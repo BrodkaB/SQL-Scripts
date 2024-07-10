@@ -1,16 +1,16 @@
-1) Create table in DBA database dbo.AuditCheckLog
+--1) Create table in DBA database dbo.AuditCheckLog
 
 CREATE TABLE DBA.dbo.AuditCheckLog (
 	CheckTime DATETIME);
 
-2) Setup DatabaseMail service
-3) Setup Instance level Audit
+--2) Setup DatabaseMail service
+--3) Setup Instance level Audit
 
 CREATE SERVER AUDIT [NameOfAudit]
 TO FILE (FILEPATH = 'path for your files\', MAXSIZE =10MB, MAX_ROLLOVER_FILES = 100);
 ALTER SERVER AUDIT [NameOfAudit] WITH (STATE=ON);
 
-4) Setup Audit specification with same variables which will point to created audit
+--4) Setup Audit specification with same variables which will point to created audit
 
 CREATE SERVER AUDIT SPECIFICATION [NameOfAuditSpecification]
 FOR SERVER AUDIT [NameOfAudit]
@@ -18,11 +18,11 @@ ADD (SUCCESSFUL_LOGIN_GROUP),
 ADD (FAILED_LOGIN_GROUP);
 ALTER SERVER AUDIT SPECIFICATION [NameOfAuditSpecification] WITH (STATE=ON);
 
-5) Execute below script with changing required variables
+--5) Execute below script with changing required variables
 ---Declaring variables and temporary table
 
-DECLARE @EmailRecipient NVARCHAR(255) = N'brodkab@ryanair.com';
-DECLARE @EmailSubject NVARCHAR(255) = N'SQL Instance login audit';
+DECLARE @EmailRecipient NVARCHAR(255) = N'brodkab@ryanair.com';		--Enter your recipients
+DECLARE @EmailSubject NVARCHAR(255) = N'SQL Instance login audit';	--Enter name of mail subject
 DECLARE @EmailBody NVARCHAR(MAX);
 DECLARE @LastCheckTime DATETIME;
 SELECT @LastCheckTime = MAX(CheckTime) FROM DBA.dbo.AuditCheckLog;
@@ -87,7 +87,7 @@ SELECT @EmailBody;
 ---Executing stored procedure for email sending
 
 EXEC msdb.dbo.sp_send_dbmail
-    @profile_name = @ProfileName,--'YourMailProfile', Replace with the name of your Database Mail profile
+    @profile_name = @ProfileName,		--'YourMailProfile', Replace with the name of your Database Mail profile
     @recipients = @EmailRecipient,
     @subject = @EmailSubject,
     @body = @EmailBody,
