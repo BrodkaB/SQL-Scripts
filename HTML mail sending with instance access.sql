@@ -2,6 +2,7 @@
 
 CREATE TABLE DBA.dbo.AuditCheckLog (
 	CheckTime DATETIME);
+INSERT INTO DBA.dbo.AuditCheckLog (CheckTime) VALUES ('2024-01-01 10:00:00.000')
 
 --2) Setup DatabaseMail service
 --3) Setup Instance level Audit
