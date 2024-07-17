@@ -8,7 +8,7 @@ INSERT INTO DBA.dbo.AuditCheckLog (CheckTime) VALUES ('2024-01-01 10:00:00.000')
 --3) Setup Instance level Audit
 
 CREATE SERVER AUDIT [NameOfAudit]
-TO FILE (FILEPATH = 'path for your files\', MAXSIZE =10MB, MAX_ROLLOVER_FILES = 100);
+TO FILE (FILEPATH = 'path for your files\', MAXSIZE =100MB, MAX_ROLLOVER_FILES = 100);
 ALTER SERVER AUDIT [NameOfAudit] WITH (STATE=ON);
 
 --4) Setup Audit specification with same variables which will point to created audit
