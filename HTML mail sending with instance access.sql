@@ -54,7 +54,7 @@ INSERT INTO @temp
 		WHERE event_time >@LastCheckTime
 		GROUP BY server_principal_name
 
-INSERT INTO dba.dbo.AuditCheckLog (CheckTime) VALUES (GETDATE());
+INSERT INTO DBA.dbo.AuditCheckLog (CheckTime) VALUES (GETDATE());
 
 ---Setting up HTML email body to be sent
 
