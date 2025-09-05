@@ -1,0 +1,3 @@
+-----STEP 1: Create needed stored procedures to be executed for particular task:
+---Task1: Database CHECKDB check (Olla Hallegeren script for DBCC_CHECKDB)
+---Task12:
