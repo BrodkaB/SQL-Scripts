@@ -1,7 +1,7 @@
-To create a log in script that has a blank password, follow these steps:
+--To create a log in script that has a blank password, follow these steps:
 
-1. On server A, start SQL Server Management Studio, and then connect to the instance of SQL Server from which you moved the database.
-2. Open a new Query Editor window, and then run the following script:
+--1. On server A, start SQL Server Management Studio, and then connect to the instance of SQL Server from which you moved the database.
+--2. Open a new Query Editor window, and then run the following script:
 
 USE master
 GO
@@ -139,13 +139,14 @@ RETURN 0
 GO
 
 -------------------------------------------------------------------------------------------------------------------
-3. Note This script creates two stored procedures in the master database. The procedures are named sp_hexadecimal and sp_help_revlogin.
-4. Run the following statement in the same or a new query window: 
+--3. Note This script creates two stored procedures in the master database. The procedures are named sp_hexadecimal and sp_help_revlogin.
+--4. Run the following statement in the same or a new query window: 
 EXEC sp_help_revlogin
 
-The output script that the sp_help_revlogin stored procedure generates is the login script. 
-This login script creates the logins that have the original Security Identifier (SID) and the original password.
+--The output script that the sp_help_revlogin stored procedure generates is the login script. 
+--This login script creates the logins that have the original Security Identifier (SID) and the original password.
 
-B. Steps on the destination server (Server B):
-1. On server B, start SQL Server Management Studio, and then connect to the instance of SQL Server to which you moved the database.
-2. Open a new Query Editor window, and then run the output script that's generated in step 2 of the preceding procedure.
+--B. Steps on the destination server (Server B):
+1--. On server B, start SQL Server Management Studio, and then connect to the instance of SQL Server to which you moved the database.
+
+--2. Open a new Query Editor window, and then run the output script that's generated in step 2 of the preceding procedure.
