@@ -6,3 +6,24 @@ Priority	Finding	Database Name	Details: schema.table.index(indexid)	Definition: 
 =VALUE(MID(G29, FIND("Reads:", G29) + 7, FIND(",", G29) - FIND("Reads:", G29) - 7))
 =VALUE(MID(G29, FIND("Writes:", G29) + 8, LEN(G29)))
 
+-- proper
+exec dba.dbo.sp_BlitzIndex
+	@Databasename = 'ADR_LIVE',
+	@Mode =4,
+	@IncludeInactiveIndexes = 1,
+	@BringThePain = 0;
+
+
+
+exec dba.dbo.sp_BlitzIndex
+	@Databasename = 'ADR_LIVE',
+	@Mode =2,
+	@SortOrder = 'writes',
+	@SortDirection = 'DESC';
+
+
+exec dba.dbo.sp_BlitzIndex
+	@Databasename = 'ADR_LIVE',
+	@Mode =4,
+	@ThresholdMB = 100,
+	@IncludeInactiveIndexes =1;
