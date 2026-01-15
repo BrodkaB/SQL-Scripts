@@ -3,5 +3,6 @@ Priority	Finding	Database Name	Details: schema.table.index(indexid)	Definition: 
 1	No Major Problems Found: Nice Work!	NULL	Consider running with @Mode = 4 in individual databases (not all) for more detailed diagnostics.	The default Mode 0 only looks for very serious index issues.		Server: JLDB-PROD-06 Days Uptime: 6.25			http://FirstResponderKit.org		NULL
 
 
-=VALUE(MID(G2;FIND("Reads:";G2)+7;FIND(",";G2)-FIND("Reads:";G2)-7))
-=VALUE(MID(G2;FIND("Writes:";G2)+8;LEN(G2)))
+=VALUE(MID(G29, FIND("Reads:", G29) + 7, FIND(",", G29) - FIND("Reads:", G29) - 7))
+=VALUE(MID(G29, FIND("Writes:", G29) + 8, LEN(G29)))
+
