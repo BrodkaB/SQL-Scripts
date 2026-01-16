@@ -29,7 +29,8 @@ exec dba.dbo.sp_BlitzIndex
 	@IncludeInactiveIndexes =1;
 
 
-=IFERROR(VALUE(SUBSTITUTE(TRIM(LEFT(MID(G29,FIND("Reads:",G29)+6,50),FIND(" ",MID(G29,FIND("Reads:",G29)+6,50)&" ")-1)),",","")),"")
-=IFERROR(VALUE(SUBSTITUTE(TRIM(MID(G29,FIND("Writes:",G29)+7,50)),",","")),"")
+=IFERROR(VALUE(SUBSTITUTE(LEFT(MID(H29,FIND("Reads:",H29)+6,50),FIND(" ",MID(H29,FIND("Reads:",H29)+6,50)&" ")-1),",","")),"")
+=IFERROR(VALUE(SUBSTITUTE(MID(H29,FIND("Writes:",H29)+7,50),",","")),"")
+
 
 =TRIM(SUBSTITUTE(SUBSTITUTE(G29,CHAR(160)," "),CHAR(9)," "))
