@@ -28,10 +28,34 @@ exec dba.dbo.sp_BlitzIndex
 	@ThresholdMB = 100,
 	@IncludeInactiveIndexes =1;
 
-Reads: 0 Writes: 29,048
 
-Reads: 5,530 (4,981 seek 549 scan) Writes: 5,226
 
-Reads: 30,429 (10,776 seek 19,653 scan) Writes: 903
+=IFERROR(
+  VALUE(
+    SUBSTITUTE(
+      TRIM(
+        LEFT(
+          MID(G29, FIND("Reads:", G29) + 6, 50),
+          FIND(" ", MID(G29, FIND("Reads:", G29) + 6, 50) & " ") - 1
+        )
+      ),
+      ",",
+      ""
+    )
+  ),
+  ""
+)
 
-Reads: 3 (1 seek 2 scan) Writes: 4
+
+=IFERROR(
+  VALUE(
+    SUBSTITUTE(
+      TRIM(
+        MID(G29, FIND("Writes:", G29) + 7, 50)
+      ),
+      ",",
+      ""
+    )
+  ),
+  ""
+)
