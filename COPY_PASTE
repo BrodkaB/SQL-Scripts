@@ -37,3 +37,5 @@ exec dba.dbo.sp_BlitzIndex
 
 =IFERROR(VALUE(SUBSTITUTE(LEFT(MID(G29,FIND("Reads:",G29)+6,50),FIND("(",MID(G29,FIND("Reads:",G29)+6,50)&"(")-1),",","")),"")
 
+=IFERROR(VALUE(SUBSTITUTE(LEFT(H29,FIND(" rows",H29)-1),",","")),0)
+=IFERROR(VALUE(SUBSTITUTE(MID(H29,FIND("; ",H29)+2,FIND("MB",H29)-FIND("; ",H29)-2),",","")),0)
