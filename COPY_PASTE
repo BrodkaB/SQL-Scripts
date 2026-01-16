@@ -31,3 +31,14 @@ exec dba.dbo.sp_BlitzIndex
 =IFERROR(--TEXTAFTER(TEXTBEFORE(G29,"Writes"),"Reads"),"")
 =IFERROR(--TEXTAFTER(G29,"Writes"),"")
 
+=IFERROR(
+  VALUE(
+    TRIM(
+      LEFT(
+        MID(G29, FIND("Reads", G29), 50),
+        FIND(" ", MID(G29, FIND("Reads", G29), 50) & " ") - 1
+      )
+    )
+  ),
+  ""
+)
