@@ -34,3 +34,6 @@ exec dba.dbo.sp_BlitzIndex
 
 
 =TRIM(SUBSTITUTE(SUBSTITUTE(G29,CHAR(160)," "),CHAR(9)," "))
+
+=IFERROR(VALUE(SUBSTITUTE(LEFT(MID(G29,FIND("Reads:",G29)+6,50),FIND("(",MID(G29,FIND("Reads:",G29)+6,50)&"(")-1),",","")),"")
+
