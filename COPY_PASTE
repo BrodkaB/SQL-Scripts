@@ -27,3 +27,7 @@ exec dba.dbo.sp_BlitzIndex
 	@Mode =4,
 	@ThresholdMB = 100,
 	@IncludeInactiveIndexes =1;
+
+=IFERROR(--TEXTAFTER(TEXTBEFORE(G29,"Writes"),"Reads"),"")
+=IFERROR(--TEXTAFTER(G29,"Writes"),"")
+
