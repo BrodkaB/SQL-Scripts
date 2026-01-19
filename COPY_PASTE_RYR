@@ -1,0 +1,73 @@
+EXEC DBA.dbo.sp_ReGenStatistics
+    @Databases = 'BigDB',
+    @UpdateStatistics = 'ALL',
+    @OnlyModifiedStatistics = 'Y',
+    @StatisticsSample = 'RESAMPLE',
+    @TimeLimit = 900,        -- 15 minut
+    @LogToTable = 'Y';
+
+--- w trakcie
+SELECT
+    r.session_id,
+    r.command,
+    r.status,
+    r.wait_type,
+    r.wait_time,
+    t.text
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
+WHERE t.text LIKE '%UPDATE STATISTICS%';
+
+---po
+SELECT
+    COUNT(*) AS total_stats,
+    SUM(CASE WHEN STATS_DATE(object_id, stats_id) IS NULL THEN 1 ELSE 0 END) AS null_stats
+FROM sys.stats
+WHERE OBJECTPROPERTY(object_id, 'IsUserTable') = 1;
+
+SELECT TOP (20)
+    OBJECT_NAME(object_id) AS table_name,
+    name,
+    STATS_DATE(object_id, stats_id) AS last_updated
+FROM sys.stats
+WHERE OBJECTPROPERTY(object_id, 'IsUserTable') = 1
+ORDER BY last_updated DESC;
+
+--- update stats light and heavy
+EXEC DBA.dbo.sp_ReGenStatistics
+    @Databases = 'USER_DATABASES,-BigDB',
+    @UpdateStatistics = 'ALL',
+    @OnlyModifiedStatistics = 'Y',
+    @StatisticsSample = 'RESAMPLE',
+    @TimeLimit = 1800,      -- 30 minut
+    @LogToTable = 'Y';
+
+EXEC DBA.dbo.sp_ReGenStatistics
+    @Databases = 'USER_DATABASES,-BigDB',
+    @UpdateStatistics = 'ALL',
+    @OnlyModifiedStatistics = 'N',
+    @StatisticsSample = 'SAMPLE 30 PERCENT',
+    @TimeLimit = 3600,      -- 60 minut
+    @LogToTable = 'Y';
+
+
+---Index light and heavy
+EXEC DBA.dbo.sp_ReIndex
+    @Databases = 'USER_DATABASES,-BigDB',
+    @FragmentationLow = 'NULL',
+    @FragmentationMedium = 'REORGANIZE',
+    @FragmentationHigh = 'REORGANIZE',
+    @FragmentationLevel1 = 5,
+    @FragmentationLevel2 = 30,
+    @TimeLimit = 1800,     -- 30 minut
+    @LogToTable = 'Y';
+
+EXEC DBA.dbo.sp_ReIndex
+    @Databases = 'USER_DATABASES,-BigDB',
+    @FragmentationLow = 'NULL',
+    @FragmentationMedium = 'REORGANIZE',
+    @FragmentationHigh = 'REBUILD',
+    @FragmentationLevel1 = 5,
+    @FragmentationLevel2 = 30,
+    @TimeLimit = 3600,     -- 60 minut
+    @LogToTable = 'Y';
