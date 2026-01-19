@@ -34,40 +34,36 @@ WHERE OBJECTPROPERTY(object_id, 'IsUserTable') = 1
 ORDER BY last_updated DESC;
 
 --- update stats light and heavy
-EXEC DBA.dbo.sp_ReGenStatistics
+EXEC DBA.dbo.sp_IndexOptimize
     @Databases = 'USER_DATABASES,-BigDB',
     @UpdateStatistics = 'ALL',
     @OnlyModifiedStatistics = 'Y',
-    @StatisticsSample = 'RESAMPLE',
-    @TimeLimit = 1800,      -- 30 minut
+    @StatisticsResample = 'Y',
     @LogToTable = 'Y';
 
-EXEC DBA.dbo.sp_ReGenStatistics
+EXEC DBA.dbo.sp_IndexOptimize
     @Databases = 'USER_DATABASES,-BigDB',
     @UpdateStatistics = 'ALL',
     @OnlyModifiedStatistics = 'N',
-    @StatisticsSample = 'SAMPLE 30 PERCENT',
-    @TimeLimit = 3600,      -- 60 minut
+    @StatisticsSample = 30,
     @LogToTable = 'Y';
 
 
 ---Index light and heavy
-EXEC DBA.dbo.sp_ReIndex
+EXEC DBA.dbo.sp_IndexOptimize
     @Databases = 'USER_DATABASES,-BigDB',
-    @FragmentationLow = 'NULL',
+    @FragmentationLow = NULL,
     @FragmentationMedium = 'REORGANIZE',
     @FragmentationHigh = 'REORGANIZE',
     @FragmentationLevel1 = 5,
     @FragmentationLevel2 = 30,
-    @TimeLimit = 1800,     -- 30 minut
     @LogToTable = 'Y';
 
-EXEC DBA.dbo.sp_ReIndex
+EXEC DBA.dbo.sp_IndexOptimize
     @Databases = 'USER_DATABASES,-BigDB',
-    @FragmentationLow = 'NULL',
+    @FragmentationLow = NULL,
     @FragmentationMedium = 'REORGANIZE',
     @FragmentationHigh = 'REBUILD',
     @FragmentationLevel1 = 5,
     @FragmentationLevel2 = 30,
-    @TimeLimit = 3600,     -- 60 minut
     @LogToTable = 'Y';
