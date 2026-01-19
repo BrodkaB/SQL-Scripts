@@ -67,3 +67,52 @@ EXEC DBA.dbo.sp_IndexOptimize
     @FragmentationLevel1 = 5,
     @FragmentationLevel2 = 30,
     @LogToTable = 'Y';
+
+
+SELECT
+    OBJECT_NAME(s.object_id) AS table_name,
+    s.name AS stats_name,
+    s.auto_created,
+    s.user_created,
+    STATS_DATE(s.object_id, s.stats_id) AS last_updated
+FROM sys.stats s
+WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+  AND STATS_DATE(s.object_id, s.stats_id) IS NULL
+ORDER BY table_name;
+
+DECLARE @DaysOld INT = 60;
+
+SELECT
+    OBJECT_NAME(s.object_id) AS table_name,
+    s.name AS stats_name,
+    STATS_DATE(s.object_id, s.stats_id) AS last_updated,
+    DATEDIFF(DAY, STATS_DATE(s.object_id, s.stats_id), GETDATE()) AS days_old
+FROM sys.stats s
+WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+  AND STATS_DATE(s.object_id, s.stats_id) < DATEADD(DAY, -@DaysOld, GETDATE())
+ORDER BY days_old DESC;
+
+SELECT
+    OBJECT_NAME(s.object_id) AS table_name,
+    s.name AS stats_name,
+    STATS_DATE(s.object_id, s.stats_id) AS last_updated,
+    sp.rows,
+    sp.modification_counter,
+    CASE 
+        WHEN sp.modification_counter = 0 THEN 'no changes'
+        WHEN sp.modification_counter > 0 AND STATS_DATE(s.object_id, s.stats_id) IS NULL THEN 'never updated'
+        WHEN sp.modification_counter > 0 THEN 'stale stats'
+    END AS stats_state
+FROM sys.stats s
+CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
+WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+ORDER BY sp.modification_counter DESC;
+
+SELECT
+    COUNT(*) AS total_stats,
+    SUM(CASE WHEN STATS_DATE(object_id, stats_id) IS NULL THEN 1 ELSE 0 END) AS never_updated,
+    SUM(CASE 
+        WHEN STATS_DATE(object_id, stats_id) < DATEADD(DAY, -30, GETDATE())
+        THEN 1 ELSE 0 END) AS older_than_30_days
+FROM sys.stats
+WHERE OBJECTPROPERTY(object_id, 'IsUserTable') = 1;
