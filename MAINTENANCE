@@ -67,3 +67,23 @@ WHERE s.name IN (
 )
 ORDER BY sp.modification_counter DESC;
 
+
+
+EXEC dbo.IndexOptimize
+    @Databases = 'USER_DATABASES',
+    @UpdateStatistics = 'ALL',
+    @OnlyModifiedStatistics = 'Y',
+    @StatisticsSample = 5,
+    @Indexes = 'NONE',
+    @TimeLimit = 1800, -- 30 minut
+    @LogToTable = 'Y';
+
+
+EXEC dbo.IndexOptimize
+    @Databases = 'USER_DATABASES',
+    @UpdateStatistics = 'ALL',
+    @OnlyModifiedStatistics = 'Y',
+    @StatisticsSample = 10,
+    @Indexes = 'NONE',
+    @TimeLimit = 5400, -- 1.5 godziny
+    @LogToTable = 'Y';
