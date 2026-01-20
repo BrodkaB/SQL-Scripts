@@ -46,3 +46,24 @@ SELECT
 FROM StatsCTE
 WHERE rn <= 10
 ORDER BY rn;
+
+
+SELECT
+    OBJECT_NAME(s.object_id) AS table_name,
+    s.name AS stats_name,
+    STATS_DATE(s.object_id, s.stats_id) AS last_updated,
+    sp.modification_counter
+FROM sys.stats s
+CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
+WHERE s.name IN (
+    'Stats_PK_ID',
+    'Stats_FK_OrderID',
+    'Stats_Date',
+    'Stats_Status',
+    'Stats_UserID',
+    'Stats_Type',
+    'Stats_CreatedDate',
+    'Stats_ModifiedDate'
+)
+ORDER BY sp.modification_counter DESC;
+
