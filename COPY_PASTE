@@ -28,6 +28,7 @@ JOIN sys.objects o ON i.object_id = o.object_id
 JOIN sys.schemas s ON o.schema_id = s.schema_id
 WHERE o.type = 'U';
 
+=SchemaNameCell & "." & TableNameCell & "." & IndexNameCell & "(" & IndexIDCell & ")"
 
 
 exec dba.dbo.sp_BlitzIndex
