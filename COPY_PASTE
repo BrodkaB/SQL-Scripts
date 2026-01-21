@@ -20,6 +20,7 @@ exec dba.dbo.sp_BlitzIndex
   RAW_Mode2!Details_Key,
   "NOT FOUND"
 )
+=XLOOKUP([@Details],RAW2!Details_Key,RAW2!Details_Key,"NOT FOUND")
 
 
 
