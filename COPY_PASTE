@@ -18,7 +18,8 @@ exec dba.dbo.sp_BlitzIndex
 =MID(D2,FIND(".",D2)+1,FIND(".",D2,FIND(".",D2)+1)-FIND(".",D2)-1)
 
 =IF(AND(ISNUMBER(FIND("(",D2)),ISNUMBER(FIND(")",D2)),RIGHT(TRIM(D2),1)=")",NOT(ISNUMBER(FIND("Reads:",D2))),NOT(ISNUMBER(FIND("Writes:",D2))),NOT(ISNUMBER(FIND("indexes on",LOWER(D2)))),NOT(ISNUMBER(FIND("est. benefit",LOWER(D2))))),1,0)
-=IF(IsPhysicalIndex=1,IndexID & "." & Schema & "." & Table,"")
+=IF(IsPhysicalIndex=1,Schema & "." & Table & "." & IndexID,"")
+
 
 
 
