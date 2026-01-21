@@ -13,6 +13,9 @@ exec dba.dbo.sp_BlitzIndex
 	@IncludeInactiveIndexes = 1,
 	@BringThePain = 0;
 
+=A2 & "." & B2 & "." & C2 & "(" & D2 & ")"
+
+
 SELECT
     DB_NAME() AS DatabaseName,
     s.name AS SchemaName,
