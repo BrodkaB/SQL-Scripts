@@ -17,6 +17,7 @@ exec dba.dbo.sp_BlitzIndex
 =LEFT(D2,FIND(".",D2)-1)
 =MID(D2,FIND(".",D2)+1,FIND(".",D2,FIND(".",D2)+1)-FIND(".",D2)-1)
 
+=IF(AND(ISNUMBER(FIND("(",B2)),ISNUMBER(FIND(")",B2)),RIGHT(TRIM(B2),1)=")",NOT(ISNUMBER(FIND("Reads:",B2))),NOT(ISNUMBER(FIND("Writes:",B2))),NOT(ISNUMBER(FIND("indexes on",LOWER(B2)))),NOT(ISNUMBER(FIND("est. benefit",LOWER(B2))))),1,0)
 
 
 
