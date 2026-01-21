@@ -13,7 +13,9 @@ exec dba.dbo.sp_BlitzIndex
 	@IncludeInactiveIndexes = 1,
 	@BringThePain = 0;
 
-=VALUE(MID(B2,FIND("(",B2)+1,FIND(")",B2)-FIND("(",B2)-1))
+=VALUE(MID(B2,FIND("(",D2)+1,FIND(")",D2)-FIND("(",D2)-1))
+=LEFT(D2,FIND(".",D2)-1)
+=MID(D2,FIND(".",D2)+1,FIND(".",D2,FIND(".",D2)+1)-FIND(".",D2)-1)
 
 
 
