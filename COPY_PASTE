@@ -13,15 +13,8 @@ exec dba.dbo.sp_BlitzIndex
 	@IncludeInactiveIndexes = 1,
 	@BringThePain = 0;
 
-=A2 & "." & B2 & "." & C2 & "(" & D2 & ")"
-=XLOOKUP(
-  [@Details],
-  RAW_Mode2!Details_Key,
-  RAW_Mode2!Details_Key,
-  "NOT FOUND"
-)
-=XLOOKUP([@Details],RAW2!Details_Key,RAW2!Details_Key,"NOT FOUND")
-=XLOOKUP([@Details],RAW2_Table[Details_Key],RAW2_Table[Details_Key],"NOT FOUND")
+=VALUE(MID(B2,FIND("(",B2)+1,FIND(")",B2)-FIND("(",B2)-1))
+
 
 
 
