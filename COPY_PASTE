@@ -68,3 +68,24 @@ exec dba.dbo.sp_BlitzIndex
 =IFERROR(VALUE(SUBSTITUTE(MID(H29,FIND("; ",H29)+2,FIND("MB",H29)-FIND("; ",H29)-2),",","")),0)
 
 =IFERROR(IF(ISNUMBER(FIND("GB",H29)),VALUE(SUBSTITUTE(MID(H29,FIND("; ",H29)+2,FIND("GB",H29)-FIND("; ",H29)-2),",",""))*1024,VALUE(SUBSTITUTE(MID(H29,FIND("; ",H29)+2,FIND("MB",H29)-FIND("; ",H29)-2),",",""))),0)
+
+
+Research on impact of Query Store in our production environment.  
+
+What can it provide, what are the costs associated with it (system overhead)?
+
+What are best practice configurations?
+
+What is the impact on the database and server overall?
+
+Document and provide an analysis, and prepare the use of it on the following databases in development:
+
+JLDB-DEV-02: ADR_TRAIN
+
+JLDB-DEV-04: OpenDB
+
+JLDB-DEV-01: CompuLaw
+
+JLDB-DEV-01: CompuLawSync
+
+Include potential 3rd party scripts for support and enhanced usage
