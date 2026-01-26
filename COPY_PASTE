@@ -94,33 +94,24 @@ Include potential 3rd party scripts for support and enhanced usage
 DECLARE @sql NVARCHAR(MAX) = N'';
 
 SELECT @sql += '
+-- ===== ' + s.name + '.' + t.name + ' =====
 IF EXISTS (SELECT 1 FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ')
 BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM sys.columns c
-        JOIN sys.types ty ON c.user_type_id = ty.user_type_id
-        WHERE c.object_id = ' + CAST(t.object_id AS NVARCHAR(20)) + '
-          AND (
-                LOWER(c.name) LIKE ''%name%''
-             OR LOWER(c.name) LIKE ''%email%''
-             OR ty.name IN (''money'', ''smallmoney'')
-          )
-    )
-    BEGIN
-        SELECT 
-            ''' + s.name + '.' + t.name + ''' AS TableName,
-            c.name AS ColumnName,
-            ty.name AS DataType
-        FROM sys.columns c
-        JOIN sys.types ty ON c.user_type_id = ty.user_type_id
-        WHERE c.object_id = ' + CAST(t.object_id AS NVARCHAR(20)) + '
-          AND (
-                LOWER(c.name) LIKE ''%name%''
-             OR LOWER(c.name) LIKE ''%email%''
-             OR ty.name IN (''money'', ''smallmoney'')
-          )
-    END
+    -- Header row (table name)
+    SELECT 
+        ''' + s.name + '.' + t.name + ''' AS TableName,
+        NULL AS DataMarker;
+
+    -- Top 10 rows
+    SELECT TOP (10)
+        ''' + s.name + '.' + t.name + ''' AS TableName,
+        * 
+    FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ';
+
+    -- Empty separator row
+    SELECT 
+        NULL AS TableName,
+        NULL AS DataMarker;
 END;
 '
 FROM sys.tables t
@@ -128,7 +119,6 @@ JOIN sys.schemas s ON t.schema_id = s.schema_id
 WHERE t.is_ms_shipped = 0;
 
 EXEC sp_executesql @sql;
-
 
 
 
