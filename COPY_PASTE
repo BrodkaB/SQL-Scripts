@@ -91,20 +91,68 @@ JLDB-DEV-01: CompuLawSync
 Include potential 3rd party scripts for support and enhanced usage
 
 ---
-DECLARE @sql NVARCHAR(MAX) = N'';
-
-SELECT @sql += '
-IF EXISTS (SELECT 1 FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ')
-BEGIN
-    SELECT TOP (10)
-        ''' + s.name + '.' + t.name + ''' AS TableName,
-        *
-    FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ';
-END;
-'
+SELECT 
+    s.name AS SchemaName,
+    t.name AS TableName
 FROM sys.tables t
 JOIN sys.schemas s ON t.schema_id = s.schema_id
-WHERE t.is_ms_shipped = 0;
+WHERE t.is_ms_shipped = 0
+  AND EXISTS (
+        SELECT 1 
+        FROM sys.partitions p
+        WHERE p.object_id = t.object_id
+          AND p.index_id IN (0,1)
+          AND p.rows > 0
+  )
+ORDER BY s.name, t.name;
+
+
+-- <<< ZMIENIASZ TYLKO TO >>>
+DECLARE @SchemaName SYSNAME = 'dbo';
+DECLARE @TableName  SYSNAME = 'YourTableName';
+
+DECLARE @sql NVARCHAR(MAX);
+
+SET @sql = '
+SELECT TOP (10)
+    ''' + @SchemaName + '.' + @TableName + ''' AS TableName,
+    *
+FROM ' + QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName) + ';
+';
 
 EXEC sp_executesql @sql;
+
+DECLARE @SchemaName SYSNAME = 'dbo';
+DECLARE @TableName  SYSNAME = 'YourTableName';
+DECLARE @MaskColumn SYSNAME = 'PersonName';
+DECLARE @ColumnList NVARCHAR(MAX);
+DECLARE @sql        NVARCHAR(MAX);
+
+SELECT @ColumnList = STRING_AGG(
+    CASE 
+        WHEN c.name = @MaskColumn THEN
+            'CASE 
+                WHEN ' + QUOTENAME(c.name) + ' IS NULL THEN NULL
+                ELSE LEFT(' + QUOTENAME(c.name) + ', 1) + ''***''
+             END AS ' + QUOTENAME(c.name)
+        ELSE
+            QUOTENAME(c.name)
+    END
+, ', ')
+FROM sys.columns c
+WHERE c.object_id = OBJECT_ID(QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName))
+ORDER BY c.column_id;
+
+SET @sql = '
+SELECT TOP (10)
+    ''' + @SchemaName + '.' + @TableName + ''' AS TableName,
+    ' + @ColumnList + '
+FROM ' + QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName) + ';
+';
+
+EXEC sp_executesql @sql;
+
+
+
+
 
