@@ -91,18 +91,4 @@ JLDB-DEV-01: CompuLawSync
 Include potential 3rd party scripts for support and enhanced usage
 
 
-Extract sample data from all the tables in the FoundationExport database which contain records. 
 
-The database is located on: VM-FDNHB-DB-E01.
-
-Take the top 10 records from each table which contains data and provide them in an excel spread sheet.
-
-Use Column A to indicate the Table Name.
-
-Please mask the following types of data:
-
-Person Name
-
-Person Email Address
-
-Monetary Values
