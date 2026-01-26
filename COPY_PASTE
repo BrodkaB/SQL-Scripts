@@ -91,42 +91,15 @@ JLDB-DEV-01: CompuLawSync
 Include potential 3rd party scripts for support and enhanced usage
 
 ---
-IF OBJECT_ID('tempdb..#ExportData') IS NOT NULL
-    DROP TABLE #ExportData;
-
-CREATE TABLE #ExportData
-(
-    RowOrder     INT IDENTITY(1,1),
-    TableName    NVARCHAR(256),
-    RowContent   NVARCHAR(MAX)
-);
-
-
 DECLARE @sql NVARCHAR(MAX) = N'';
 
 SELECT @sql += '
 IF EXISTS (SELECT 1 FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ')
 BEGIN
-    -- Header row
-    INSERT INTO #ExportData (TableName, RowContent)
-    VALUES (''' + s.name + '.' + t.name + ''', NULL);
-
-    -- Data rows
-    INSERT INTO #ExportData (TableName, RowContent)
-    SELECT 
+    SELECT TOP (10)
         ''' + s.name + '.' + t.name + ''' AS TableName,
-        (
-            SELECT *
-            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
-        ) AS RowContent
-    FROM (
-        SELECT TOP (10) *
-        FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + '
-    ) d;
-
-    -- Separator row
-    INSERT INTO #ExportData (TableName, RowContent)
-    VALUES (NULL, NULL);
+        *
+    FROM ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ';
 END;
 '
 FROM sys.tables t
@@ -134,11 +107,4 @@ JOIN sys.schemas s ON t.schema_id = s.schema_id
 WHERE t.is_ms_shipped = 0;
 
 EXEC sp_executesql @sql;
-
-
-SELECT 
-    TableName,
-    RowContent
-FROM #ExportData
-ORDER BY RowOrder;
 
