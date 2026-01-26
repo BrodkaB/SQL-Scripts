@@ -122,26 +122,28 @@ FROM ' + QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName) + ';
 
 EXEC sp_executesql @sql;
 
+
 DECLARE @SchemaName SYSNAME = 'dbo';
 DECLARE @TableName  SYSNAME = 'YourTableName';
 DECLARE @MaskColumn SYSNAME = 'PersonName';
 DECLARE @ColumnList NVARCHAR(MAX);
 DECLARE @sql        NVARCHAR(MAX);
 
-SELECT @ColumnList = STRING_AGG(
-    CASE 
-        WHEN c.name = @MaskColumn THEN
-            'CASE 
-                WHEN ' + QUOTENAME(c.name) + ' IS NULL THEN NULL
-                ELSE LEFT(' + QUOTENAME(c.name) + ', 1) + ''***''
-             END AS ' + QUOTENAME(c.name)
-        ELSE
-            QUOTENAME(c.name)
-    END
-, ', ')
+SELECT @ColumnList =
+    STRING_AGG(
+        CASE 
+            WHEN c.name = @MaskColumn THEN
+                'CASE 
+                    WHEN ' + QUOTENAME(c.name) + ' IS NULL THEN NULL
+                    ELSE LEFT(' + QUOTENAME(c.name) + ', 1) + ''***''
+                 END AS ' + QUOTENAME(c.name)
+            ELSE
+                QUOTENAME(c.name)
+        END,
+        ', '
+    ) WITHIN GROUP (ORDER BY c.column_id)
 FROM sys.columns c
-WHERE c.object_id = OBJECT_ID(QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName))
-ORDER BY c.column_id;
+WHERE c.object_id = OBJECT_ID(QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName));
 
 SET @sql = '
 SELECT TOP (10)
@@ -151,7 +153,6 @@ FROM ' + QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName) + ';
 ';
 
 EXEC sp_executesql @sql;
-
 
 
 
