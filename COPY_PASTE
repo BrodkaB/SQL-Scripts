@@ -155,5 +155,11 @@ FROM ' + QUOTENAME(@SchemaName) + '.' + QUOTENAME(@TableName) + ';
 EXEC sp_executesql @sql;
 
 
+Research and suggest the proper SKU for a SQL server VM which will be in a cluster less always on group with VM-FDNHB-DB-E01 (Azure VM: Standard D8ds v5
+
+Suggest Data Disks which should be attached to this to replicate the FoundationExport and FoundationImport databases, as well as additional databases which will be local to the data.  One database will be used to determine difference between data sets before sending it to a different destination.  
+
+Assume the need for at least 50% more data on top of what is needed for the replicated databases and future growth. 
+
 
 
