@@ -24,6 +24,29 @@ FROM StatsCTE
 WHERE rn <= 10---here you can use whatever value 
 ORDER BY modification_counter DESC;
 
+WITH StatsCTE AS (
+    SELECT
+        OBJECT_SCHEMA_NAME(s.object_id) AS schema_name,
+        OBJECT_NAME(s.object_id) AS table_name,
+        s.name AS stats_name,
+        sp.modification_counter,
+        ROW_NUMBER() OVER (ORDER BY sp.modification_counter DESC) AS rn
+    FROM sys.stats s
+    CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
+    WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+      AND sp.modification_counter > 0
+)
+SELECT
+    'UPDATE STATISTICS '
+    + QUOTENAME(schema_name) + '.'
+    + QUOTENAME(table_name) + ' '
+    + QUOTENAME(stats_name)
+    + ' WITH SAMPLE 10 PERCENT;'
+    AS update_statement
+FROM StatsCTE
+WHERE rn <= 5
+ORDER BY rn;
+
 ----reading current CPU usage 
 select scheduler_id, runnable_tasks_count from sys.dm_os_schedulers where status = 'VISIBLE ONLINE';
 
