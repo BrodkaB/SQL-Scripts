@@ -60,6 +60,8 @@ WITH StatsCTE AS (
         OBJECT_NAME(s.object_id) AS table_name,
         s.name AS stats_name,
         sp.last_updated,
+        sp.rows,
+        sp.modification_counter,
         ROW_NUMBER() OVER (ORDER BY sp.last_updated ASC) AS rn
     FROM sys.stats s
     CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
@@ -73,8 +75,11 @@ SELECT
     + QUOTENAME(stats_name)
     + ' WITH SAMPLE 5 PERCENT;'
     AS update_statement,
-    last_updated
+    last_updated,
+    rows,
+    modification_counter
 FROM StatsCTE
 WHERE rn <= 5
 ORDER BY rn;
+
 
