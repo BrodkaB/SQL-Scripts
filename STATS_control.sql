@@ -67,6 +67,7 @@ WITH StatsCTE AS (
     CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
     WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
       AND sp.last_updated IS NOT NULL
+      AND sp.modification_counter > 0   -- 👈 KLUCZOWE
 )
 SELECT
     'UPDATE STATISTICS '
@@ -81,5 +82,6 @@ SELECT
 FROM StatsCTE
 WHERE rn <= 5
 ORDER BY rn;
+
 
 
