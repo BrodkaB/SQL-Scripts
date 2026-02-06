@@ -54,35 +54,27 @@ select scheduler_id, runnable_tasks_count from sys.dm_os_schedulers where status
 select r.session_id, r.status, r.wait_type, r.cpu_time, r.total_elapsed_time, t.text from sys.dm_exec_requests r cross apply sys.dm_exec_sql_text(r.sql_handle) t where r.command like 'UPDATE STATISTICS'
 
 
-WITH StatsInfo AS
-(
+WITH StatsCTE AS (
     SELECT
-        s.object_id,
-        s.stats_id,
         OBJECT_SCHEMA_NAME(s.object_id) AS schema_name,
         OBJECT_NAME(s.object_id) AS table_name,
-        s.name AS stat_name,
+        s.name AS stats_name,
         sp.last_updated,
-        sp.rows,
-        sp.modification_counter
+        ROW_NUMBER() OVER (ORDER BY sp.last_updated ASC) AS rn
     FROM sys.stats s
     CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
-    WHERE
-        sp.last_updated IS NOT NULL
-        AND sp.rows <= @MaxRows               -- tylko małe tabele
-        AND s.is_temporary = 0
-        AND OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+    WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+      AND sp.last_updated IS NOT NULL
 )
-SELECT TOP (@TopN)
-    last_updated,
-    rows,
-    modification_counter,
-    CONCAT(
-        'UPDATE STATISTICS ',
-        QUOTENAME(schema_name), '.', QUOTENAME(table_name),
-        ' ', QUOTENAME(stat_name),
-        ' WITH SAMPLE ', @SamplePercent, ' PERCENT;'
-    ) AS update_stats_command
-FROM StatsInfo
-ORDER BY last_updated ASC;
+SELECT
+    'UPDATE STATISTICS '
+    + QUOTENAME(schema_name) + '.'
+    + QUOTENAME(table_name) + ' '
+    + QUOTENAME(stats_name)
+    + ' WITH SAMPLE 5 PERCENT;'
+    AS update_statement,
+    last_updated
+FROM StatsCTE
+WHERE rn <= 5
+ORDER BY rn;
 
