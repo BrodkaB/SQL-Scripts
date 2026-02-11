@@ -1,1 +1,27 @@
+SELECT
+    i.name,
+    ps.partition_number,
+    ps.avg_fragmentation_in_percent,
+    ps.page_count * 8 / 1024.0 AS SizeMB
+FROM sys.dm_db_index_physical_stats
+    (DB_ID(), OBJECT_ID('schema.tabela'), NULL, NULL, 'LIMITED') ps
+JOIN sys.indexes i
+    ON ps.object_id = i.object_id
+    AND ps.index_id = i.index_id
+WHERE i.name = 'NazwaIndeksu'
+ORDER BY ps.avg_fragmentation_in_percent DESC;
 
+SELECT
+    i.name,
+    us.user_seeks,
+    us.user_scans,
+    us.user_lookups,
+    us.user_updates
+FROM sys.indexes i
+LEFT JOIN sys.dm_db_index_usage_stats us
+    ON us.object_id = i.object_id
+    AND us.index_id = i.index_id
+    AND us.database_id = DB_ID()
+WHERE i.name = 'NazwaIndeksu';
+
+@Indexes = 'ALL_INDEXES, -schema.tabela.NazwaIndeksu'
