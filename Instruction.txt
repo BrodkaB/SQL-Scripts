@@ -1,0 +1,51 @@
+Instruction for index filtering.
+Before you start, run this command agains database that stores First Responder Kit from Brent Ozar
+
+EXEC dbo.sp_BlitzIndex @Version =1;
+
+Output shows you if  you are using the most recent version of the tool. You can check and compare it on Brent's GitHub: https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit
+
+Above statemtnt can also help you to provide version number but also, it returns server uptime which is crucial when you read index reads and writes
+Once you have that done, execute below script to get all neccesary information. REMEMBER - this script setup returns useful information to read high used or unused indexes inside particular database
+
+EXEC dba.dbo.sp_BlitzIndex
+	@Databasename = 'Adatabase_name',
+	@Mode =4,
+	@IncludeInactiveIndexes = 1,
+	@BringThePain = 0;
+
+Put your output into raw excel file, paste it there. Then use CTRL+T to create that output as a table. If filters were not enabled automatically, do it. 
+
+Now, we will be filtering raw data to get the data that we are looking for:
+1) Column USAGE filters -> Text Filters -> Contains "Reads:"
+2) Column DETAILS filters -> Text Filters -> Does not contain "(1)"
+3) Create new columns: Reads, Writes, Rows, SizeMB
+4) For Reads: =IFERROR(VALUE(SUBSTITUTE(LEFT(MID(E2,FIND("Reads:",E2)+6,50),FIND("(",MID(E2,FIND("Reads:",E2)+6,50)&"(")-1),",","")),0)
+	WARNING! Make sure that column USAGE is a G column, if the value is different, modify it
+5) For Writes: =VALUE(MID(E2, FIND("Writes:", E2) + 8, LEN(E2)))
+6) For Rows: =IFERROR(VALUE(SUBSTITUTE(LEFT(F2,FIND(" rows",F2)-1),",","")),0)
+7) For SizeMB: =IFERROR(IF(ISNUMBER(FIND("GB",F2)),VALUE(SUBSTITUTE(MID(F2,FIND("; ",F2)+2,FIND("GB",F2)-FIND("; ",F2)-2),",",""))*1024,VALUE(SUBSTITUTE(MID(F2,FIND("; ",F2)+2,FIND("MB",F2)-FIND("; ",F2)-2),",",""))),0)
+8) For uses: =IFERROR(VALUE(SUBSTITUTE(TEXTBEFORE(E2," uses"),",","")),0)
+9) For avg: =IFERROR(VALUE(SUBSTITUTE(TRIM(TEXTAFTER(LOWER(E2),"avg query cost:")),",","")),0)
+
+Column names: RAW, All indexes, Indexes not in use, High write vs very low read, Uses and svg cost
+If there is no uses and cost values: In Brent's outpt for ExpertImaging databases, there are no rows showing usage and cost of particular index around database
+
+Once you have all neccesary columns in place, you can filter indexes out however you want, basing on values from newely created columns. 
+
+When data is filtered the way you like it, you can copy it into separated tab or excel file with this order:
+1) Mark on cell from header, CTRL + A
+2) ALT + ; (Option + ; on Macbook)
+3) CTRL + C 
+4) CTRL + V (in the destination)
+
+Below, example of message that you can left in the ticket:
+
+Hey Marcin, indexes review for CompuLaw and COMPULAWSYNC are ready. Columns available as we discussed, this process will be upgraded for additional column in the future. 
+JLDB-PROD-01 uptime is 20 days
+sp.BlitzIndex version used is v8.28 - November 24, 2025
+
+Lookup conditions:
+For indexes not in use: Reads = 0, Writes > 1
+For High write vs very low read: 0 > Reads > 50, Writes > 1000. This one allows us to cut noise indexes with lower writes, this value can be modified
+For uses and avg cost: uses > 0, avg cost > 0
