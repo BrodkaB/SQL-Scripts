@@ -13,3 +13,18 @@ FROM (
 WHERE xevent.value('(event/@name)[1]', 'varchar(100)')
     = 'scheduler_monitor_non_yielding_ring_buffer_recorded'
 ORDER BY local_time DESC;
+
+
+CREATE EVENT SESSION [HANG_CAPTURE] ON SERVER
+ADD EVENT sqlos.scheduler_monitor_non_yielding_ring_buffer_recorded,
+ADD EVENT sqlos.wait_info(
+    ACTION(sqlserver.sql_text,sqlserver.session_id,sqlserver.client_app_name)
+    WHERE duration > 5000),
+ADD EVENT sqlserver.error_reported
+ADD TARGET package0.event_file(
+    SET filename='D:\XE\hang_capture.xel'
+)
+WITH (STARTUP_STATE=ON);
+GO
+
+ALTER EVENT SESSION [HANG_CAPTURE] ON SERVER STATE = START;
