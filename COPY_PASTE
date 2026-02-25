@@ -1,18 +1,31 @@
-CREATE TABLE #results(
-schema_name sysname,
-table_name sysname,
-index_id int,
-compression_type varchar(20),
-size_current_kb bigint,
-size_requested_kb bigint
-)
+SELECT 
+    s.name schema_name,
+    t.name table_name,
+    SUM(p.rows) rows_count,
+    SUM(a.total_pages)*8/1024 MB
+FROM sys.tables t
+JOIN sys.schemas s ON t.schema_id=s.schema_id
+JOIN sys.indexes i ON t.object_id=i.object_id
+JOIN sys.partitions p ON i.object_id=p.object_id AND i.index_id=p.index_id
+JOIN sys.allocation_units a ON p.partition_id=a.container_id
+GROUP BY s.name,t.name
+ORDER BY MB DESC
 
-DECLARE @schema sysname, @table sysname
+EXEC sp_estimate_data_compression_savings 
+    @schema_name='dbo',
+    @object_name='Orders',
+    @index_id=NULL,
+    @partition_number=NULL,
+    @data_compression='PAGE'
+
+
+DECLARE @schema sysname
+DECLARE @table sysname
 
 DECLARE c CURSOR FOR
-SELECT s.name, t.name
+SELECT s.name,t.name
 FROM sys.tables t
-JOIN sys.schemas s ON s.schema_id=t.schema_id
+JOIN sys.schemas s ON t.schema_id=s.schema_id
 
 OPEN c
 FETCH NEXT FROM c INTO @schema,@table
@@ -20,21 +33,18 @@ FETCH NEXT FROM c INTO @schema,@table
 WHILE @@FETCH_STATUS=0
 BEGIN
 
-INSERT INTO #results
 EXEC sp_estimate_data_compression_savings
-    @schema,
-    @table,
-    NULL,
-    NULL,
-    'PAGE'
+    @schema_name=@schema,
+    @object_name=@table,
+    @data_compression='ROW'
+
+EXEC sp_estimate_data_compression_savings
+    @schema_name=@schema,
+    @object_name=@table,
+    @data_compression='PAGE'
 
 FETCH NEXT FROM c INTO @schema,@table
 END
 
-SELECT *
-FROM #results
-ORDER BY size_current_kb DESC
-
-
-Msg 213, Level 16, State 7, Procedure sp_estimate_data_compression_savings, Line 509 [Batch Start Line 0]
-Column name or number of supplied values does not match table definition.
+CLOSE c
+DEALLOCATE c
