@@ -1,49 +1,79 @@
-SELECT 
+IF OBJECT_ID('tempdb..#compression_results') IS NOT NULL
+DROP TABLE #compression_results
+
+CREATE TABLE #compression_results
+(
+    schema_name sysname,
+    object_name sysname,
+    index_id int,
+    partition_number int,
+    size_current_kb bigint,
+    size_requested_kb bigint,
+    compression_type varchar(20)
+)
+
+
+IF OBJECT_ID('tempdb..#targets') IS NOT NULL
+DROP TABLE #targets
+
+SELECT
     s.name schema_name,
     t.name table_name,
-    SUM(p.rows) rows_count,
-    SUM(a.total_pages)*8/1024 MB
+    i.index_id,
+    SUM(a.total_pages)*8/1024 AS size_MB
+INTO #targets
 FROM sys.tables t
 JOIN sys.schemas s ON t.schema_id=s.schema_id
 JOIN sys.indexes i ON t.object_id=i.object_id
 JOIN sys.partitions p ON i.object_id=p.object_id AND i.index_id=p.index_id
 JOIN sys.allocation_units a ON p.partition_id=a.container_id
-GROUP BY s.name,t.name
-ORDER BY MB DESC
-
-EXEC sp_estimate_data_compression_savings 
-    @schema_name='dbo',
-    @object_name='Orders',
-    @index_id=NULL,
-    @partition_number=NULL,
-    @data_compression='PAGE'
+WHERE i.index_id >= 0
+GROUP BY s.name,t.name,i.index_id
+HAVING SUM(a.total_pages)*8/1024 > 100   -- 👈 tylko >100MB (zmień jeśli chcesz)
 
 
-DECLARE @schema sysname
-DECLARE @table sysname
+DECLARE 
+    @schema sysname,
+    @table sysname,
+    @index int
 
-DECLARE c CURSOR FOR
-SELECT s.name,t.name
-FROM sys.tables t
-JOIN sys.schemas s ON t.schema_id=s.schema_id
+DECLARE c CURSOR LOCAL FAST_FORWARD FOR
+SELECT schema_name, table_name, index_id
+FROM #targets
 
 OPEN c
-FETCH NEXT FROM c INTO @schema,@table
+FETCH NEXT FROM c INTO @schema,@table,@index
 
 WHILE @@FETCH_STATUS=0
 BEGIN
 
+INSERT INTO #compression_results
 EXEC sp_estimate_data_compression_savings
     @schema_name=@schema,
     @object_name=@table,
+    @index_id=@index,
+    @partition_number=NULL,
     @data_compression='ROW'
 
+UPDATE #compression_results
+SET compression_type='ROW'
+WHERE compression_type IS NULL
+
+
+INSERT INTO #compression_results
 EXEC sp_estimate_data_compression_savings
     @schema_name=@schema,
     @object_name=@table,
+    @index_id=@index,
+    @partition_number=NULL,
     @data_compression='PAGE'
 
-FETCH NEXT FROM c INTO @schema,@table
+UPDATE #compression_results
+SET compression_type='PAGE'
+WHERE compression_type IS NULL
+
+
+FETCH NEXT FROM c INTO @schema,@table,@index
 END
 
 CLOSE c
