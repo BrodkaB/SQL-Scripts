@@ -1,75 +1,36 @@
-Priority	Finding	Database Name	Details: schema.table.index(indexid)	Definition: [Property] ColumnName {datatype maxbytes}	Secret Columns	Usage	Size	More Info	URL	Create TSQL	Sample Query Plan
--1	sp_BlitzIndex(TM) v8.28 - November 24, 2025: Database [DBA] as of 2026-01-15 08:57	NULL	http://FirstResponderKit.org	Server: JLDB-PROD-06 Days Uptime: 6.25					From Your Community Volunteers		NULL
-1	No Major Problems Found: Nice Work!	NULL	Consider running with @Mode = 4 in individual databases (not all) for more detailed diagnostics.	The default Mode 0 only looks for very serious index issues.		Server: JLDB-PROD-06 Days Uptime: 6.25			http://FirstResponderKit.org		NULL
+CREATE TABLE #results(
+schema_name sysname,
+table_name sysname,
+index_id int,
+compression_type varchar(20),
+size_current_kb bigint,
+size_requested_kb bigint
+)
 
+DECLARE @schema sysname, @table sysname
 
-=VALUE(MID(G29, FIND("Reads:", G29) + 7, FIND(",", G29) - FIND("Reads:", G29) - 7))
-=VALUE(MID(G29, FIND("Writes:", G29) + 8, LEN(G29)))
+DECLARE c CURSOR FOR
+SELECT s.name, t.name
+FROM sys.tables t
+JOIN sys.schemas s ON s.schema_id=t.schema_id
 
--- proper
-exec dba.dbo.sp_BlitzIndex
-	@Databasename = 'ADR_LIVE',
-	@Mode =4,
-	@IncludeInactiveIndexes = 1,
-	@BringThePain = 0;
+OPEN c
+FETCH NEXT FROM c INTO @schema,@table
 
-=VALUE(MID(B2,FIND("(",D2)+1,FIND(")",D2)-FIND("(",D2)-1))
-=LEFT(D2,FIND(".",D2)-1)
-=MID(D2,FIND(".",D2)+1,FIND(".",D2,FIND(".",D2)+1)-FIND(".",D2)-1)
+WHILE @@FETCH_STATUS=0
+BEGIN
 
-=IF(AND(ISNUMBER(FIND("(",D2)),ISNUMBER(FIND(")",D2)),RIGHT(TRIM(D2),1)=")",NOT(ISNUMBER(FIND("Reads:",D2))),NOT(ISNUMBER(FIND("Writes:",D2))),NOT(ISNUMBER(FIND("indexes on",LOWER(D2)))),NOT(ISNUMBER(FIND("est. benefit",LOWER(D2))))),1,0)
-=IF(IsPhysicalIndex=1,Schema & "." & Table & "." & IndexID,"")
+INSERT INTO #results
+EXEC sp_estimate_data_compression_savings
+    @schema,
+    @table,
+    NULL,
+    NULL,
+    'PAGE'
 
+FETCH NEXT FROM c INTO @schema,@table
+END
 
-
-
-
-SELECT
-    DB_NAME() AS DatabaseName,
-    s.name AS SchemaName,
-    o.name AS TableName,
-    i.name AS IndexName,
-    i.index_id,
-    i.type_desc AS IndexType,
-    i.is_primary_key,
-    i.is_unique,
-    i.is_unique_constraint
-FROM sys.indexes i
-JOIN sys.objects o ON i.object_id = o.object_id
-JOIN sys.schemas s ON o.schema_id = s.schema_id
-WHERE o.type = 'U';
-
-=SchemaNameCell & "." & TableNameCell & "." & IndexNameCell & "(" & IndexIDCell & ")"
-
-
-exec dba.dbo.sp_BlitzIndex
-	@Databasename = 'ADR_LIVE',
-	@Mode =2,
-	@SortOrder = 'writes',
-	@SortDirection = 'DESC';
-
-
-exec dba.dbo.sp_BlitzIndex
-	@Databasename = 'ADR_LIVE',
-	@Mode =4,
-	@ThresholdMB = 100,
-	@IncludeInactiveIndexes =1;
-
-
-
-READS =IFERROR(VALUE(SUBSTITUTE(MID(G2,FIND("Reads:",G2)+6,FIND("Writes:",G2)-FIND("Reads:",G2)-6),",","")),0)
-WRITES =IFERROR(VALUE(SUBSTITUTE(MID(G2,FIND("Writes:",G2)+7,LEN(G2)),",","")),0)
-ROWS =IFERROR(VALUE(SUBSTITUTE(LEFT(H2,FIND(" rows",H2)-1),",","")),0)
-SizeMB =IFERROR(IF(ISNUMBER(FIND("GB",H2)),VALUE(LEFT(H2,FIND("GB",H2)-1))*1024,VALUE(LEFT(H2,FIND("MB",H2)-1))),0)
-
-READS: =IFERROR(VALUE(SUBSTITUTE(MID(Tab0_RAW!G2,FIND("Reads:",RTab0_RAW!G2)+6,FIND("Writes:",Tab0_RAW!G2)-FIND("Reads:",Tab0_RAW!G2)-6),",","")),0)
-
-USES: =IFERROR(VALUE(SUBSTITUTE(TEXTBEFORE(G2," uses"),",","")),0)
-COST: =IFERROR(VALUE(SUBSTITUTE(TRIM(TEXTAFTER(LOWER(G2),"avg query cost:")),",","")),0)
-
-
-
-
-
-
-
+SELECT *
+FROM #results
+ORDER BY size_current_kb DESC
