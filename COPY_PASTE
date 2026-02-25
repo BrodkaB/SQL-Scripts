@@ -34,3 +34,7 @@ END
 SELECT *
 FROM #results
 ORDER BY size_current_kb DESC
+
+
+Msg 213, Level 16, State 7, Procedure sp_estimate_data_compression_savings, Line 509 [Batch Start Line 0]
+Column name or number of supplied values does not match table definition.
