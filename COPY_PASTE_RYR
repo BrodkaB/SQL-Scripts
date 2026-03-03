@@ -1,37 +1,28 @@
+USE DBA;
+GO
 
+CREATE TABLE dbo.BAG_Health_Log
+(
+    HealthID                bigint IDENTITY(1,1) PRIMARY KEY,
+    CaptureTime             datetime2 NOT NULL DEFAULT SYSDATETIME(),
+    ServerName              sysname NOT NULL,
+    AGName                  sysname NOT NULL,
+    ReplicaRole             nvarchar(60) NOT NULL,
 
--- Run continuously
+    SyncState               nvarchar(60) NULL,
+    IsSuspended             bit NULL,
+    LogSendQueueMB          decimal(18,2) NULL,
+    RedoQueueMB             decimal(18,2) NULL,
 
-WHILE 1=1
-BEGIN
+    LogReuseWaitDesc        nvarchar(120) NULL,
 
-	CREATE TABLE #Processes(
-		[dbid] [smallint] NULL,
-		[uid] [smallint] NULL,
-		[hostname] [nchar](128) NULL,
-		[program_name] [nchar](128) NULL,
-		[nt_domain] [nchar](128) NULL,
-		[nt_username] [nchar](128) NULL,
-		[loginame] [nchar](128) NULL)
+    DataDiskFreePct         decimal(5,2) NULL,
+    LogDiskFreePct          decimal(5,2) NULL,
 
-	INSERT INTO #Processes ([dbid], [uid], [hostname], [program_name], [nt_domain], [nt_username], [loginame])
-	SELECT DISTINCT s.[dbid], s.[uid], s.[hostname], s.[program_name], s.[nt_domain], s.[nt_username], s.[loginame]
-	 FROM master.sys.sysprocesses s
+    AgentRunning            bit NOT NULL,
+    FailedJobsLastHour      int NOT NULL,
 
-	UPDATE dbo.Processes
-	 SET HitCount = ISNULL(HitCount, 1) + 1,
-		[DateLastAccessed] = GETDATE()
-	 FROM #Processes s
-		INNER JOIN dbo.Processes p ON s.[dbid] = p.[dbid] AND s.[loginame] = p.[loginame] AND s.[hostname] = p.[hostname] AND s.[program_name] = p.[program_name]
-
-	INSERT INTO dbo.Processes ([dbid], [uid], [hostname], [program_name], [nt_domain], [nt_username], [loginame], [DateAdded], [DateLastAccessed])
-	SELECT DISTINCT s.[dbid], s.[uid], s.[hostname], s.[program_name], s.[nt_domain], s.[nt_username], s.[loginame], GETDATE() AS [DateAdded], GETDATE() AS [DateLastAccessed]
-	 FROM #Processes s
-		LEFT JOIN dbo.Processes p ON s.[dbid] = p.[dbid] AND s.[loginame] = p.[loginame] AND s.[hostname] = p.[hostname] AND s.[program_name] = p.[program_name]
-	 WHERE p.[dbid] IS NULL	
-
-	DROP TABLE #Processes
-
-	WAITFOR DELAY '00:00:10';
-
-END
+    OverallStatus           varchar(10) NOT NULL, -- GREEN/YELLOW/RED
+    ProblemDetails          nvarchar(max) NULL
+);
+GO
