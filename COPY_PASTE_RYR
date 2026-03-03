@@ -1,28 +1,200 @@
 USE DBA;
 GO
 
-CREATE TABLE dbo.BAG_Health_Log
-(
-    HealthID                bigint IDENTITY(1,1) PRIMARY KEY,
-    CaptureTime             datetime2 NOT NULL DEFAULT SYSDATETIME(),
-    ServerName              sysname NOT NULL,
-    AGName                  sysname NOT NULL,
-    ReplicaRole             nvarchar(60) NOT NULL,
+CREATE OR ALTER PROCEDURE dbo.usp_BAG_Health_Collect
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-    SyncState               nvarchar(60) NULL,
-    IsSuspended             bit NULL,
-    LogSendQueueMB          decimal(18,2) NULL,
-    RedoQueueMB             decimal(18,2) NULL,
+    DECLARE @ServerName sysname = @@SERVERNAME;
+    DECLARE @AnyRed bit = 0;
+    DECLARE @GlobalProblems nvarchar(max) = '';
 
-    LogReuseWaitDesc        nvarchar(120) NULL,
+    ----------------------------------------------------
+    -- SQL Agent
+    ----------------------------------------------------
+    DECLARE @AgentRunning bit = 0;
 
-    DataDiskFreePct         decimal(5,2) NULL,
-    LogDiskFreePct          decimal(5,2) NULL,
+    SELECT @AgentRunning =
+        CASE WHEN status_desc = 'Running' THEN 1 ELSE 0 END
+    FROM sys.dm_server_services
+    WHERE servicename LIKE 'SQL Server Agent%';
 
-    AgentRunning            bit NOT NULL,
-    FailedJobsLastHour      int NOT NULL,
+    ----------------------------------------------------
+    -- Failed jobs last hour
+    ----------------------------------------------------
+    DECLARE @FailedJobs int = 0;
 
-    OverallStatus           varchar(10) NOT NULL, -- GREEN/YELLOW/RED
-    ProblemDetails          nvarchar(max) NULL
-);
+    SELECT @FailedJobs = COUNT(*)
+    FROM msdb.dbo.sysjobhistory h
+    WHERE h.run_status = 0
+      AND DATEADD(HOUR, -1, SYSDATETIME()) <=
+          msdb.dbo.agent_datetime(h.run_date, h.run_time);
+
+    ----------------------------------------------------
+    -- Disk space (all volumes hosting DB files)
+    ----------------------------------------------------
+    DECLARE @MinDiskFreePct decimal(5,2);
+
+    SELECT @MinDiskFreePct = MIN(
+        (vs.available_bytes * 100.0) / vs.total_bytes
+    )
+    FROM sys.master_files mf
+    CROSS APPLY sys.dm_os_volume_stats(mf.database_id, mf.file_id) vs;
+
+    ----------------------------------------------------
+    -- Cursor over PRIMARY AGs
+    ----------------------------------------------------
+    DECLARE AG_CURSOR CURSOR FOR
+    SELECT ag.name
+    FROM sys.availability_groups ag
+    JOIN sys.dm_hadr_availability_replica_states rs
+        ON ag.group_id = rs.group_id
+    WHERE rs.role_desc = 'PRIMARY'
+      AND rs.is_local = 1;
+
+    DECLARE @AGName sysname;
+
+    OPEN AG_CURSOR;
+    FETCH NEXT FROM AG_CURSOR INTO @AGName;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE 
+            @SyncState nvarchar(60),
+            @IsSuspended bit,
+            @LogSendMB decimal(18,2),
+            @RedoMB decimal(18,2),
+            @LogReuse nvarchar(120),
+            @Status varchar(10) = 'GREEN',
+            @Problems nvarchar(max) = '';
+
+        SELECT 
+            @SyncState = drs.synchronization_state_desc,
+            @IsSuspended = drs.is_suspended,
+            @LogSendMB = drs.log_send_queue_size / 1024.0,
+            @RedoMB = drs.redo_queue_size / 1024.0
+        FROM sys.dm_hadr_database_replica_states drs
+        JOIN sys.availability_groups ag ON drs.group_id = ag.group_id
+        WHERE ag.name = @AGName;
+
+        SELECT @LogReuse = d.log_reuse_wait_desc
+        FROM sys.databases d
+        JOIN sys.availability_databases_cluster adc
+            ON d.name = adc.database_name
+        JOIN sys.availability_groups ag
+            ON adc.group_id = ag.group_id
+        WHERE ag.name = @AGName;
+
+        ------------------------------------------------
+        -- AG checks
+        ------------------------------------------------
+        IF @SyncState <> 'SYNCHRONIZED'
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'SyncState=' + ISNULL(@SyncState,'NULL') + '; ';
+        END
+
+        IF @IsSuspended = 1
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'Replica SUSPENDED; ';
+        END
+
+        IF @LogSendMB > 1024 OR @RedoMB > 1024
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'Queue >1GB; ';
+        END
+        ELSE IF @LogSendMB > 256 OR @RedoMB > 256
+        BEGIN
+            IF @Status <> 'RED'
+                SET @Status = 'YELLOW';
+            SET @Problems += 'Queue >256MB; ';
+        END
+
+        IF @LogReuse = 'LOG_BACKUP'
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'LOG_REUSE_WAIT=LOG_BACKUP; ';
+        END
+
+        ------------------------------------------------
+        -- Global checks
+        ------------------------------------------------
+        IF @AgentRunning = 0
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'SQL Agent NOT running; ';
+        END
+
+        IF @FailedJobs > 0 AND @Status <> 'RED'
+        BEGIN
+            SET @Status = 'YELLOW';
+            SET @Problems += 'Failed jobs last hour=' + CAST(@FailedJobs AS varchar) + '; ';
+        END
+
+        IF @MinDiskFreePct < 10
+        BEGIN
+            SET @Status = 'RED';
+            SET @Problems += 'Disk free <10% (' + CAST(@MinDiskFreePct AS varchar) + '%); ';
+        END
+        ELSE IF @MinDiskFreePct < 15 AND @Status <> 'RED'
+        BEGIN
+            SET @Status = 'YELLOW';
+            SET @Problems += 'Disk free <15% (' + CAST(@MinDiskFreePct AS varchar) + '%); ';
+        END
+
+        ------------------------------------------------
+        -- Insert log
+        ------------------------------------------------
+        INSERT INTO dbo.BAG_Health_Log
+        (
+            ServerName, AGName, ReplicaRole,
+            SyncState, IsSuspended, LogSendQueueMB, RedoQueueMB,
+            LogReuseWaitDesc,
+            DataDiskFreePct,
+            AgentRunning, FailedJobsLastHour,
+            OverallStatus, ProblemDetails
+        )
+        VALUES
+        (
+            @ServerName, @AGName, 'PRIMARY',
+            @SyncState, @IsSuspended, @LogSendMB, @RedoMB,
+            @LogReuse,
+            @MinDiskFreePct,
+            @AgentRunning, @FailedJobs,
+            @Status, @Problems
+        );
+
+        IF @Status = 'RED'
+        BEGIN
+            SET @AnyRed = 1;
+            SET @GlobalProblems += 'AG=' + @AGName + ' -> ' + @Problems + CHAR(13);
+        END
+
+        FETCH NEXT FROM AG_CURSOR INTO @AGName;
+    END
+
+    CLOSE AG_CURSOR;
+    DEALLOCATE AG_CURSOR;
+
+    ----------------------------------------------------
+    -- Retention 90 days
+    ----------------------------------------------------
+    DELETE FROM dbo.BAG_Health_Log
+    WHERE CaptureTime < DATEADD(DAY, -90, SYSDATETIME());
+
+    ----------------------------------------------------
+    -- Send mail if critical
+    ----------------------------------------------------
+    IF @AnyRed = 1
+    BEGIN
+        EXEC msdb.dbo.sp_send_dbmail
+            @profile_name = 'TwojProfilSMTP',
+            @recipients = 'twoj@email.pl',
+            @subject = 'BAG CRITICAL - ' + @ServerName,
+            @body = @GlobalProblems;
+    END
+END
 GO
