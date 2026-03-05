@@ -1,80 +1,22 @@
-IF OBJECT_ID('tempdb..#compression_results') IS NOT NULL
-DROP TABLE #compression_results
-
-CREATE TABLE #compression_results
-(
-    schema_name sysname,
-    object_name sysname,
-    index_id int,
-    partition_number int,
-    size_current_kb bigint,
-    size_requested_kb bigint,
-    compression_type varchar(20)
-)
+ALTER DATABASE [TwojaBaza]
+SET QUERY_STORE (
+    OPERATION_MODE = READ_WRITE,
+    CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 14),
+    DATA_FLUSH_INTERVAL_SECONDS = 900,
+    INTERVAL_LENGTH_MINUTES = 15,
+    MAX_STORAGE_SIZE_MB = 2048,
+    QUERY_CAPTURE_MODE = AUTO,
+    WAIT_STATS_CAPTURE_MODE = ON
+);
 
 
-IF OBJECT_ID('tempdb..#targets') IS NOT NULL
-DROP TABLE #targets
-
-SELECT
-    s.name schema_name,
-    t.name table_name,
-    i.index_id,
-    SUM(a.total_pages)*8/1024 AS size_MB
-INTO #targets
-FROM sys.tables t
-JOIN sys.schemas s ON t.schema_id=s.schema_id
-JOIN sys.indexes i ON t.object_id=i.object_id
-JOIN sys.partitions p ON i.object_id=p.object_id AND i.index_id=p.index_id
-JOIN sys.allocation_units a ON p.partition_id=a.container_id
-WHERE i.index_id >= 0
-GROUP BY s.name,t.name,i.index_id
-HAVING SUM(a.total_pages)*8/1024 > 100   -- 👈 tylko >100MB (zmień jeśli chcesz)
-
-
-DECLARE 
-    @schema sysname,
-    @table sysname,
-    @index int
-
-DECLARE c CURSOR LOCAL FAST_FORWARD FOR
-SELECT schema_name, table_name, index_id
-FROM #targets
-
-OPEN c
-FETCH NEXT FROM c INTO @schema,@table,@index
-
-WHILE @@FETCH_STATUS=0
-BEGIN
-
-INSERT INTO #compression_results
-EXEC sp_estimate_data_compression_savings
-    @schema_name=@schema,
-    @object_name=@table,
-    @index_id=@index,
-    @partition_number=NULL,
-    @data_compression='ROW'
-
-UPDATE #compression_results
-SET compression_type='ROW'
-WHERE compression_type IS NULL
-
-
-INSERT INTO #compression_results
-EXEC sp_estimate_data_compression_savings
-    @schema_name=@schema,
-    @object_name=@table,
-    @index_id=@index,
-    @partition_number=NULL,
-    @data_compression='PAGE'
-
-UPDATE #compression_results
-SET compression_type='PAGE'
-WHERE compression_type IS NULL
-
-
-FETCH NEXT FROM c INTO @schema,@table,@index
-END
-
-CLOSE c
-DEALLOCATE c
+--snapshot
+SELECT TOP 20
+    qsqt.query_sql_text,
+    SUM(rs.avg_cpu_time * rs.count_executions) AS total_cpu
+FROM sys.query_store_query_text qsqt
+JOIN sys.query_store_query qsq ON qsqt.query_text_id = qsq.query_text_id
+JOIN sys.query_store_plan qsp ON qsq.query_id = qsp.query_id
+JOIN sys.query_store_runtime_stats rs ON qsp.plan_id = rs.plan_id
+GROUP BY qsqt.query_sql_text
+ORDER BY total_cpu DESC;
