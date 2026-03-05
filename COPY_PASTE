@@ -20,3 +20,28 @@ JOIN sys.query_store_plan qsp ON qsq.query_id = qsp.query_id
 JOIN sys.query_store_runtime_stats rs ON qsp.plan_id = rs.plan_id
 GROUP BY qsqt.query_sql_text
 ORDER BY total_cpu DESC;
+
+SELECT TOP 20
+    qt.query_sql_text,
+    SUM(rs.count_executions) executions,
+    AVG(rs.avg_duration) avg_duration,
+    MAX(rs.max_duration) max_duration
+FROM sys.query_store_query_text qt
+JOIN sys.query_store_query q
+    ON qt.query_text_id = q.query_text_id
+JOIN sys.query_store_plan p
+    ON q.query_id = p.query_id
+JOIN sys.query_store_runtime_stats rs
+    ON p.plan_id = rs.plan_id
+GROUP BY qt.query_sql_text
+ORDER BY avg_duration DESC;
+
+SELECT 
+    q.query_id,
+    COUNT(p.plan_id) AS number_of_plans
+FROM sys.query_store_query q
+JOIN sys.query_store_plan p
+    ON q.query_id = p.query_id
+GROUP BY q.query_id
+HAVING COUNT(p.plan_id) > 1
+ORDER BY number_of_plans DESC;
