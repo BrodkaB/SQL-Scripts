@@ -1,83 +1,70 @@
-USE DBA;
-GO
+-- sensownosc maintenance
+SELECT
+    s.name AS schema_name,
+    o.name AS table_name,
+    i.name AS index_name,
+    i.type_desc,
+    ps.page_count,
+    ps.avg_fragmentation_in_percent,
+    
+    CASE
+        WHEN ps.avg_fragmentation_in_percent >= 40 THEN 'REBUILD'
+        WHEN ps.avg_fragmentation_in_percent >= 10 THEN 'REORGANIZE'
+        ELSE 'NONE'
+    END AS maintenance_action
+FROM sys.dm_db_index_physical_stats(
+        DB_ID(),
+        NULL,
+        NULL,
+        NULL,
+        'LIMITED'
+) ps
+JOIN sys.indexes i
+    ON ps.object_id = i.object_id
+    AND ps.index_id = i.index_id
+JOIN sys.objects o
+    ON ps.object_id = o.object_id
+JOIN sys.schemas s
+    ON o.schema_id = s.schema_id
+WHERE
+    o.type = 'U'
+    AND ps.index_id > 0
+    AND ps.page_count >= 1000   -- zgodne z Ola Hallengren default
+ORDER BY
+    ps.avg_fragmentation_in_percent DESC;
 
-CREATE OR ALTER PROCEDURE dbo.usp_BAG_Daily_Summary
-AS
-BEGIN
-    SET NOCOUNT ON;
 
-    DECLARE @Since datetime2 = DATEADD(HOUR, -24, SYSDATETIME());
-    DECLARE @Report nvarchar(max) = '';
-    DECLARE @Overall varchar(20) = 'ALL GREEN';
-
-    ;WITH Last24h AS
-    (
-        SELECT *
-        FROM dbo.BAG_Health_Log
-        WHERE CaptureTime >= @Since
-    ),
-    Aggregated AS
-    (
-        SELECT
-            AGName,
-            COUNT(*) AS TotalChecks,
-            SUM(CASE WHEN OverallStatus = 'GREEN' THEN 1 ELSE 0 END) AS GreenCount,
-            SUM(CASE WHEN OverallStatus = 'YELLOW' THEN 1 ELSE 0 END) AS YellowCount,
-            SUM(CASE WHEN OverallStatus = 'RED' THEN 1 ELSE 0 END) AS RedCount,
-            MAX(CaptureTime) AS LastCheckTime
-        FROM Last24h
-        GROUP BY AGName
-    )
-    SELECT * INTO #Summary FROM Aggregated;
-
-    IF EXISTS (SELECT 1 FROM #Summary WHERE RedCount > 0)
-        SET @Overall = 'CRITICAL ISSUES DETECTED';
-    ELSE IF EXISTS (SELECT 1 FROM #Summary WHERE YellowCount > 0)
-        SET @Overall = 'WARNINGS DETECTED';
-
-    SET @Report = 'BAG DAILY HEALTH SUMMARY (Last 24h)' + CHAR(13) + CHAR(10)
-                + 'Server: ' + @@SERVERNAME + CHAR(13) + CHAR(10)
-                + 'Overall: ' + @Overall + CHAR(13) + CHAR(10)
-                + '----------------------------------------' + CHAR(13) + CHAR(10);
-
-    DECLARE @AGName sysname,
-            @Total int,
-            @Green int,
-            @Yellow int,
-            @Red int;
-
-    DECLARE CUR CURSOR LOCAL FAST_FORWARD FOR
-    SELECT AGName, TotalChecks, GreenCount, YellowCount, RedCount
-    FROM #Summary;
-
-    OPEN CUR;
-    FETCH NEXT FROM CUR INTO @AGName, @Total, @Green, @Yellow, @Red;
-
-    WHILE @@FETCH_STATUS = 0
-    BEGIN
-        SET @Report +=
-            'AG: ' + @AGName + CHAR(13) + CHAR(10) +
-            '  Total checks: ' + CAST(@Total AS varchar) + CHAR(13) + CHAR(10) +
-            '  GREEN: ' + CAST(@Green AS varchar) + CHAR(13) + CHAR(10) +
-            '  YELLOW: ' + CAST(@Yellow AS varchar) + CHAR(13) + CHAR(10) +
-            '  RED: ' + CAST(@Red AS varchar) + CHAR(13) + CHAR(10) +
-            '----------------------------------------' + CHAR(13) + CHAR(10);
-
-        FETCH NEXT FROM CUR INTO @AGName, @Total, @Green, @Yellow, @Red;
-    END
-
-    CLOSE CUR;
-    DEALLOCATE CUR;
-
-    DROP TABLE #Summary;
-
-    DECLARE @Subject nvarchar(200);
-    SET @Subject = 'BAG DAILY SUMMARY - ' + @@SERVERNAME;
-
-    EXEC msdb.dbo.sp_send_dbmail
-        @profile_name = 'TwojProfilSMTP',
-        @recipients = 'twoj@email.pl',
-        @subject = @Subject,
-        @body = @Report;
-END;
-GO
+--summary
+SELECT
+    s.name AS schema_name,
+    o.name AS table_name,
+    i.name AS index_name,
+    i.type_desc,
+    ps.page_count,
+    ps.avg_fragmentation_in_percent,
+    
+    CASE
+        WHEN ps.avg_fragmentation_in_percent >= 40 THEN 'REBUILD'
+        WHEN ps.avg_fragmentation_in_percent >= 10 THEN 'REORGANIZE'
+        ELSE 'NONE'
+    END AS maintenance_action
+FROM sys.dm_db_index_physical_stats(
+        DB_ID(),
+        NULL,
+        NULL,
+        NULL,
+        'LIMITED'
+) ps
+JOIN sys.indexes i
+    ON ps.object_id = i.object_id
+    AND ps.index_id = i.index_id
+JOIN sys.objects o
+    ON ps.object_id = o.object_id
+JOIN sys.schemas s
+    ON o.schema_id = s.schema_id
+WHERE
+    o.type = 'U'
+    AND ps.index_id > 0
+    AND ps.page_count >= 1000   -- zgodne z Ola Hallengren default
+ORDER BY
+    ps.avg_fragmentation_in_percent DESC;
