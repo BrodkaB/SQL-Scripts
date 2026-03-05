@@ -116,3 +116,39 @@ FROM sys.dm_exec_query_stats qs
 CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
 WHERE qt.text LIKE 'schema.tablename'
 ORDER BY avg_time DESC;
+
+---checking page count, avg fragmentation and suggested action to be taken
+-- sensownosc maintenance
+SELECT
+    s.name AS schema_name,
+    o.name AS table_name,
+    i.name AS index_name,
+    i.type_desc,
+    ps.page_count,
+    ps.avg_fragmentation_in_percent,
+    
+    CASE
+        WHEN ps.avg_fragmentation_in_percent >= 40 THEN 'REBUILD'
+        WHEN ps.avg_fragmentation_in_percent >= 10 THEN 'REORGANIZE'
+        ELSE 'NONE'
+    END AS maintenance_action
+FROM sys.dm_db_index_physical_stats(
+        DB_ID(),
+        NULL,
+        NULL,
+        NULL,
+        'LIMITED'
+) ps
+JOIN sys.indexes i
+    ON ps.object_id = i.object_id
+    AND ps.index_id = i.index_id
+JOIN sys.objects o
+    ON ps.object_id = o.object_id
+JOIN sys.schemas s
+    ON o.schema_id = s.schema_id
+WHERE
+    o.type = 'U'
+    AND ps.index_id > 0
+    AND ps.page_count >= 1000   -- zgodne z Ola Hallengren default
+ORDER BY
+    ps.avg_fragmentation_in_percent DESC;
