@@ -56,3 +56,37 @@ FROM (
 WHERE x.value('(event/@name)[1]', 'varchar(100)')
 = 'scheduler_monitor_non_yielding_ring_buffer_recorded'
 ORDER BY local_time DESC;
+
+SELECT  
+    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
+        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
+    x.value('(event/@name)[1]', 'varchar(100)') AS event_name,
+    x.value('(event/data[@name="wait_type"]/text)[1]', 'varchar(100)') AS wait_type,
+    x.value('(event/data[@name="duration"]/value)[1]', 'bigint')/1000 AS duration_ms,
+    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id,
+    x.value('(event/action[@name="sql_text"]/value)[1]', 'nvarchar(max)') AS sql_text
+FROM (
+    SELECT CAST(event_data AS XML) AS x
+    FROM sys.fn_xe_file_target_read_file(
+        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
+) t
+WHERE 
+    x.value('(event/@name)[1]', 'varchar(100)') = 'wait_info'
+AND
+    x.value('(event/data[@name="duration"]/value)[1]', 'bigint') > 5000000
+ORDER BY local_time DESC;
+
+SELECT TOP 20
+    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
+        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
+    x.value('(event/data[@name="wait_type"]/text)[1]', 'varchar(100)') AS wait_type,
+    x.value('(event/data[@name="duration"]/value)[1]', 'bigint')/1000 AS duration_ms,
+    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id
+FROM (
+    SELECT CAST(event_data AS XML) AS x
+    FROM sys.fn_xe_file_target_read_file(
+        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
+) t
+WHERE 
+    x.value('(event/@name)[1]', 'varchar(100)') = 'wait_info'
+ORDER BY duration_ms DESC;
