@@ -1,47 +1,16 @@
-ALTER DATABASE [TwojaBaza]
-SET QUERY_STORE (
-    OPERATION_MODE = READ_WRITE,
-    CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 14),
-    DATA_FLUSH_INTERVAL_SECONDS = 900,
-    INTERVAL_LENGTH_MINUTES = 15,
-    MAX_STORAGE_SIZE_MB = 2048,
-    QUERY_CAPTURE_MODE = AUTO,
-    WAIT_STATS_CAPTURE_MODE = ON
-);
-
-
---snapshot
-SELECT TOP 20
-    qsqt.query_sql_text,
-    SUM(rs.avg_cpu_time * rs.count_executions) AS total_cpu
-FROM sys.query_store_query_text qsqt
-JOIN sys.query_store_query qsq ON qsqt.query_text_id = qsq.query_text_id
-JOIN sys.query_store_plan qsp ON qsq.query_id = qsp.query_id
-JOIN sys.query_store_runtime_stats rs ON qsp.plan_id = rs.plan_id
-GROUP BY qsqt.query_sql_text
-ORDER BY total_cpu DESC;
-
-SELECT TOP 20
-    qt.query_sql_text,
-    SUM(rs.count_executions) executions,
-    AVG(rs.avg_duration) avg_duration,
-    MAX(rs.max_duration) max_duration
-FROM sys.query_store_query_text qt
-JOIN sys.query_store_query q
-    ON qt.query_text_id = q.query_text_id
-JOIN sys.query_store_plan p
-    ON q.query_id = p.query_id
-JOIN sys.query_store_runtime_stats rs
-    ON p.plan_id = rs.plan_id
-GROUP BY qt.query_sql_text
-ORDER BY avg_duration DESC;
-
-SELECT 
-    q.query_id,
-    COUNT(p.plan_id) AS number_of_plans
-FROM sys.query_store_query q
-JOIN sys.query_store_plan p
-    ON q.query_id = p.query_id
-GROUP BY q.query_id
-HAVING COUNT(p.plan_id) > 1
-ORDER BY number_of_plans DESC;
+SELECT TOP 3
+    r.session_id,
+    r.cpu_time,
+    r.dop,
+    qp.query_plan,
+    SUBSTRING(t.text,
+        (r.statement_start_offset/2) + 1,
+        ((CASE r.statement_end_offset
+            WHEN -1 THEN DATALENGTH(t.text)
+            ELSE r.statement_end_offset
+        END - r.statement_start_offset)/2) + 1
+    ) AS running_statement
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
+CROSS APPLY sys.dm_exec_query_plan(r.plan_handle) qp
+ORDER BY r.cpu_time DESC;
