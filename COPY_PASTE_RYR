@@ -1,92 +1,41 @@
-SELECT 
-    s.name,
-    t.target_name,
-    CAST(t.target_data AS XML)
-FROM sys.dm_xe_sessions s
-JOIN sys.dm_xe_session_targets t 
-    ON s.address = t.event_session_address
-WHERE s.name = 'HANG_CAPTURE';
+ Reserved URL            : https://+:443/sra_{BA195980-CD49-458b-9E23-C84EE0ADCD75}/
+        User: NT SERVICE\SstpSvc
+            Listen: Yes
+            Delegate: Yes
+        User: BUILTIN\Administrators
+            Listen: Yes
+            Delegate: Yes
+        User: NT AUTHORITY\SYSTEM
+            Listen: Yes
+            Delegate: Yes
+            SDDL: D:(A;;GA;;;S-1-5-80-3435701886-799518250-3791383489-3228296122-2938884314)(A;;GA;;;BA)(A;;GA;;;SY)
 
-SELECT  
-    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
-        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
-    x.value('(event/@name)[1]', 'varchar(100)') AS event_name,
-    x.value('(event/data[@name="duration"]/value)[1]', 'bigint') AS duration,
-    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id,
-    x.value('(event/action[@name="sql_text"]/value)[1]', 'nvarchar(max)') AS sql_text
-FROM (
-    SELECT CAST(event_data AS XML) AS x
-    FROM sys.fn_xe_file_target_read_file(
-        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
-) t
-ORDER BY local_time DESC;
+    Reserved URL            : http://+:8082/
+        User: NT SERVICE\SQLServerReportingServices
+            Listen: Yes
+            Delegate: No
+            SDDL: D:(A;;GX;;;S-1-5-80-4050220999-2730734961-1537482082-519850261-379003301)
 
-------
-SELECT  
-    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
-        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
-    x.value('(event/@name)[1]', 'varchar(100)') AS event_name,
-    x.value('(event/data[@name="scheduler_id"]/value)[1]', 'int') AS scheduler_id,
-    x.value('(event/data[@name="duration"]/value)[1]', 'bigint') AS duration,
-    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id,
-    x.value('(event/action[@name="sql_text"]/value)[1]', 'nvarchar(max)') AS sql_text,
-    x.value('(event/data[@name="wait_type"]/text)[1]', 'varchar(100)') AS wait_type
-FROM (
-    SELECT CAST(event_data AS XML) AS x
-    FROM sys.fn_xe_file_target_read_file(
-        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
-) t
-WHERE x.value('(event/@name)[1]', 'varchar(100)') IN
-(
-'scheduler_monitor_non_yielding_ring_buffer_recorded',
-'error_reported',
-'wait_info'
-)
-ORDER BY local_time DESC;
+    Reserved URL            : https://crewsql01.crew.ryanair.com:443/ReportServer/
+        User: NT SERVICE\SQLServerReportingServices
+            Listen: Yes
+            Delegate: No
+            SDDL: D:(A;;GX;;;S-1-5-80-4050220999-2730734961-1537482082-519850261-379003301)
 
-SELECT  
-    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
-        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
-    x.value('(event/data[@name="scheduler_id"]/value)[1]', 'int') AS scheduler_id
-FROM (
-    SELECT CAST(event_data AS XML) AS x
-    FROM sys.fn_xe_file_target_read_file(
-        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
-) t
-WHERE x.value('(event/@name)[1]', 'varchar(100)')
-= 'scheduler_monitor_non_yielding_ring_buffer_recorded'
-ORDER BY local_time DESC;
+    Reserved URL            : https://crewsql01.crew.ryanair.com:443/Reports/
+        User: NT SERVICE\SQLServerReportingServices
+            Listen: Yes
+            Delegate: No
+            SDDL: D:(A;;GX;;;S-1-5-80-4050220999-2730734961-1537482082-519850261-379003301)
 
-SELECT  
-    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
-        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
-    x.value('(event/@name)[1]', 'varchar(100)') AS event_name,
-    x.value('(event/data[@name="wait_type"]/text)[1]', 'varchar(100)') AS wait_type,
-    x.value('(event/data[@name="duration"]/value)[1]', 'bigint')/1000 AS duration_ms,
-    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id,
-    x.value('(event/action[@name="sql_text"]/value)[1]', 'nvarchar(max)') AS sql_text
-FROM (
-    SELECT CAST(event_data AS XML) AS x
-    FROM sys.fn_xe_file_target_read_file(
-        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
-) t
-WHERE 
-    x.value('(event/@name)[1]', 'varchar(100)') = 'wait_info'
-AND
-    x.value('(event/data[@name="duration"]/value)[1]', 'bigint') > 5000000
-ORDER BY local_time DESC;
+    Reserved URL            : http://localhost:80/ReportServer/
+        User: NT SERVICE\SQLServerReportingServices
+            Listen: Yes
+            Delegate: No
+            SDDL: D:(A;;GX;;;S-1-5-80-4050220999-2730734961-1537482082-519850261-379003301)
 
-SELECT TOP 20
-    DATEADD(hour, DATEDIFF(hour, GETUTCDATE(), SYSDATETIME()), 
-        x.value('(event/@timestamp)[1]', 'datetime2')) AS local_time,
-    x.value('(event/data[@name="wait_type"]/text)[1]', 'varchar(100)') AS wait_type,
-    x.value('(event/data[@name="duration"]/value)[1]', 'bigint')/1000 AS duration_ms,
-    x.value('(event/action[@name="session_id"]/value)[1]', 'int') AS session_id
-FROM (
-    SELECT CAST(event_data AS XML) AS x
-    FROM sys.fn_xe_file_target_read_file(
-        'D:\XE\hang_capture*.xel', NULL, NULL, NULL)
-) t
-WHERE 
-    x.value('(event/@name)[1]', 'varchar(100)') = 'wait_info'
-ORDER BY duration_ms DESC;
+    Reserved URL            : http://localhost:80/Reports/
+        User: NT SERVICE\SQLServerReportingServices
+            Listen: Yes
+            Delegate: No
+            SDDL: D:(A;;GX;;;S-1-5-80-4050220999-2730734961-1537482082-519850261-379003301)
