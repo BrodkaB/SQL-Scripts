@@ -1,7 +1,33 @@
-netsh http delete sslcert ipport=0.0.0.0:443
+                                                                        PS C:\Users\brodkabj> Invoke-WebRequest https://ssrs.crew.ryanair.com/Reports -UseDefaultCredentials
+Security Warning: Script Execution Risk
+Invoke-WebRequest parses the content of the web page. Script code in the web page might be run when the page is
+parsed.
+      RECOMMENDED ACTION:
+      Use the -UseBasicParsing switch to avoid script code execution.
 
-netsh http add sslcert hostnameport=<FQDN>:443 certhash=<THUMBPRINT> appid={00112233-4455-6677-8899-AABBCCDDEEFF} certstorename=MY
+      Do you want to continue?
 
-netsh http add sslcert hostnameport=ssrs.domain.local:443 certhash=ABC123... appid={00112233-4455-6677-8899-AABBCCDDEEFF} certstorename=MY
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
 
-netsh http show sslcert
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : <!DOCTYPE html><html data-critters-container=""><head>
+                        <meta charset="utf-8">
+                        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+                        <meta content="width=device-width,initial-scale...
+RawContent        : HTTP/1.1 200 OK
+                    Transfer-Encoding: chunked
+                    X-Frame-Options: SAMEORIGIN
+                    X-Content-Type-Options: nosniff
+                    Cache-Control: no-cache
+                    Content-Type: text/html; charset=UTF-8
+                    Date: Fri, 22 May 2026 06:13...
+Forms             : {}
+Headers           : {[Transfer-Encoding, chunked], [X-Frame-Options, SAMEORIGIN], [X-Content-Type-Options, nosniff],
+                    [Cache-Control, no-cache]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : System.__ComObject
+RawContentLength  : 8338
