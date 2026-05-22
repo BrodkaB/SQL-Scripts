@@ -1,16 +1,1 @@
-SELECT TOP 3
-    r.session_id,
-    r.cpu_time,
-    r.dop,
-    qp.query_plan,
-    SUBSTRING(t.text,
-        (r.statement_start_offset/2) + 1,
-        ((CASE r.statement_end_offset
-            WHEN -1 THEN DATALENGTH(t.text)
-            ELSE r.statement_end_offset
-        END - r.statement_start_offset)/2) + 1
-    ) AS running_statement
-FROM sys.dm_exec_requests r
-CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
-CROSS APPLY sys.dm_exec_query_plan(r.plan_handle) qp
-ORDER BY r.cpu_time DESC;
+
