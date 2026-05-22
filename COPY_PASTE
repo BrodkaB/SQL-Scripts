@@ -1,1 +1,24 @@
+Migrate the SSAS database files to new disks on the JLDB-PROD-05 server.
 
+Attempt with detach/attach method first.
+
+D:\OLAPData → M:\OLAPData
+
+E:\OLAPLog → N:\OLAPLog
+
+Move an Analysis Services Database | Microsoft Learn
+
+ 
+
+Migrate OLAP Temp DB files to new drive
+
+F:\OLAPTemp → O:\OLAPTemp
+
+Once complete enable SQL Agent Job: BI-Process-Daily (BI-PROD)
+
+
+Folders have been created and permissions have been set.
+
+Configuration has been altered but needs a restart to take effect.
+
+Please ensure to set a password when detaching the database 
