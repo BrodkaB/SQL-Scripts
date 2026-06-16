@@ -91,7 +91,156 @@ CREATE TABLE [dbo].[AncillaryRevenueODDetailHistory_New] ( [CaptureDate]     [sm
 ,                                                          [Currency]        [char](3) NULL ) ON [PRIMARY];
 GO
 
+--step2
 
+--moving AncillaryRevenueLegDetailHistory
+
+SELECT MasterKey INTO TempMove2
+FROM LegSchedule
+WHERE DepartureDate >= '2024-01-01'  -- cutoff point
+ORDER BY MasterKey
+CREATE INDEX IX_TempMove2_Masterkey ON TempMove2(Masterkey);
+
+-- move into new Table with chunks of 50000
+DECLARE @BatchSize INT = 50000;
+DECLARE @RowsInserted INT = 1;
+DECLARE @RowsDeleted INT = 1;
+DECLARE @Now varchar(20);
+
+IF OBJECT_ID('tempdb..#Batch') IS NOT NULL
+DROP TABLE #Batch;
+
+CREATE TABLE #Batch
+(
+    Masterkey BIGINT PRIMARY KEY
+);
+
+WHILE @RowsDeleted > 0
+BEGIN
+    BEGIN TRAN;
+
+	TRUNCATE TABLE #Batch;
+
+    INSERT INTO #Batch(Masterkey)
+    SELECT TOP (@BatchSize) Masterkey
+    FROM TempMove2
+    ORDER BY Masterkey;
+
+INSERT INTO [AncillaryRevenueLegDetailHistory_New]
+   SELECT 
+    [CaptureDate],
+    a.[MasterKey],
+ 	[CategoryCode] ,
+	[FareClassLetter],
+	[Cnt],
+	[Rev], 
+	[Currency]
+    FROM [AncillaryRevenueLegDetailHistory] a
+    JOIN #Batch  ON a.Masterkey = #Batch.Masterkey;
+
+    SET @RowsInserted = @@ROWCOUNT;
+
+    DELETE TempMove2
+    FROM TempMove2 
+    JOIN #Batch ON TempMove2.Masterkey = #Batch.Masterkey;
+
+	SET @RowsDeleted = @@ROWCOUNT;
+
+    COMMIT;
+
+   SET @Now = CONVERT(varchar(20), GETDATE(), 120);
+   RAISERROR ('%s - Inserted rows this batch: %d', 0, 1, @Now, @RowsInserted) WITH NOWAIT;
+
+END
+
+
+--step3
+
+--moving AncillaryRevenueLegSummaryHistory
+
+SELECT MasterKey INTO TempMove
+FROM LegSchedule
+WHERE DepartureDate >= '2024-01-01'  -- cutoff point
+ORDER BY MasterKey
+CREATE INDEX IX_TempMove_Masterkey ON TempMove(Masterkey);
+
+-- move into new Table with chunks of 50000
+DECLARE @BatchSize INT = 50000;
+DECLARE @RowsInserted INT = 1;
+DECLARE @RowsDeleted INT = 1;
+DECLARE @Now varchar(20);
+
+IF OBJECT_ID('tempdb..#Batch') IS NOT NULL
+DROP TABLE #Batch;
+
+CREATE TABLE #Batch
+(
+    Masterkey BIGINT PRIMARY KEY
+);
+
+WHILE @RowsDeleted > 0
+BEGIN
+    BEGIN TRAN;
+
+	TRUNCATE TABLE #Batch;
+
+    INSERT INTO #Batch(Masterkey)
+    SELECT TOP (@BatchSize) Masterkey
+    FROM TempMove
+    ORDER BY Masterkey;
+
+INSERT INTO [AncillaryRevenueLegSummaryHistory_New]
+   SELECT 
+    [CaptureDate],
+    a.[MasterKey],
+    [Cnt1] , [Rev1] ,
+    [Cnt2] , [Rev2] ,
+    [Cnt3] , [Rev3] ,
+    [Cnt4] , [Rev4] ,
+    [Cnt5] , [Rev5] ,
+    [Cnt6] , [Rev6] ,
+    [Cnt7] , [Rev7] ,
+    [Cnt8] , [Rev8] ,
+    [Cnt9] , [Rev9] ,
+    [Cnt10] , [Rev10] ,
+    [Cnt11] , [Rev11] ,
+    [Cnt12] , [Rev12] ,
+    [Cnt13] , [Rev13] ,
+    [Cnt14] , [Rev14] ,
+    [Cnt15] , [Rev15] ,
+    [Cnt16] , [Rev16] ,
+    [Cnt17] , [Rev17] ,
+    [Cnt18] , [Rev18] ,
+    [Cnt19] , [Rev19] ,
+    [Cnt20] , [Rev20] ,
+    [Cnt21] , [Rev21] ,
+    [Cnt22] , [Rev22] ,
+    [Cnt23] , [Rev23] ,
+    [Cnt24] , [Rev24] ,
+    [Cnt25] , [Rev25] ,
+    [Cnt26] , [Rev26] 
+    FROM [AncillaryRevenueLegSummaryHistory] a
+    JOIN #Batch  ON a.Masterkey = #Batch.Masterkey;
+
+    SET @RowsInserted = @@ROWCOUNT;
+
+    DELETE TempMove
+    FROM TempMove 
+    JOIN #Batch ON TempMove.Masterkey = #Batch.Masterkey;
+
+	SET @RowsDeleted = @@ROWCOUNT;
+
+    COMMIT;
+
+   SET @Now = CONVERT(varchar(20), GETDATE(), 120);
+   RAISERROR ('%s - Inserted rows this batch: %d', 0, 1, @Now, @RowsInserted) WITH NOWAIT;
+    COMMIT;
+
+   COMMIT;
+
+   SET @Now = CONVERT(varchar(20), GETDATE(), 120);
+   RAISERROR ('%s - Inserted rows this batch: %d', 0, 1, @Now, @RowsInserted) WITH NOWAIT;
+END
 
 -- step 4
 --SummaryHistory
@@ -194,4 +343,72 @@ WITH (
     FILLFACTOR = 90, 
     OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
 ) ON [PRIMARY];
+GO
+
+
+
+-- step 5
+--- rename 
+
+-- detail
+EXEC sp_rename 'PK_AncillaryRevenueLegDetailHistory', 'PK_AncillaryRevenueLegDetailHistory_Old';
+
+EXEC sp_rename 'AncillaryRevenueLegDetailHistory', 'AncillaryRevenueLegDetailHistory_Old';
+
+
+EXEC sp_rename 'AncillaryRevenueLegDetailHistory_New', 'AncillaryRevenueLegDetailHistory';
+
+EXEC sp_rename 'IX_AncillaryRevenueLegDetailHistory_New', 'IX_AncillaryRevenueLegDetailHistory';
+
+EXEC sp_rename 'PK_AncillaryRevenueLegDetailHistory_New', 'PK_AncillaryRevenueLegDetailHistory';
+
+
+
+
+EXEC sp_rename 'AncillaryRevenueODDetailHistory', 'AncillaryRevenueODDetailHistory_Old';
+
+EXEC sp_rename 'AncillaryRevenueODDetailHistory', 'AncillaryRevenueODDetailHistory_Old';
+
+
+EXEC sp_rename 'AncillaryRevenueODDetailHistory_New', 'AncillaryRevenueODDetailHistory';
+
+EXEC sp_rename 'IX_AncillaryRevenueODDetailHistory_New', 'IX_AncillaryRevenueODDetailHistory';
+
+EXEC sp_rename 'PK_AncillaryRevenueODDetailHistory_New', 'PK_AncillaryRevenueODDetailHistory';
+
+
+
+
+-- summary
+
+EXEC sp_rename 'PK_AncillaryRevenueLegSummaryHistory', 'PK_AncillaryRevenueLegSummaryHistory_Old';
+
+EXEC sp_rename 'AncillaryRevenueLegSummaryHistory', 'AncillaryRevenueLegSummaryHistory_Old';
+
+
+EXEC sp_rename 'AncillaryRevenueLegSummaryHistory_New', 'AncillaryRevenueLegSummaryHistory';
+
+EXEC sp_rename 'IX_AncillaryRevenueLegSummaryHistory_New', 'IX_AncillaryRevenueLegSummaryHistory';
+
+EXEC sp_rename 'PK_AncillaryRevenueLegSummaryHistory_New', 'PK_AncillaryRevenueLegSummaryHistory';
+
+
+
+
+EXEC sp_rename 'AncillaryRevenueODSummaryHistory', 'AncillaryRevenueODSummaryHistory_Old';
+
+EXEC sp_rename 'AncillaryRevenueODSummaryHistory', 'AncillaryRevenueODSummaryHistory_Old';
+
+
+EXEC sp_rename 'AncillaryRevenueODSummaryHistory_New', 'AncillaryRevenueODSummaryHistory';
+
+EXEC sp_rename 'IX_AncillaryRevenueODSummaryHistory_New', 'IX_AncillaryRevenueODSummaryHistory';
+
+EXEC sp_rename 'PK_AncillaryRevenueODSummaryHistory_New', 'PK_AncillaryRevenueODSummaryHistory';
+
+
+
+-- step 6
+ALTER DATABASE FR
+SET RECOVERY Full;
 GO
