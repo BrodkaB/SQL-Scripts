@@ -1,88 +1,197 @@
---step3
+-- step 0
+ALTER DATABASE FR
+SET RECOVERY SIMPLE;
+GO
 
---moving AncillaryRevenueLegSummaryHistory
 
-SELECT MasterKey INTO TempMove
-FROM LegSchedule
-WHERE DepartureDate >= '2024-01-01'  -- cutoff point
-ORDER BY MasterKey
-CREATE INDEX IX_TempMove_Masterkey ON TempMove(Masterkey);
 
--- move into new Table with chunks of 50000
-DECLARE @BatchSize INT = 50000;
-DECLARE @RowsInserted INT = 1;
-DECLARE @RowsDeleted INT = 1;
-DECLARE @Now varchar(20);
+-- step 1
+CREATE TABLE [dbo].[AncillaryRevenueLegSummaryHistory_New](
+    [CaptureDate] [smalldatetime] NOT NULL,
+    [MasterKey] [int] NOT NULL,
+    [Cnt1] [smallint] NULL, [Rev1] [decimal](12,2) NULL,
+    [Cnt2] [smallint] NULL, [Rev2] [decimal](12,2) NULL,
+    [Cnt3] [smallint] NULL, [Rev3] [decimal](12,2) NULL,
+    [Cnt4] [smallint] NULL, [Rev4] [decimal](12,2) NULL,
+    [Cnt5] [smallint] NULL, [Rev5] [decimal](12,2) NULL,
+    [Cnt6] [smallint] NULL, [Rev6] [decimal](12,2) NULL,
+    [Cnt7] [smallint] NULL, [Rev7] [decimal](12,2) NULL,
+    [Cnt8] [smallint] NULL, [Rev8] [decimal](12,2) NULL,
+    [Cnt9] [smallint] NULL, [Rev9] [decimal](12,2) NULL,
+    [Cnt10] [smallint] NULL, [Rev10] [decimal](12,2) NULL,
+    [Cnt11] [smallint] NULL, [Rev11] [decimal](12,2) NULL,
+    [Cnt12] [smallint] NULL, [Rev12] [decimal](12,2) NULL,
+    [Cnt13] [smallint] NULL, [Rev13] [decimal](12,2) NULL,
+    [Cnt14] [smallint] NULL, [Rev14] [decimal](12,2) NULL,
+    [Cnt15] [smallint] NULL, [Rev15] [decimal](12,2) NULL,
+    [Cnt16] [smallint] NULL, [Rev16] [decimal](12,2) NULL,
+    [Cnt17] [smallint] NULL, [Rev17] [decimal](12,2) NULL,
+    [Cnt18] [smallint] NULL, [Rev18] [decimal](12,2) NULL,
+    [Cnt19] [smallint] NULL, [Rev19] [decimal](12,2) NULL,
+    [Cnt20] [smallint] NULL, [Rev20] [decimal](12,2) NULL,
+    [Cnt21] [smallint] NULL, [Rev21] [decimal](12,2) NULL,
+    [Cnt22] [smallint] NULL, [Rev22] [decimal](12,2) NULL,
+    [Cnt23] [smallint] NULL, [Rev23] [decimal](12,2) NULL,
+    [Cnt24] [smallint] NULL, [Rev24] [decimal](12,2) NULL,
+    [Cnt25] [smallint] NULL, [Rev25] [decimal](12,2) NULL,
+    [Cnt26] [smallint] NULL, [Rev26] [decimal](12,2) NULL
+) ON [PRIMARY];
+GO
 
-IF OBJECT_ID('tempdb..#Batch') IS NOT NULL
-DROP TABLE #Batch;
+CREATE TABLE [dbo].[AncillaryRevenueODSummaryHistory_New](
+    [CaptureDate] [smalldatetime] NOT NULL,
+    [MasterKey] [int] NOT NULL,
+    [Cnt1] [smallint] NULL, [Rev1] [decimal](12,2) NULL,
+    [Cnt2] [smallint] NULL, [Rev2] [decimal](12,2) NULL,
+    [Cnt3] [smallint] NULL, [Rev3] [decimal](12,2) NULL,
+    [Cnt4] [smallint] NULL, [Rev4] [decimal](12,2) NULL,
+    [Cnt5] [smallint] NULL, [Rev5] [decimal](12,2) NULL,
+    [Cnt6] [smallint] NULL, [Rev6] [decimal](12,2) NULL,
+    [Cnt7] [smallint] NULL, [Rev7] [decimal](12,2) NULL,
+    [Cnt8] [smallint] NULL, [Rev8] [decimal](12,2) NULL,
+    [Cnt9] [smallint] NULL, [Rev9] [decimal](12,2) NULL,
+    [Cnt10] [smallint] NULL, [Rev10] [decimal](12,2) NULL,
+    [Cnt11] [smallint] NULL, [Rev11] [decimal](12,2) NULL,
+    [Cnt12] [smallint] NULL, [Rev12] [decimal](12,2) NULL,
+    [Cnt13] [smallint] NULL, [Rev13] [decimal](12,2) NULL,
+    [Cnt14] [smallint] NULL, [Rev14] [decimal](12,2) NULL,
+    [Cnt15] [smallint] NULL, [Rev15] [decimal](12,2) NULL,
+    [Cnt16] [smallint] NULL, [Rev16] [decimal](12,2) NULL,
+    [Cnt17] [smallint] NULL, [Rev17] [decimal](12,2) NULL,
+    [Cnt18] [smallint] NULL, [Rev18] [decimal](12,2) NULL,
+    [Cnt19] [smallint] NULL, [Rev19] [decimal](12,2) NULL,
+    [Cnt20] [smallint] NULL, [Rev20] [decimal](12,2) NULL,
+    [Cnt21] [smallint] NULL, [Rev21] [decimal](12,2) NULL,
+    [Cnt22] [smallint] NULL, [Rev22] [decimal](12,2) NULL,
+    [Cnt23] [smallint] NULL, [Rev23] [decimal](12,2) NULL,
+    [Cnt24] [smallint] NULL, [Rev24] [decimal](12,2) NULL,
+    [Cnt25] [smallint] NULL, [Rev25] [decimal](12,2) NULL,
+    [Cnt26] [smallint] NULL, [Rev26] [decimal](12,2) NULL
+) ON [PRIMARY];
+GO
 
-CREATE TABLE #Batch
+
+
+CREATE TABLE [dbo].[AncillaryRevenueLegDetailHistory_New] ( [CaptureDate]     [smalldatetime] NOT NULL
+,                                                           [MasterKey]       [int] NOT NULL
+,                                                           [CategoryCode]    [char](3) NOT NULL
+,                                                           [FareClassLetter] [char](3) NOT NULL
+,                                                           [Cnt]             [smallint] NULL
+,                                                           [Rev]             [decimal](12, 2) NULL
+,                                                           [Currency]        [char](3) NULL ) ON [PRIMARY];
+GO
+
+
+CREATE TABLE [dbo].[AncillaryRevenueODDetailHistory_New] ( [CaptureDate]     [smalldatetime] NOT NULL
+,                                                          [MasterKey]       [int] NOT NULL
+,                                                          [CategoryCode]    [char](3) NOT NULL
+,                                                          [FareClassLetter] [char](3) NOT NULL
+,                                                          [Cnt]             [smallint] NULL
+,                                                          [Rev]             [decimal](12, 2) NULL
+,                                                          [Currency]        [char](3) NULL ) ON [PRIMARY];
+GO
+
+
+
+-- step 4
+--SummaryHistory
+--Leg
+ALTER TABLE [dbo].[AncillaryRevenueLegSummaryHistory_New] 
+ADD CONSTRAINT [PK_AncillaryRevenueLegSummaryHistory_New] PRIMARY KEY CLUSTERED 
 (
-    Masterkey BIGINT PRIMARY KEY
-);
+    [CaptureDate] ASC,
+    [MasterKey] ASC
+) 
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
+--4min
 
-WHILE @RowsDeleted > 0
-BEGIN
-    BEGIN TRAN;
+CREATE NONCLUSTERED INDEX [IX_AncillaryRevenueLegSummaryHistory_New] 
+ON [dbo].[AncillaryRevenueLegSummaryHistory_New] ([MasterKey] ASC)
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
+--1min
 
-	TRUNCATE TABLE #Batch;
+--SummaryHistory
+--OD
+ALTER TABLE [dbo].[AncillaryRevenueODSummaryHistory_New] 
+ADD CONSTRAINT [PK_AncillaryRevenueODSummaryHistory_New] PRIMARY KEY CLUSTERED 
+(
+    [CaptureDate] ASC,
+    [MasterKey] ASC
+) 
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
 
-    INSERT INTO #Batch(Masterkey)
-    SELECT TOP (@BatchSize) Masterkey
-    FROM TempMove
-    ORDER BY Masterkey;
 
-INSERT INTO [AncillaryRevenueLegSummaryHistory_New]
-   SELECT 
-    [CaptureDate],
-    a.[MasterKey],
-    [Cnt1] , [Rev1] ,
-    [Cnt2] , [Rev2] ,
-    [Cnt3] , [Rev3] ,
-    [Cnt4] , [Rev4] ,
-    [Cnt5] , [Rev5] ,
-    [Cnt6] , [Rev6] ,
-    [Cnt7] , [Rev7] ,
-    [Cnt8] , [Rev8] ,
-    [Cnt9] , [Rev9] ,
-    [Cnt10] , [Rev10] ,
-    [Cnt11] , [Rev11] ,
-    [Cnt12] , [Rev12] ,
-    [Cnt13] , [Rev13] ,
-    [Cnt14] , [Rev14] ,
-    [Cnt15] , [Rev15] ,
-    [Cnt16] , [Rev16] ,
-    [Cnt17] , [Rev17] ,
-    [Cnt18] , [Rev18] ,
-    [Cnt19] , [Rev19] ,
-    [Cnt20] , [Rev20] ,
-    [Cnt21] , [Rev21] ,
-    [Cnt22] , [Rev22] ,
-    [Cnt23] , [Rev23] ,
-    [Cnt24] , [Rev24] ,
-    [Cnt25] , [Rev25] ,
-    [Cnt26] , [Rev26] 
-    FROM [AncillaryRevenueLegSummaryHistory] a
-    JOIN #Batch  ON a.Masterkey = #Batch.Masterkey;
+CREATE NONCLUSTERED INDEX [IX_AncillaryRevenueODSummaryHistory_New] 
+ON [dbo].[AncillaryRevenueODSummaryHistory_New] ([MasterKey] ASC)
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
 
-    SET @RowsInserted = @@ROWCOUNT;
 
-    DELETE TempMove
-    FROM TempMove 
-    JOIN #Batch ON TempMove.Masterkey = #Batch.Masterkey;
+--DetailHistory
+--Leg
 
-	SET @RowsDeleted = @@ROWCOUNT;
+ALTER TABLE [dbo].[AncillaryRevenueLegDetailHistory_New] 
+ADD CONSTRAINT [PK_AncillaryRevenueLegDetailHistory_New] PRIMARY KEY CLUSTERED 
+(
+	[CaptureDate] ASC,
+	[MasterKey] ASC,
+	[CategoryCode] ASC,
+	[FareClassLetter] ASC
+) 
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
 
-    COMMIT;
 
-   SET @Now = CONVERT(varchar(20), GETDATE(), 120);
-   RAISERROR ('%s - Inserted rows this batch: %d', 0, 1, @Now, @RowsInserted) WITH NOWAIT;
-    COMMIT;
+CREATE NONCLUSTERED INDEX [IX_AncillaryRevenueLegDetailHistory_New] 
+ON [dbo].[AncillaryRevenueLegDetailHistory_New] ([MasterKey] ASC)
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
 
-   COMMIT;
 
-   SET @Now = CONVERT(varchar(20), GETDATE(), 120);
-   RAISERROR ('%s - Inserted rows this batch: %d', 0, 1, @Now, @RowsInserted) WITH NOWAIT;
-END
 
+
+--DetailHistory
+--OD
+
+ALTER TABLE [dbo].[AncillaryRevenueODDetailHistory_New] 
+ADD CONSTRAINT [PK_AncillaryRevenueODDetailHistory_New] PRIMARY KEY CLUSTERED 
+(
+	[CaptureDate] ASC,
+	[MasterKey] ASC,
+	[CategoryCode] ASC,
+	[FareClassLetter] ASC
+) 
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
+
+CREATE NONCLUSTERED INDEX [IX_AncillaryRevenueODDetailHistory_New] 
+ON [dbo].[AncillaryRevenueODDetailHistory_New] ([MasterKey] ASC)
+WITH (
+    FILLFACTOR = 90, 
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = ON
+) ON [PRIMARY];
+GO
