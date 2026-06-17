@@ -1,1 +1,43 @@
-SELECT * FROM sys.database_audit_specification_details
+USE YourDatabase;
+GO
+
+CREATE DATABASE AUDIT SPECIFICATION Audit_RLL_All
+FOR SERVER AUDIT MainAudit
+
+ADD (SELECT               ON DATABASE::YourDatabase BY RLL_audit_role),
+ADD (INSERT               ON DATABASE::YourDatabase BY RLL_audit_role),
+ADD (UPDATE               ON DATABASE::YourDatabase BY RLL_audit_role),
+ADD (DELETE               ON DATABASE::YourDatabase BY RLL_audit_role),
+
+ADD (EXECUTE              ON DATABASE::YourDatabase BY RLL_audit_role),
+
+ADD (REFERENCES           ON DATABASE::YourDatabase BY RLL_audit_role),
+
+ADD (CREATE TABLE         BY RLL_audit_role),
+ADD (ALTER TABLE          BY RLL_audit_role),
+ADD (DROP TABLE           BY RLL_audit_role),
+
+ADD (CREATE VIEW          BY RLL_audit_role),
+ADD (ALTER VIEW           BY RLL_audit_role),
+ADD (DROP VIEW            BY RLL_audit_role),
+
+ADD (CREATE PROCEDURE     BY RLL_audit_role),
+ADD (ALTER PROCEDURE      BY RLL_audit_role),
+ADD (DROP PROCEDURE       BY RLL_audit_role),
+
+ADD (CREATE FUNCTION      BY RLL_audit_role),
+ADD (ALTER FUNCTION       BY RLL_audit_role),
+ADD (DROP FUNCTION        BY RLL_audit_role),
+
+ADD (CREATE SCHEMA        BY RLL_audit_role),
+ADD (ALTER SCHEMA         BY RLL_audit_role),
+ADD (DROP SCHEMA          BY RLL_audit_role),
+
+ADD (DATABASE_PERMISSION_CHANGE_GROUP),
+
+ADD (SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP),
+
+ADD (DATABASE_PRINCIPAL_CHANGE_GROUP)
+
+WITH (STATE = ON);
+GO
