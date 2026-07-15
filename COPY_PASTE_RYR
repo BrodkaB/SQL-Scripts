@@ -1,5 +1,10 @@
-name	physical_name	(No column name)	SizeMB	UsedMB	growth	is_percent_growth
-RYREFB	G:\Databases\RYREFBTest.mdf	2867440	0	1580846.750000	0	0
-RYREFB_log	L:\Logs\RYREFBTest_log.ldf	103550	0	28.039062	64000	0
-RYREFBTest2	H:\Databases\RYREFBTest2.ndf	2091300	0	828081.375000	0	0
-RYREFBTest3	I:\Databases\RYREFBTest3.ndf	1424716	0	481899.437500	131072	0
+drive	MB free
+C	131779
+F	614488
+G	152122
+H	55092
+I	749101
+L	144308
+Q	949
+T	145944
+Z	305218
