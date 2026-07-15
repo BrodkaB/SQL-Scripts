@@ -1,27 +1,28 @@
-SELECT
-    StartTime,
-    DatabaseName,
-    FileName,
-    IntegerData * 8 / 1024 AS GrowthMB,
-    ApplicationName,
-    HostName,
-    LoginName
-FROM fn_trace_gettable(
-(
-    SELECT REVERSE(SUBSTRING(REVERSE(path),
-                             CHARINDEX('\', REVERSE(path)), 260))
-           + '\Log.trc'
-    FROM sys.traces
-    WHERE is_default = 1
-), DEFAULT)
-WHERE EventClass IN (92,93)
-  AND DatabaseName = 'RYREFB'
-ORDER BY StartTime DESC;
 
+EXECUTE [dbo].[IndexOptimize]
+	@Databases		= 'RYREFB',
+	@FragmentationLow	= NULL,
+	@FragmentationMedium	= 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+	@FragmentationHigh	= 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',  
+	@FragmentationLevel1	= 5,
+	@FragmentationLevel2	 = 30,
+	@PartitionLevel		= 'Y',
+	@LogToTable		= 'Y',
+	@MaxDOP		= 4,
+	@SortInTempdb		= 'Y',
+	@MinNumberOfPages	= "1000",
+	@TimeLimit		= 7140;
 
-SELECT
-    name,
-    create_date,
-    modify_date
-FROM sys.databases
-WHERE name = 'RYREFB';
+EXECUTE [dbo].[IndexOptimize]
+@Databases		= 'USER_DATABASES',
+@FragmentationLow	= NULL,
+@FragmentationMedium	= 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+@FragmentationHigh	= 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+@FragmentationLevel1	=  5,
+@FragmentationLevel2	 = 30,
+@LogToTable		= 'Y',
+@MaxDOP		= 4,
+@SortInTempdb		= 'N',
+@MinNumberOfPages	= "1000",
+@TimeLimit 		= 43200,
+@FillFactor		= 90;
