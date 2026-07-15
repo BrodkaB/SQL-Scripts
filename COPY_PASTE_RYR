@@ -1,8 +1,27 @@
-ReservedGB	UsedGB
-2822.98014831542	1988.74131774902
+SELECT
+    StartTime,
+    DatabaseName,
+    FileName,
+    IntegerData * 8 / 1024 AS GrowthMB,
+    ApplicationName,
+    HostName,
+    LoginName
+FROM fn_trace_gettable(
+(
+    SELECT REVERSE(SUBSTRING(REVERSE(path),
+                             CHARINDEX('\', REVERSE(path)), 260))
+           + '\Log.trc'
+    FROM sys.traces
+    WHERE is_default = 1
+), DEFAULT)
+WHERE EventClass IN (92,93)
+  AND DatabaseName = 'RYREFB'
+ORDER BY StartTime DESC;
 
-database_name	database_size	unallocated space
-RYREFB	6487006.06 MB	3492723.20 MB
 
-reserved	data	index_size	unused
-2960110448 KB	1913587488 KB	171760688 KB	874762272 KB
+SELECT
+    name,
+    create_date,
+    modify_date
+FROM sys.databases
+WHERE name = 'RYREFB';
