@@ -1,10 +1,84 @@
-Enforce using MSODBC for SQL connection.  $$<Configuration Manager Setup><08-04-2026 12:28:41.116-60><thread=8836 (0x2284)>
-INFO: Registered type CREWSQL01.CREW.RYANAIR.COM MASTER for CREWSQL01.Crew.ryanair.com master  $$<Configuration Manager Setup><08-04-2026 12:28:41.274-60><thread=8836 (0x2284)>
-INFO: Registered type SMS Master for CREWSQL01.Crew.ryanair.com master  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
-INFO: Registered type CREWSQL01.CREW.RYANAIR.COM CM_CREWDB for CREWSQL01.Crew.ryanair.com CM_CREWDB  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
-INFO: Registered type SMS ACCESS for CREWSQL01.Crew.ryanair.com CM_CREWDB  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
-INFO: SQL Server version detected is 15.0, 15.0.4465.1.~  $$<Configuration Manager Setup><08-04-2026 12:28:41.433-60><thread=8836 (0x2284)>
-INFO: Return code:0, Major:15, Minor:0, BuildNum:4465  $$<Configuration Manager Setup><08-04-2026 12:28:41.580-60><thread=8836 (0x2284)>
-<08-04-2026 12:34:07> *****************************************************
-<08-04-2026 12:34:07> *****   Exiting ConfigMgr Setup Bootstrapper    *****
-<08-04-2026 12:34:07> *****************************************************
+04/08/2026 12:13:07: ConfigMgrSetupWizard Information: 1 : Cannot detect SMS Type because either SiteServer, SqlServer or SiteServerName is empty.
+04/08/2026 12:13:07: ConfigMgrSetupWizard Information: 1 : CD_LATEST is not used. Recovery is blocked
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Sql connection is established.
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Detected instance name: (null)
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Detected default data path: E:\Databases\
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Detected default log path: E:\Logs\
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Is SQL clustered?: False
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Is SQL availability group?: False
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Detected SQL port: 1433
+04/08/2026 12:15:05: ConfigMgrSetupWizard Information: 1 : Does database CM_CREWDB already exist?: True
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : SqlServerName = CREWSQL01.Crew.ryanair.com
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : SqlServerPort = 1433
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : SqlDatabaseName = CM_CREWDB
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : IsSqlAlwaysOn = False
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : IsAlwaysOnAutoSeeding = False
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = []
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = []
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = []
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = []
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases\]
+04/08/2026 12:15:06: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs\]
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : ValidatePage for user input
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases\]
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs\]
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : Validating Path: E:\Databases\. 
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 :  Remote Sql specified, translating path relative to remote Sql server [CREWSQL01.Crew.ryanair.com].   
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : For remote sql server, using sql path as \\CREWSQL01.Crew.ryanair.com\E$\Databases\
+04/08/2026 12:17:07: ConfigMgrSetupWizard Information: 1 : Verify if given path exists: \\CREWSQL01.Crew.ryanair.com\E$\Databases\. 
+04/08/2026 12:18:08: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases]
+04/08/2026 12:18:08: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs]
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : ValidatePage for user input
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases]
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs]
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : Validating Path: E:\Databases. 
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 :  Remote Sql specified, translating path relative to remote Sql server [CREWSQL01.Crew.ryanair.com].   
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : For remote sql server, using sql path as \\CREWSQL01.Crew.ryanair.com\E$\Databases
+04/08/2026 12:18:10: ConfigMgrSetupWizard Information: 1 : Verify if given path exists: \\CREWSQL01.Crew.ryanair.com\E$\Databases. 
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Sql connection is established.
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Detected instance name: (null)
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Detected default data path: E:\Databases\
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Detected default log path: E:\Logs\
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Is SQL clustered?: False
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Is SQL availability group?: False
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Detected SQL port: 1433
+04/08/2026 12:20:49: ConfigMgrSetupWizard Information: 1 : Does database CM_CREWDB already exist?: True
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : SqlServerName = CREWSQL01.Crew.ryanair.com
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : SqlServerPort = 1433
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : SqlDatabaseName = CM_CREWDB
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : IsSqlAlwaysOn = False
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : IsAlwaysOnAutoSeeding = False
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases]
+04/08/2026 12:20:50: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs]
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : ValidatePage for user input
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases]
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs]
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : Validating Path: E:\Databases. 
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 :  Remote Sql specified, translating path relative to remote Sql server [CREWSQL01.Crew.ryanair.com].   
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : For remote sql server, using sql path as \\CREWSQL01.Crew.ryanair.com\E$\Databases
+04/08/2026 12:22:31: ConfigMgrSetupWizard Information: 1 : Verify if given path exists: \\CREWSQL01.Crew.ryanair.com\E$\Databases. 
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Sql connection is established.
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Detected instance name: (null)
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Detected default data path: E:\Databases\
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Detected default log path: E:\Logs\
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Is SQL clustered?: False
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Is SQL availability group?: False
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Detected SQL port: 1433
+04/08/2026 12:28:40: ConfigMgrSetupWizard Information: 1 : Does database CM_CREWDB already exist?: True
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : SqlServerName = CREWSQL01.Crew.ryanair.com
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : SqlServerPort = 1433
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : SqlDatabaseName = CM_CREWDB
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : IsSqlAlwaysOn = False
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : IsAlwaysOnAutoSeeding = False
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases]
+04/08/2026 12:28:41: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs]
+04/08/2026 12:28:44: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases\]
+04/08/2026 12:28:44: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs\]
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : ValidatePage for user input
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Databases\]
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : Validating sqlDataPath = [E:\Logs\]
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : Validating Path: E:\Databases\. 
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 :  Remote Sql specified, translating path relative to remote Sql server [CREWSQL01.Crew.ryanair.com].   
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : For remote sql server, using sql path as \\CREWSQL01.Crew.ryanair.com\E$\Databases\
+04/08/2026 12:33:21: ConfigMgrSetupWizard Information: 1 : Verify if given path exists: \\CREWSQL01.Crew.ryanair.com\E$\Databases\. 
+04/08/2026 12:34:06: ConfigMgrSetupWizard Verbose: 1 : Exiting SetupWPF.exe.
