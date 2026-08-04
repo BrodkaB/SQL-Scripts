@@ -1,23 +1,10 @@
-SELECT @@VERSION;
-
-SELECT
-    SERVERPROPERTY('ServerName') AS ServerName,
-    SERVERPROPERTY('MachineName') AS MachineName,
-    SERVERPROPERTY('InstanceName') AS InstanceName,
-    @@SERVERNAME AS AtAtServerName;
-
-SELECT
-name,
-state_desc,
-is_disabled
-FROM sys.server_principals
-WHERE name LIKE '%ServerA%'
-OR name LIKE '%TwojeKonto%';
-
-
-SELECT servicename,
-startup_type_desc,
-status_desc,
-last_startup_time,
-service_account
-FROM sys.dm_server_services;
+Enforce using MSODBC for SQL connection.  $$<Configuration Manager Setup><08-04-2026 12:28:41.116-60><thread=8836 (0x2284)>
+INFO: Registered type CREWSQL01.CREW.RYANAIR.COM MASTER for CREWSQL01.Crew.ryanair.com master  $$<Configuration Manager Setup><08-04-2026 12:28:41.274-60><thread=8836 (0x2284)>
+INFO: Registered type SMS Master for CREWSQL01.Crew.ryanair.com master  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
+INFO: Registered type CREWSQL01.CREW.RYANAIR.COM CM_CREWDB for CREWSQL01.Crew.ryanair.com CM_CREWDB  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
+INFO: Registered type SMS ACCESS for CREWSQL01.Crew.ryanair.com CM_CREWDB  $$<Configuration Manager Setup><08-04-2026 12:28:41.401-60><thread=8836 (0x2284)>
+INFO: SQL Server version detected is 15.0, 15.0.4465.1.~  $$<Configuration Manager Setup><08-04-2026 12:28:41.433-60><thread=8836 (0x2284)>
+INFO: Return code:0, Major:15, Minor:0, BuildNum:4465  $$<Configuration Manager Setup><08-04-2026 12:28:41.580-60><thread=8836 (0x2284)>
+<08-04-2026 12:34:07> *****************************************************
+<08-04-2026 12:34:07> *****   Exiting ConfigMgr Setup Bootstrapper    *****
+<08-04-2026 12:34:07> *****************************************************
