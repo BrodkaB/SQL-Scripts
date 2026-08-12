@@ -1,40 +1,5 @@
-PS C:\WINDOWS\system32> Get-CimClass -Namespace 'root\microsoft\SqlServer\ComputerManagement16' | Select-Object -First 10 CimClassName
-
-CimClassName
-------------
-CIM_Indication
-CIM_ClassIndication
-CIM_ClassDeletion
-CIM_ClassCreation
-CIM_ClassModification
-CIM_InstIndication
-CIM_InstCreation
-CIM_InstModification
-CIM_InstDeletion
-__NotifyStatus
-
-
-PS C:\WINDOWS\system32> Get-CimInstance -Namespace 'root\Microsoft\SqlServer\ComputerManagement16' -ClassName __Namespace
-
-Name   PSComputerName
-----   --------------
-MS_409
-
-
-PS C:\WINDOWS\system32> Get-CimClass -Namespace 'root\Microsoft\SqlServer\ComputerManagement17' | Select-Object -First 10 CimClassName
-
-CimClassName
-------------
-__SystemClass
-__thisNAMESPACE
-__Provider
-__Win32Provider
-__ProviderRegistration
-__EventProviderRegistration
-__ObjectProviderRegistration
-__ClassProviderRegistration
-__InstanceProviderRegistration
-__MethodProviderRegistration
-
-
-PS C:\WINDOWS\system32>
+Get-ChildItem `
+'C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555' `
+-Recurse -File |
+Where-Object {$_.Name -match 'ERRORLOG|SQLServer_ERRORLOG|Detail'} |
+Select FullName,Length,LastWriteTime
