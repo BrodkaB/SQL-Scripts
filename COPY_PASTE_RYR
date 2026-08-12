@@ -1,12 +1,8 @@
+Get-ItemProperty `
+'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL' |
+Format-List
+
 Get-Service | Where-Object {
     $_.Name -like '*SQL2022*'
-} | Select Name,DisplayName,Status
+} | Select-Object Name,DisplayName,Status
 
-Get-ItemProperty `
-'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL'
-
-Get-ItemProperty `
-'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
-'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' |
-Where-Object {$_.DisplayName -like '*SQL Server 2022*'} |
-Select DisplayName,DisplayVersion,PSChildName
