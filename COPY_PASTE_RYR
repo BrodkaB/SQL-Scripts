@@ -1,7 +1,58 @@
-Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
-              'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' |
-Get-ItemProperty |
-Where-Object {
-    $_.DisplayName -like '*SQL Server*'
-} |
-Select-Object DisplayName, DisplayVersion, PSChildName
+DisplayName                                          DisplayVersion PSChildName                           
+-----------                                          -------------- -----------                           
+Hotfix 4065 for SQL Server 2025 (KB5096981) (64-bit) 17.0.4065.4    KB5096981                             
+Microsoft SQL Server 2022 (64-bit)                                  Microsoft SQL Server 16               
+Microsoft SQL Server 2025 (64-bit)                                  Microsoft SQL Server 17               
+Microsoft SQL Server 2022 (64-bit)                                  Microsoft SQL Server SQL2022          
+Microsoft SQL Server 2025 (64-bit)                                  Microsoft SQL Server SQL2025          
+SQL Server 2025 Common Files                         17.0.1000.7    {00B16944-973B-4F1E-83FC-DFC8D6D1321E}
+SQL Server 2022 SQL Diagnostics                      16.0.1000.6    {0CEFE958-E71A-4171-9DEF-77E9234A5613}
+Microsoft ODBC Driver 17 for SQL Server              17.10.6.1      {0E0F96AC-80DE-4400-A40C-429D63293651}
+SQL Server 2022 Shared Management Objects            16.0.1000.6    {12618131-AA9A-4DAE-9387-CE4417955B9F}
+SQL Server 2025 Connection Info                      17.0.1000.7    {148D25D7-B33F-4DE3-A0F3-E13142ED72F1}
+SQL Server 2022 Database Engine Shared               16.0.1000.6    {161B8D12-C41B-4ACF-9BB5-E1FEE6788869}
+SQL Server 2025 Batch Parser                         17.0.1000.7    {2EC6BB27-0233-4CB4-9941-5565C751297A}
+SQL Server 2025 DMF                                  17.0.1000.7    {3042B424-F056-4B2B-BEE5-8C89B8A94ED1}
+SQL Server 2022 Full text search                     16.0.1000.6    {325160B7-7194-48E9-8FEF-53E2517D8748}
+SQL Server 2025 Connection Info                      17.0.1000.7    {33953E4A-DACD-4D7F-91E1-46E7AFB3600F}
+SQL Server 2022 Shared Management Objects Extensions 16.0.1000.6    {35EC6145-E333-42DB-BCB3-380DF6140C11}
+SQL Server 2025 Database Engine Services             17.0.1000.7    {3BF8EF9B-22CD-4F71-AEBD-DA30B40DD1FF}
+Microsoft ODBC Driver 18 for SQL Server              18.5.2.1       {55422B70-0DE4-4793-8872-A44B58683F33}
+SQL Server 2022 DMF                                  16.0.1000.6    {5AB77D4E-9E5F-4627-B78B-129A5EC2858A}
+SQL Server 2025 Common Files                         17.0.1000.7    {5C545B10-15FD-4A0D-9E53-50B1DDD3379A}
+Microsoft SQL Server 2022 RsFx Driver                16.0.1000.6    {629C8FC9-3763-4C58-8264-5288AE34AFEF}
+SQL Server 2022 Database Engine Services             16.0.1000.6    {6621C765-569C-4D46-A8E9-C69A47971357}
+SQL Server 2025 Shared Management Objects            17.0.1000.7    {6A53D608-E9C7-4FCA-B0D1-E8F69B940E1D}
+SQL Server 2022 Common Files                         16.0.1000.6    {6A68D32C-4C0D-4847-B70C-58E6B4D76A12}
+SQL Server 2022 Shared Management Objects            16.0.1000.6    {6F8242AA-1B25-421C-8E45-FC5978D9AA3A}
+SQL Server 2022 Connection Info                      16.0.1000.6    {770DA7F2-817B-4AA6-9160-08BB658ABDC6}
+Microsoft OLE DB Driver for SQL Server               18.2.4.0       {77E9E138-0D4C-495E-BE77-761E1797BA16}
+SQL Server 2022 Batch Parser                         16.0.1000.6    {7EFD8B19-A9E6-41CF-A96F-B9B6E30EC345}
+SQL Server 2022 Common Files                         16.0.1000.6    {8770AF64-BB4B-4404-BDD6-6AF8E4C461FC}
+SQL Server 2025 Full text search                     17.0.1000.7    {8799DF2F-B990-4EDB-AB6D-659CA12E2CC7}
+SQL Server 2025 Shared Management Objects Extensions 17.0.1000.7    {94962D86-1582-46C3-8627-20F31D634678}
+SQL Server 2022 XEvent                               16.0.1000.6    {94AEB0A0-365C-449B-B573-D2ECB353EB06}
+SQL Server 2025 DMF                                  17.0.1000.7    {9E0229EC-2F2B-4A92-821A-594E7DC207B0}
+SQL Server 2022 Shared Management Objects Extensions 16.0.1000.6    {A0F7ACBA-075F-4BC7-A85A-5DC301FCEC74}
+SQL Server 2025 Database Engine Shared               17.0.1000.7    {A2B4819A-61D5-41FF-9297-65993A52C14B}
+SQL Server 2025 Shared Management Objects Extensions 17.0.1000.7    {A7AD2A69-01CD-4035-8F3F-1A88E3121FD1}
+SQL Server 2025 Database Engine Shared               17.0.1000.7    {AE3BE393-A78E-45D5-A24F-7088F764D98F}
+SQL Server 2022 XEvent                               16.0.1000.6    {BD8B7339-7559-4FC3-95E6-264324D45235}
+Microsoft SQL Server 2022 Setup (English)            16.0.1000.6    {BF4D8C4B-D931-4D62-A7ED-8A34B2FC0D1B}
+SQL Server 2025 XEvent                               17.0.1000.7    {C347F6C3-80D1-4396-A0B9-EF2F66863D04}
+SQL Server 2022 Database Engine Services             16.0.1000.6    {C4CF167C-4739-4A3A-8D75-59C9C5F135CA}
+SQL Server 2025 XEvent                               17.0.1000.7    {C5EFAB2B-B8B0-48F1-9FD7-357624DD086C}
+Microsoft SQL Server 2025 Setup (English)            17.0.4065.4    {CFA61418-E83A-4DEE-84E1-3925AAC3C2C0}
+Microsoft SQL Server 2025 RsFx Driver                17.0.1000.7    {D0B7FEAB-4315-44E5-90E1-58E967E8F1C1}
+SQL Server 2022 Database Engine Shared               16.0.1000.6    {D6E82158-05B9-4A18-A624-EA135BC77766}
+SQL Server 2025 Shared Management Objects            17.0.1000.7    {D8ADCBBD-4E25-4C86-BA12-54F15604B797}
+SQL Server 2022 DMF                                  16.0.1000.6    {DCA0C2D6-83BF-41AE-B1AB-C4181002DE40}
+SQL Server 2025 SQL Diagnostics                      17.0.1000.7    {E50D9138-967D-43C2-93C8-60E874B8F8BF}
+SQL Server 2022 Connection Info                      16.0.1000.6    {EAC54B82-7A37-4A9E-8953-474316BD40F6}
+Microsoft OLE DB Driver 19 for SQL Server            19.3.7.0       {EBA0BAE0-0238-4698-BEC2-820841C39A9E}
+SQL Server 2025 Database Engine Services             17.0.1000.7    {F3AB9D35-DEA4-4D50-B589-18D14D81B02D}
+Microsoft VSS Writer for SQL Server 2025             17.0.1000.7    {FEC10394-D378-48E4-8A10-5BFCE3098A05}
+Microsoft SQL Server Management Studio - 20.2.1      20.2.37.0      {22baa1c2-262f-4194-9cc7-84403b8e16f1}
+SQL Server Management Studio Language Pack - English 20.2.37.0      {99F9105D-C47D-4B22-975F-F57339EE359E}
+Browser for SQL Server 2025                          17.0.1000.7    {DD36BE85-7BAC-4FEA-876E-060BD7936895}
+SQL Server Management Studio                         20.2.37.0      {FE8C7838-D3E6-4CEA-87BE-216E42391827}
