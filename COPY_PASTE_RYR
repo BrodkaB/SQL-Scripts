@@ -1,22 +1,1156 @@
-$log = Get-ChildItem `
-'C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555' `
--Recurse -File |
-Where-Object {
-    $_.Name -match 'SQLServer_ERRORLOG|sql_engine|engine'
-} |
-Sort-Object Length -Descending |
-Select-Object -First 1
-
-$log.FullName
-
-Select-String `
+PS C:\Users\brodkabj> Select-String `
 -Path $log.FullName `
 -Pattern 'error|failed|cannot|unable|could not|exception|0x|FCB|master|permission|access|startup' `
 -CaseSensitive:$false `
 -Context 2,3
 
-Get-CimClass -Namespace 'root\Microsoft\SqlServer\ComputerManagement16' |
-Where-Object {
-    $_.CimClassName -match 'SqlService|ServerSettings|Sql'
-} |
-Select-Object CimClassName
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:73:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+CreateFolder 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:74:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+DrLocator 3: -2147287038 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:75:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+Error 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:76:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+FeatureComponents 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:77:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+InstallExecuteSequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:78:MSI (s) (58:7C) [11:41:28:256]: Note: 1: 2262 2: 
+InstallUISequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:129:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+CreateFolder 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:130:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+DrLocator 3: -2147287038 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:131:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+Error 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:132:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+FeatureComponents 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:133:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+InstallExecuteSequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:134:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+InstallUISequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:183:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+CreateFolder 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:184:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+DrLocator 3: -2147287038 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:185:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+Error 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:186:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+FeatureComponents 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:187:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+InstallExecuteSequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:188:MSI (s) (58:7C) [11:41:28:258]: Note: 1: 2262 2: 
+InstallUISequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:210:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:211:MSI (s) (58:7C) [11:41:28:267]: PROPERTY CHANGE: 
+Adding MsiLogFileLocation property. Its value is 'C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log'.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:212:MSI (s) (58:7C) [11:41:28:267]: Command Line: 
+EXTERNALMSICONTROL=1 ADDLOCAL=MPT_AGENT_CORE_CNI,MPT_AGENT_CORE_MNGD_CNI,SQL_AGENT_FNI,SQL_CMDLINETOOLS_CNI,SQL_DATA_COLLECTOR_FNI,SQL_DataFiles_Core_Inst,SQL_DUMPER_C
+NI,SQL_Engine_CNI,SQL_ENGINE_CORE_CNI,SQL_Engine_Core_Inst,SQL_ENGINE_DB_CNI,SQL_LEGACYTOOLS_CNI,SQL_LEGACYTOOLS_FNI,SQL_MAIL_FNI,SQL_REPL_ENGINE_SUPPORT_CNI,SQL_REPL_
+ENGINE_SUPPORT_FNI,SQL_SLP_ENGINE_SUPPORT_CNI,SQL_UPGRADESCRIPTS_FNI INSTANCENAME=SQL2022 SQMREPORTING=True ERRORREPORTING=True INSTALLSQLDIR=C:\Program 
+Files\Microsoft SQL Server\ INSTALLSQLSHAREDDIR_32=C:\Program Files (x86)\Microsoft SQL Server\ INSTALLSQLSHAREDDIR_64=C:\Program Files\Microsoft SQL Server\ 
+REBOOT=ReallySuppress MSIFASTINSTALL=7 MSINEWINSTANCE=1 SKIPPENDINGREBOOTCHECK=1 TRANSFORMS=:SqlRun01.mst;:InstID02.mst;:InstName02.mst INSTANCEID=MSSQL16.SQL2022 
+MEDIAPACKAGEPATH=x64\setup\ CURRENTDIRECTORY=J:\ CLIENTUILEVEL=3 MSICLIENTUSESEXTERNALUI=1 CLIENTPROCESSID=8704 CURRENTMEDIAVOLUMELABEL=SQLServer2022 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:213:MSI (s) (58:7C) [11:41:28:267]: PROPERTY CHANGE: 
+Adding PackageCode property. Its value is '{5B49DA82-36F8-4EB6-AB2D-A9C1633B7DB4}'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:214:MSI (s) (58:7C) [11:41:28:267]: PROPERTY CHANGE: 
+Adding TRANSFORMS property. Its value is ':SqlRun01.mst;:InstID02.mst;:InstName02.mst'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:215:MSI (s) (58:7C) [11:41:28:267]: Product Code 
+passed to Engine.Initialize:           ''
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:238:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding INSTANCENAME property. Its value is 'SQL2022'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:239:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding SQMREPORTING property. Its value is 'True'.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:240:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding ERRORREPORTING property. Its value is 'True'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:241:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding INSTALLSQLDIR property. Its value is 'C:\Program Files\Microsoft SQL Server\'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:242:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding INSTALLSQLSHAREDDIR_32 property. Its value is 'C:\Program Files (x86)\Microsoft SQL Server\'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:243:MSI (s) (58:7C) [11:41:28:273]: PROPERTY CHANGE: 
+Adding INSTALLSQLSHAREDDIR_64 property. Its value is 'C:\Program Files\Microsoft SQL Server\'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:270:MSI (s) (58:7C) [11:41:28:296]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\Pictures
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:271:MSI (s) (58:7C) [11:41:28:300]: 
+SHELL32::SHGetFolderPath returned: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:272:MSI (s) (58:7C) [11:41:28:302]: 
+SHELL32::SHGetFolderPath returned: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:273:MSI (s) (58:7C) [11:41:28:302]: 
+SHELL32::SHGetFolderPath returned: C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:274:MSI (s) (58:7C) [11:41:28:304]: 
+SHELL32::SHGetFolderPath returned: C:\ProgramData\Microsoft\Windows\Start Menu
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:275:MSI (s) (58:7C) [11:41:28:306]: 
+SHELL32::SHGetFolderPath returned: C:\Users\Public\Desktop
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:276:MSI (s) (58:7C) [11:41:28:310]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:277:MSI (s) (58:7C) [11:41:28:312]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:278:MSI (s) (58:7C) [11:41:28:314]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:279:MSI (s) (58:7C) [11:41:28:316]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\AppData\Roaming\Microsoft\Windows\Start Menu
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:280:MSI (s) (58:7C) [11:41:28:318]: 
+SHELL32::SHGetFolderPath returned: C:\Users\brodkabj\Desktop
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:302:MSI (s) (58:7C) [11:41:28:334]: Note: 1: 2205 2:  
+3: LaunchCondition 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:303:MSI (s) (58:7C) [11:41:28:334]: Note: 1: 2228 2:  
+3: LaunchCondition 4: SELECT `Condition` FROM `LaunchCondition` 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:304:MSI (s) (58:7C) [11:41:28:334]: APPCOMPAT: 
+[DetectVersionLaunchCondition] Failed to initialize pRecErr.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:305:MSI (s) (58:7C) [11:41:28:334]: PROPERTY CHANGE: 
+Adding ACTION property. Its value is 'INSTALL'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:306:MSI (s) (58:7C) [11:41:28:334]: Doing action: 
+INSTALL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:307:Action start 11:41:28: INSTALL.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:343:MSI (s) (58:60) [11:41:28:447]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI7E1B.tmp, Entrypoint: Do_LogInstallStart
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:344:MSI (s) (58:EC) [11:41:28:449]: Generating random 
+cookie.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:345:MSI (s) (58:EC) [11:41:28:458]: Created Custom 
+Action Server with PID 6852 (0x1AC4).
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:346:MSI (s) (58:60) [11:41:28:558]: Running as a 
+service.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:347:MSI (s) (58:AC) [11:41:28:574]: Hello, I'm your 
+64bit Impersonated custom action server.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:348:Action start 11:41:28: Do_LogInstallStart_64.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:350:Function=Do_LogInstallStart
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:351:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:352:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:353:Doing Action: Do_LogInstallStart
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:354:PerfTime Start: Do_LogInstallStart : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:355:<Func Name='Do_LogInstallStart'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:356:<EndFunc Name='Do_LogInstallStart' Return='0' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:357:PerfTime Stop: Do_LogInstallStart : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:358:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:359:MSI (s) (58:7C) [11:41:28:657]: Doing action: 
+FindRelatedProducts
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:360:Action ended 11:41:28: Do_LogInstallStart_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:361:MSI (s) (58:7C) [11:41:28:663]: Note: 1: 2205 2:  
+3: Upgrade 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:377:Function=SetInstanceProperty
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:378:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:379:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:380:Doing Action: SetInstanceProperty
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:381:PerfTime Start: SetInstanceProperty : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:382:<Func Name='SetInstanceProperty'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:392:MSI (s) (58!C8) [11:41:28:836]: PROPERTY CHANGE: 
+Adding InstanceRegKey_64 property. Its value is 'Microsoft SQL Server\MSSQL16.SQL2022'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:393:Using PrevRegRootPath: 
+Software\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:394:<EndFunc Name='SetInstanceProperty' Return='0' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:395:PerfTime Stop: SetInstanceProperty : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:396:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='203'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:397:MSI (s) (58:7C) [11:41:28:850]: Skipping action: 
+SetErrorReporting (condition is false)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:398:MSI (s) (58:7C) [11:41:28:850]: Skipping action: 
+SetSqmReporting (condition is false)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:399:MSI (s) (58:7C) [11:41:28:850]: Doing action: 
+CCPSearch
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:400:Action ended 11:41:28: SetInstanceProperty_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:554:Function=ControlService
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:555:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:556:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:557:Doing Action: ControlService
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:558:PerfTime Start: ControlService : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:559:<Func Name='ControlService'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:560:<EndFunc Name='ControlService' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:561:PerfTime Stop: ControlService : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:562:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:563:MSI (s) (58:7C) [11:41:29:082]: Doing action: 
+SqlFollowComponentsValidate_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:564:Action ended 11:41:29: ControlService_64. Return 
+value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:565:MSI (s) (58:D0) [11:41:29:186]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI80ED.tmp, Entrypoint: SqlFollowComponentsValidate
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:568:Function=SqlFollowComponentsValidate
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:569:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:570:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:571:Doing Action: SqlFollowComponentsValidate
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:572:PerfTime Start: SqlFollowComponentsValidate : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:573:<Func Name='SqlFollowComponentsValidate'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:574:PerfTime Stop: SqlFollowComponentsValidate : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:575:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:576:MSI (s) (58:7C) [11:41:29:255]: Doing action: 
+SqlInstanceCA_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:577:Action ended 11:41:29: 
+SqlFollowComponentsValidate_64. Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:578:MSI (s) (58:7C) [11:41:29:255]: PROPERTY CHANGE: 
+Modifying SqlTarget_64 property. Its current value is 'C:\Program Files\Microsoft SQL Server\MSSQL.X\'. Its new value: 'C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:902:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_SQLIOSIM_EXE_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:903:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_SQLIOSIM_COM_64; Installed: Absent;   Request: Local;   Action: Local
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:904:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_sqlaccess_dll_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:905:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_EMGShowFeedback_64; Installed: Absent;   Request: Local;   Action: Null
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:906:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_LHWatsonException_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:907:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_FilestreamInstanceKeys_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:908:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_opends60_dll_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:909:MSI (s) (58:7C) [11:41:29:287]: Component: 
+ENG_RE_ReservedPorts_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1008:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbEngine_hotfix_install_sql_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1009:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbEngine_hotfix_uninstall_sql_64; Installed: Absent;   Request: Local;   Action: Local
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1010:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbMaster_MDF_64; Installed: Absent;   Request: Local;   Action: Local
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1011:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbMaster_LDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1012:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbModel_MDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1013:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbModel_LDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1014:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbMsdb_MDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1015:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_DbMsdb_LDF_64; Installed: Absent;   Request: Local;   Action: Local
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1016:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_Dbmodel_replicatedmaster_MDF_64; Installed: Absent;   Request: Local;   Action: Local
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1017:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_Dbmodel_replicatedmaster_LDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1018:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_Dbmodel_msdbdata_MDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1019:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_Dbmodel_msdblog_LDF_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1020:MSI (s) (58:7C) [11:41:29:290]: Component: 
+ENG_RE_instmsdb_sql_64; Installed: Absent;   Request: Local;   Action: Local
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1100:<Func Name='Sqlmsirc_NotifyFeatureStates'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1101:Feature state notification for 43 features.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1102:<EndFunc Name='Sqlmsirc_NotifyFeatureStates' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1103:MSI (s) (58:7C) [11:41:29:622]: Doing action: 
+ProcessComponents
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1104:Action ended 11:41:29: 
+Sqlmsirc_NotifyFeatureStates_64. Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1105:MSI (s) (58:7C) [11:41:29:629]: Note: 1: 2205 2: 
+ 3: MsiPatchCertificate 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1190:Function=Remove_NativeImage
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1191:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1192:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1193:Doing Action: Remove_NativeImage
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1194:PerfTime Start: Remove_NativeImage : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1195:<Func Name='Remove_NativeImage'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1197:<Func Name='RemoveNativeImage'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1198:RemoveNativeImageended successfully
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1199:<EndFunc Name='Remove_NativeImage' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1200:PerfTime Stop: Remove_NativeImage : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1201:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1202:MSI (s) (58:7C) [11:41:30:542]: Doing action: 
+MsiUnpublishAssemblies
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1203:Action ended 11:41:30: Remove_NativeImage_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1204:MSI (s) (58:7C) [11:41:30:542]: Note: 1: 2205 2: 
+ 3: MsiAssembly 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1330:Action start 11:41:30: 
+Sqlmsirc_Do_UpdateFeatureRefcount_64.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1331:Action ended 11:41:30: 
+Sqlmsirc_Do_UpdateFeatureRefcount_64. Return value 1.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1332:<EndFunc 
+Name='Sqlmsirc_Write_UpdateFeatureRefcount' Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1333:MSI (s) (58:7C) [11:41:30:877]: Doing action: 
+RemoveRegistryValues
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1334:Action ended 11:41:30: 
+Sqlmsirc_Write_UpdateFeatureRefcount_64. Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1335:Action start 11:41:30: RemoveRegistryValues.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1385:Function=DelimitProperty
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1386:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1387:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1388:Doing Action: DelimitProperty
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1389:PerfTime Start: DelimitProperty : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1390:MSI (s) (58!14) [11:41:31:121]: PROPERTY CHANGE: 
+Adding InstanceNameReg property. Its value is 'SQL2022'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1392:MSI (s) (58!14) [11:41:31:123]: PROPERTY CHANGE: 
+Adding SqlInstanceBinCut_64 property. Its value is 'C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1393:<Func Name='DelimitProperty'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1394:<EndFunc Name='DelimitProperty' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1395:PerfTime Stop: DelimitProperty : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1396:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1397:MSI (s) (58:7C) [11:41:31:132]: Doing action: 
+CreateFolders
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1398:Action ended 11:41:31: DelimitProperty_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1399:Action start 11:41:31: CreateFolders.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1406:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2205 2: 
+ 3: Patch 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1407:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2228 2: 
+ 3: Patch 4: SELECT `Patch`.`File_`, `Patch`.`Header`, `Patch`.`Attributes`, `Patch`.`Sequence`, `Patch`.`StreamRef_` FROM `Patch` WHERE `Patch`.`File_` = ? AND 
+`Patch`.`#_MsiActive`=? ORDER BY `Patch`.`Sequence` 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1408:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2205 2: 
+ 3: MsiSFCBypass 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1409:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2228 2: 
+ 3: MsiSFCBypass 4: SELECT `File_` FROM `MsiSFCBypass` WHERE `File_` = ? 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1410:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2205 2: 
+ 3: MsiPatchHeaders 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1411:MSI (s) (58:7C) [11:41:31:160]: Note: 1: 2228 2: 
+ 3: MsiPatchHeaders 4: SELECT `Header` FROM `MsiPatchHeaders` WHERE `StreamRef` = ? 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1412:MSI (s) (58:7C) [11:41:31:162]: Note: 1: 2205 2: 
+ 3: PatchPackage 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1450:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+CreateFolder 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1451:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+DrLocator 3: -2147287038 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1452:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+Error 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1453:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+FeatureComponents 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1454:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+InstallExecuteSequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1455:MSI (s) (58:7C) [11:41:31:305]: Note: 1: 2262 2: 
+InstallUISequence 3: -2147287038 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1562:Function=GenerateFeatureList
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1563:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1564:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1565:Doing Action: GenerateFeatureList
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1566:PerfTime Start: GenerateFeatureList : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1567:<Func Name='GenerateFeatureList'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1587:MSI (s) (58!68) [11:41:31:648]: PROPERTY CHANGE: 
+Adding FeatureList property. Its value is 'SQL_Engine_Core_Inst=3 SQL_DataFiles_Core_Inst=3 SQL_CMDLINETOOLS_CNI=3 SQL_DUMPER_CNI=3 SQL_Engine_CNI=3 
+SQL_ENGINE_CORE_CNI=3 SQL_LEGACYTOOLS_CNI=3 SQL_REPL_ENGINE_SUPPORT_CNI=3 SQL_SLP_ENGINE_SUPPORT_CNI=3 MPT_AGENT_CORE_CNI=3 MPT_AGENT_CORE_MNGD_CNI=3 
+SQL_ENGINE_DB_CNI=3 SQL_AGENT_FNI=3 SQL_DATA_COLLECTOR_FNI=3 SQL_LEGACYTOOLS_FNI=3 SQL_MAIL_FNI=3 SQL_REPL_ENGINE_SUPPORT_FNI=3 SQL_UPGRADESCRIPTS_FNI=3'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1588:Rollback FeatureList={}
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1589:<EndFunc Name='GenerateFeatureList' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1590:PerfTime Stop: GenerateFeatureList : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1591:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1592:MSI (s) (58:7C) [11:41:31:664]: Doing action: 
+Write_sqlLocalServers_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1593:Action ended 11:41:31: GenerateFeatureList_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1594:MSI (s) (58:8C) [11:41:31:746]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI8B06.tmp, Entrypoint: Write_sqlLocalServers
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1597:Function=Write_sqlLocalServers
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1598:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1599:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1600:Doing Action: Write_sqlLocalServers
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1601:PerfTime Start: Write_sqlLocalServers : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1602:<Func Name='Write_sqlLocalServers'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1603:PerfTime Stop: Write_sqlLocalServers : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1604:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1605:MSI (s) (58:7C) [11:41:31:824]: Doing action: 
+WriteRegistryValues
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1606:Action ended 11:41:31: Write_sqlLocalServers_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1607:Action start 11:41:31: WriteRegistryValues.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1613:Function=Write_sqlVerIndependentProgID
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1614:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1615:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1616:Doing Action: Write_sqlVerIndependentProgID
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1617:PerfTime Start: Write_sqlVerIndependentProgID : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1618:<Func Name='Write_sqlVerIndependentProgID'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1619:PerfTime Stop: Write_sqlVerIndependentProgID : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1620:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1621:MSI (s) (58:7C) [11:41:32:037]: Doing action: 
+WriteIniValues
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1622:Action ended 11:41:32: 
+Write_sqlVerIndependentProgID_64. Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1623:MSI (s) (58:7C) [11:41:32:040]: Note: 1: 2205 2: 
+ 3: IniFile 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1663:Function=Write_UpdateTypeLib
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1664:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1665:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1666:Doing Action: Write_UpdateTypeLib
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1667:PerfTime Start: Write_UpdateTypeLib : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1668:<Func Name='Write_UpdateTypeLib'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1669:<EndFunc Name='Write_UpdateTypeLib' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1670:PerfTime Stop: Write_UpdateTypeLib : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1671:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1672:MSI (s) (58:7C) [11:41:32:242]: Doing action: 
+SelfRegModules
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1673:Action ended 11:41:32: Write_UpdateTypeLib_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1674:MSI (s) (58:7C) [11:41:32:248]: Note: 1: 2205 2: 
+ 3: SelfReg 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1684:MSI (s) (58:7C) [11:41:32:261]: Detected older 
+ServiceInstall table schema
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1685:MSI (s) (58:7C) [11:41:32:261]: Note: 1: 2205 2: 
+ 3: ServiceInstall 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1686:MSI (s) (58:7C) [11:41:32:261]: Note: 1: 2228 2: 
+ 3: ServiceInstall 4: SELECT `ServiceInstall`,`Name`,`DisplayName`,`ServiceType`,`StartType`,`ErrorControl`,`LoadOrderGroup`,`Dependencies`,`StartName`,`Password`,`Com
+ponentId`,`Directory_`,`FileName`,`Arguments` FROM `ServiceInstall`, `Component`, `File` WHERE `ServiceInstall`.`Component_` = `Component`.`Component` AND 
+(`Component`.`KeyPath` = `File`.`File`) AND (`Action` = 1 OR `Action` = 2) 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1687:Action start 11:41:32: InstallServices.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1688:MSI (s) (58:7C) [11:41:32:262]: Doing action: 
+Write_sqlFileSDDL_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1689:Action ended 11:41:32: InstallServices. Return 
+value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1693:Function=Write_sqlFileSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1694:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1695:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1696:Doing Action: Write_sqlFileSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1697:PerfTime Start: Write_sqlFileSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1698:<Func Name='Write_sqlFileSDDL'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1699:<Func Name='ScheduleActionX'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1700:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1701:MSI (s) (58!48) [11:41:32:545]: PROPERTY CHANGE: 
+Adding Do_sqlFileSDDL_64 property. Its value is '100Setting File Security50000C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\4(A;OICI;FRFX;;;BU)(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1032\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1031\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1030\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1029\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1028\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\256(A;OICI;0x1200a9;;;BU)C:\Program 
+Files\Microsoft SQL Server\MSSQL16.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1702:MSI (s) (58!48) [11:41:32:545]: Doing action: 
+Do_sqlFileSDDL_64
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1703:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1704:Action start 11:41:32: Do_sqlFileSDDL_64.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1705:MSI (s) (58!48) [11:41:32:560]: PROPERTY CHANGE: 
+Deleting Do_sqlFileSDDL_64 property. Its current value is '100Setting File Security50000C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\4(A;OICI;FRFX;;;BU)(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1032\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1031\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1030\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1029\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1028\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\256(A;OICI;0x1200a9;;;BU)C:\Program 
+Files\Microsoft SQL Serve
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1706:Action ended 11:41:32: Do_sqlFileSDDL_64. Return 
+value 1.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1707:<EndFunc Name='ScheduleActionX' Return='0' 
+GetLastError='1008'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1708:<EndFunc Name='Write_sqlFileSDDL' Return='0' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1709:PerfTime Stop: Write_sqlFileSDDL : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1710:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1711:MSI (s) (58:7C) [11:41:32:573]: Doing action: 
+Write_sqlRegSDDL_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1712:Action ended 11:41:32: Write_sqlFileSDDL_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1713:MSI (s) (58:0C) [11:41:32:667]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI8E94.tmp, Entrypoint: Write_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1716:Function=Write_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1717:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1718:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1719:Doing Action: Write_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1720:PerfTime Start: Write_sqlRegSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1721:<Func Name='Write_sqlRegSDDL'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1724:MSI (s) (58!6C) [11:41:32:761]: PROPERTY CHANGE: 
+Adding Do_sqlRegSDDL_64 property. Its value is '100Setting Registry Security500002SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022\Security4(A;OICI;FA;;
+;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)2SYSTEM\CurrentControlSet\Services\Eventlog\Application\DatabaseMail256(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1725:MSI (s) (58!6C) [11:41:32:761]: Doing action: 
+Do_sqlRegSDDL_64
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1726:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1727:Action start 11:41:32: Do_sqlRegSDDL_64.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1728:MSI (s) (58!6C) [11:41:32:774]: PROPERTY CHANGE: 
+Deleting Do_sqlRegSDDL_64 property. Its current value is '100Setting Registry Security500002SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022\Security4(A
+;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)2SYSTEM\CurrentControlSet\Services\Eventlog\Application\DatabaseMail256(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;C
+O)'.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1729:Action ended 11:41:32: Do_sqlRegSDDL_64. Return 
+value 1.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1730:<EndFunc Name='ScheduleActionX' Return='0' 
+GetLastError='1008'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1731:<EndFunc Name='Write_sqlRegSDDL' Return='0' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1732:PerfTime Stop: Write_sqlRegSDDL : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1733:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='1008'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1734:MSI (s) (58:7C) [11:41:32:788]: Doing action: 
+Write_sqlServiceSDDL_64
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1735:Action ended 11:41:32: Write_sqlRegSDDL_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1736:MSI (s) (58:F8) [11:41:32:897]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI8F70.tmp, Entrypoint: Write_sqlServiceSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1739:Function=Write_sqlServiceSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1740:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1741:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1742:Doing Action: Write_sqlServiceSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1743:PerfTime Start: Write_sqlServiceSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1744:<Func Name='Write_sqlServiceSDDL'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1745:<EndFunc Name='Write_sqlServiceSDDL' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1746:PerfTime Stop: Write_sqlServiceSDDL : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1747:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1748:MSI (s) (58:7C) [11:41:32:971]: Doing action: 
+StartServices
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1749:Action ended 11:41:32: Write_sqlServiceSDDL_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:1750:MSI (s) (58:7C) [11:41:32:975]: Note: 1: 2205 2: 
+ 3: ServiceControl 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2157:MSI (s) (58:7C) [11:41:33:178]: Executing op: 
+ComponentRegister(ComponentId={E52C83F2-F4DE-4C99-BAEE-B50F77B6670C},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlServer.XEvent.Configuration.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2158:MSI (s) (58:7C) [11:41:33:178]: Executing op: 
+ComponentRegister(ComponentId={FC7CDA98-34BB-4F5C-B8FE-9104DFBDA95C},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlServer.XEvent.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2159:MSI (s) (58:7C) [11:41:33:192]: Executing op: 
+ComponentRegister(ComponentId={F6E6FCB5-A43F-4E6E-A39F-E882AC58ED28},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlServer.XE.Core.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2160:MSI (s) (58:7C) [11:41:33:193]: Executing op: 
+ComponentRegister(ComponentId={4472FD84-5AAF-4A26-BF45-CAA19DD36F85},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlAutoAdmin.AutoBackupAgent.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2161:MSI (s) (58:7C) [11:41:33:196]: Executing op: 
+ComponentRegister(ComponentId={F878C6E7-0D31-41B3-A4BA-0F2060EF390B},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlAutoAdmin.SqlAutoAdmin.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2162:MSI (s) (58:7C) [11:41:33:196]: Executing op: 
+ComponentRegister(ComponentId={498F6500-66E3-4430-8CEC-8CCCC3D12FAE},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1033\sqlevn70.rll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2182:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={F9B732C9-72F0-4AC1-83AE-F6C4795E8AFC},KeyPath=22:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft SQL Server 
+16\DisplayName,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2183:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={FE163298-D689-4297-8199-B3BC096B17B6},KeyPath=22:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft SQL Server 
+16\SystemComponent,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2184:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={18D68190-2020-4FC2-9072-BBFCFCB9E6E4},KeyPath=22:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft SQL Server 
+SQL2022\DisplayName,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2185:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={3A79497A-2144-46F9-ACD7-965CF6D58D4B},KeyPath=C:\Program Files (x86)\Microsoft SQL 
+Server\,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=0)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2186:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={80F1EA03-C1B4-4B8F-97E7-BCC3AC3A3B6B},KeyPath=C:\Program Files\Microsoft SQL Server\,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2187:MSI (s) (58:7C) [11:41:33:238]: Executing op: 
+ComponentRegister(ComponentId={3BA97E2E-E3E6-4CF6-B84A-5615554E1B72},KeyPath=22:\SOFTWARE\Microsoft\Microsoft SQL 
+Server\MSSQL16.SQL2022\Setup\SQL_Engine_Core_Inst\ProductCode,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2220:MSI (s) (58:7C) [11:41:33:302]: Executing op: 
+ComponentRegister(ComponentId={9789B2E4-C70B-4916-8070-56C747B97C96},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2221:MSI (s) (58:7C) [11:41:33:302]: Executing op: 
+ComponentRegister(ComponentId={D0B12483-27C1-41FB-944D-24DA43B306F1},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2222:MSI (s) (58:7C) [11:41:33:302]: Executing op: 
+ComponentRegister(ComponentId={DB5C7EEE-856A-4FCB-B044-97E8CCFDB020},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2223:MSI (s) (58:7C) [11:41:33:302]: Executing op: 
+ComponentRegister(ComponentId={DB09D602-8443-48A1-BC4D-912A47EAF0BC},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2224:MSI (s) (58:7C) [11:41:33:310]: Executing op: 
+ComponentRegister(ComponentId={8FA33393-7160-4152-B058-9C4E5B97DD7C},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2225:MSI (s) (58:7C) [11:41:33:310]: Executing op: 
+ComponentRegister(ComponentId={E4E069FA-FBBF-4004-AADB-64B526C2520B},,State=-7,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2313:MSI (s) (58:7C) [11:41:33:462]: Executing op: 
+ComponentRegister(ComponentId={53EBF7D4-A499-42B5-AAD2-DA120BD2E146},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\sqagtres.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2314:MSI (s) (58:7C) [11:41:33:462]: Executing op: 
+ComponentRegister(ComponentId={7734134D-5F5B-40BE-8B96-F9DECD52B097},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.AnalysisServices.AppLocal.Xmla.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2315:MSI (s) (58:7C) [11:41:33:462]: Executing op: 
+ComponentRegister(ComponentId={FCB61ABC-E899-4118-AE79-ABFFDA287CAC},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\batchparser.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2316:MSI (s) (58:7C) [11:41:33:474]: Executing op: 
+ComponentRegister(ComponentId={4A123A9B-4E52-44A7-A333-B8BAB0BF9405},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\sqlscm.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2317:MSI (s) (58:7C) [11:41:33:476]: Executing op: 
+ComponentRegister(ComponentId={8E8378BE-DA5A-428A-A77F-DF381FDFAA3E},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Install\instmdw.sql,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2318:MSI (s) (58:7C) [11:41:33:476]: Executing op: 
+ComponentRegister(ComponentId={6063F9F3-1B29-433F-809D-AD82213DD3ED},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\DataCollectorController.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2336:MSI (s) (58:7C) [11:41:33:511]: Executing op: 
+ComponentRegister(ComponentId={E61581AB-0506-4DA5-80C4-FB2FCC97923D},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\SQLIOSIM.EXE,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2337:MSI (s) (58:7C) [11:41:33:515]: Executing op: 
+ComponentRegister(ComponentId={525CEDC3-0D01-4AA3-804C-A5ACD5910E54},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\SQLIOSIM.COM,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2338:MSI (s) (58:7C) [11:41:33:515]: Executing op: 
+ComponentRegister(ComponentId={61F0725B-3484-45CB-AA1E-97AE3185047D},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\sqlaccess.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2339:MSI (s) (58:7C) [11:41:33:515]: Executing op: 
+ComponentRegister(ComponentId={305ABAB8-743F-4CCA-8E4D-ECF7BCC1D88B},KeyPath=22:\SOFTWARE\MICROSOFT\Microsoft SQL 
+Server\ExceptionMessageBox\ShowFeedbackButton,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2340:MSI (s) (58:7C) [11:41:33:519]: Executing op: 
+ComponentRegister(ComponentId={960FF27B-4030-4D03-B9A5-E3E5513EF4BB},KeyPath=22:\Software\Microsoft\Windows Error 
+Reporting\Consent\SQL90Exception64\,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2341:MSI (s) (58:7C) [11:41:33:519]: Executing op: 
+ComponentRegister(ComponentId={5FFC195A-9673-4518-90CF-7FF57A2C2F86},KeyPath=22:\SOFTWARE\Microsoft\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQLServer\Filestream\RsFxVersion,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2342:MSI (s) (58:7C) [11:41:33:519]: Executing op: 
+ComponentRegister(ComponentId={0590C22B-4947-4040-B7FE-51EF186DDAF1},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\opends60.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2343:MSI (s) (58:7C) [11:41:33:519]: Executing op: Com
+ponentRegister(ComponentId={B890B342-11C2-4404-9ACD-68A38D21180E},KeyPath=22:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\ReservedPorts,State=3,,Disk=1,SharedDl
+lRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2443:MSI (s) (58:7C) [11:41:33:695]: Executing op: 
+ComponentRegister(ComponentId={BB71E68F-B237-44A7-8945-DC345366C590},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Install\DbEngine_hotfix_install.sql,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2444:MSI (s) (58:7C) [11:41:33:697]: Executing op: 
+ComponentRegister(ComponentId={2A41CB29-EBA7-4FB2-9E86-517626A68F58},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Install\DbEngine_hotfix_uninstall.sql,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2445:MSI (s) (58:7C) [11:41:33:697]: Executing op: 
+ComponentRegister(ComponentId={C1D4C8E7-8799-4740-881E-02441BFF1AC8},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\master.mdf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2446:MSI (s) (58:7C) [11:41:33:699]: Executing op: 
+ComponentRegister(ComponentId={E46820F4-9F8B-467E-9A39-4B6050CBB058},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\mastlog.ldf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2447:MSI (s) (58:7C) [11:41:33:701]: Executing op: 
+ComponentRegister(ComponentId={842D4070-60A9-4AE8-92AA-C4E32A4CB5C5},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model.mdf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2448:MSI (s) (58:7C) [11:41:33:703]: Executing op: 
+ComponentRegister(ComponentId={2361979B-9B6D-4553-8E15-5D6E3B57C12D},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\modellog.ldf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2449:MSI (s) (58:7C) [11:41:33:705]: Executing op: 
+ComponentRegister(ComponentId={CB24F776-1E3D-4E60-A215-A668BAA36500},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\msdbdata.mdf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2450:MSI (s) (58:7C) [11:41:33:705]: Executing op: 
+ComponentRegister(ComponentId={785B451F-C9ED-406B-9C63-FFC48FFD260C},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\msdblog.ldf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2451:MSI (s) (58:7C) [11:41:33:708]: Executing op: 
+ComponentRegister(ComponentId={80F4CE0E-7C03-4A1F-9570-85C49462EA63},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_replicatedmaster.mdf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2452:MSI (s) (58:7C) [11:41:33:710]: Executing op: 
+ComponentRegister(ComponentId={BBA5B5B9-9CC8-4E65-BEED-22155A48924E},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_replicatedmaster.ldf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2453:MSI (s) (58:7C) [11:41:33:710]: Executing op: 
+ComponentRegister(ComponentId={2BFFF34D-2BDF-4467-8311-24F623EC741F},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_msdbdata.mdf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2454:MSI (s) (58:7C) [11:41:33:712]: Executing op: 
+ComponentRegister(ComponentId={4AC4F6DF-7B1D-42C8-B793-0B0E97DE51DF},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_msdblog.ldf,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2455:MSI (s) (58:7C) [11:41:33:713]: Executing op: 
+ComponentRegister(ComponentId={55E18125-DA13-4B9D-B642-E268261885A8},KeyPath=C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Install\instmsdb.sql,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2486:MSI (s) (58:20) [11:41:33:819]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI933A.tmp, Entrypoint: Sqlmsirc_UpdateFeatureRefcount
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2487:MSI (s) (58:EC) [11:41:33:819]: Generating 
+random cookie.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2488:MSI (s) (58:EC) [11:41:33:835]: Created Custom 
+Action Server with PID 11712 (0x2DC0).
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2489:MSI (s) (58:AC) [11:41:33:937]: Running as a 
+service.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2490:MSI (s) (58:AC) [11:41:33:956]: Hello, I'm your 
+64bit Elevated Non-remapped custom action server.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2491:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2492:Cannot read ref-count data for feature SQL_RsFx 
+under registry key SOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SqlRsFx16. Error 87
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2493:MSI (s) (58:7C) [11:41:33:988]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2494:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2495:MSI (s) (58:7C) [11:41:33:994]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_Browser_Redist1coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SqlBrowser)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2496:MSI (s) (58:7C) [11:41:34:001]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2497:MSI (s) (58:7C) [11:41:34:006]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_Browser_Redist1coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SqlBrowser)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2499:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2500:MSI (s) (58:7C) [11:41:34:099]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2501:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2502:MSI (s) (58:7C) [11:41:34:099]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_WRITER2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SqlWriter)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2503:MSI (s) (58:7C) [11:41:34:114]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2504:MSI (s) (58:7C) [11:41:34:119]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_WRITER2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SqlWriter)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2506:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2507:MSI (s) (58:7C) [11:41:34:195]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2508:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2509:MSI (s) (58:7C) [11:41:34:195]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_SQLODBC_SDK2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\MSODBCSQL17)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2510:MSI (s) (58:7C) [11:41:34:209]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2511:MSI (s) (58:7C) [11:41:34:209]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_SQLODBC_SDK2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\MSODBCSQL17)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2512:MSI (s) (58:A4) [11:41:34:271]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSI94F2.tmp, Entrypoint: Sqlmsirc_UpdateFeatureRefcount
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2513:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2514:Cannot read ref-count data for feature 
+SQL_SQLODBC_SDK under registry key SOFTWARE\Microsoft\Microsoft SQL Server\RefCount\MSODBCSQL17. Error 87
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2515:MSI (s) (58:7C) [11:41:34:299]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2516:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2517:MSI (s) (58:7C) [11:41:34:303]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_SQLODBC_CORE2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\MSODBCSQL17)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2518:MSI (s) (58:7C) [11:41:34:310]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2519:MSI (s) (58:7C) [11:41:34:314]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_SQLODBC_CORE2coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\MSODBCSQL17)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2521:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2522:MSI (s) (58:7C) [11:41:34:394]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2523:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2524:MSI (s) (58:7C) [11:41:34:394]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSupportFiles0coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SQL2022)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2525:MSI (s) (58:7C) [11:41:34:408]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2526:MSI (s) (58:7C) [11:41:34:412]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSupportFiles0coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\SQL2022)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2528:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2529:MSI (s) (58:7C) [11:41:34:515]: Executing op: 
+ActionStart(Name=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2530:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2531:MSI (s) (58:7C) [11:41:34:520]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Rollback_UpdateFeatureRefcount_64,ActionType=3393,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C76
+5-569C-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_Engine_Core_Shared0coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\sql_engine_core_shared16)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2532:MSI (s) (58:7C) [11:41:34:531]: Executing op: 
+ActionStart(Name=Sqlmsirc_Do_UpdateFeatureRefcount_64,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2533:MSI (s) (58:7C) [11:41:34:537]: Executing op: Cus
+tomActionSchedule(Action=Sqlmsirc_Do_UpdateFeatureRefcount_64,ActionType=3073,Source=BinaryData,Target=Sqlmsirc_UpdateFeatureRefcount,CustomActionData=1{6621C765-569C
+-4D46-A8E9-C69A47971357},SQL_Engine_Core_InstSQL_Engine_Core_Shared0coreSOFTWARE\Microsoft\Microsoft SQL Server\RefCount\sql_engine_core_shared16)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2535:<Func Name='Sqlmsirc_UpdateFeatureRefcount'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2536:MSI (s) (58:7C) [11:41:34:612]: Executing op: 
+ActionStart(Name=CreateFolders,Description=Creating folders Folder: [1],)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2537:<EndFunc Name='Sqlmsirc_UpdateFeatureRefcount' 
+Return='0' GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2538:MSI (s) (58:7C) [11:41:34:617]: Executing op: 
+FolderCreate(Folder=C:\Program Files\Microsoft SQL Server\,Foreign=0,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2539:MSI (s) (58:7C) [11:41:34:617]: Executing op: 
+FolderCreate(Folder=C:\Program Files (x86)\Microsoft SQL Server\,Foreign=0,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2540:MSI (s) (58:7C) [11:41:34:619]: Executing op: 
+FolderCreate(Folder=C:\Program Files\Microsoft SQL Server\,Foreign=0,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2635:MSI (s) (58:7C) [11:41:36:906]: Executing op: 
+SetTargetFolder(Folder=C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2636:MSI (s) (58:7C) [11:41:36:906]: Executing op: 
+SetSourceFolder(Folder=1\PFiles\SqlServr\MSSQL.X\MSSQL\Binn\Template\|Program Files\Microsoft SQL Server\MSSQL.X\MSSQL\Binn\Templates\)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2637:MSI (s) (58:7C) [11:41:36:906]: Executing op: Fil
+eCopy(SourceName=master.mdf,SourceCabKey=ENG_RE_master_mdf_64,DestName=master.mdf,Attributes=512,FileSize=4194304,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,Install
+Mode=58982400,HashOptions=0,HashPart1=1920053949,HashPart2=880385045,HashPart3=486677602,HashPart4=-1826841289,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2638:MSI (s) (58:7C) [11:41:36:908]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\master.mdf;	To be installed;	Won't patch;	No existing file
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2639:MSI (s) (58:7C) [11:41:36:908]: Source for file 
+'ENG_RE_master_mdf_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2640:MSI (s) (58:7C) [11:41:36:949]: Executing op: Fil
+eCopy(SourceName=mastlog.ldf,SourceCabKey=ENG_RE_mastlog_ldf_64,DestName=mastlog.ldf,Attributes=512,FileSize=524288,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,Insta
+llMode=58982400,HashOptions=0,HashPart1=-1923988605,HashPart2=-1176712231,HashPart3=-22604179,HashPart4=1993739781,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2641:MSI (s) (58:7C) [11:41:36:949]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\mastlog.ldf;	To be installed;	Won't patch;	No existing file
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2642:MSI (s) (58:7C) [11:41:36:949]: Source for file 
+'ENG_RE_mastlog_ldf_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2663:MSI (s) (58:7C) [11:41:37:182]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_msdblog.ldf;	To be installed;	Won't patch;	No existing file
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2664:MSI (s) (58:7C) [11:41:37:182]: Source for file 
+'ENG_RE_model_msdblog_ldf_64' is compressed
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2665:MSI (s) (58:7C) [11:41:37:190]: Executing op: Fil
+eCopy(SourceName=k1cwr6x6.ldf|model_replicatedmaster.ldf,SourceCabKey=ENG_RE_model_replicatedmaster_ldf_64,DestName=model_replicatedmaster.ldf,Attributes=512,FileSize=
+524288,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,InstallMode=58982400,HashOptions=0,HashPart1=-1997033483,HashPart2=-1768921731,HashPart3=783774547,HashPart4=33207
+2293,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2666:MSI (s) (58:7C) [11:41:37:190]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_replicatedmaster.ldf;	To be installed;	Won't patch;	No existing file
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2667:MSI (s) (58:7C) [11:41:37:190]: Source for file 
+'ENG_RE_model_replicatedmaster_ldf_64' is compressed
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2668:MSI (s) (58:7C) [11:41:37:201]: Executing op: Fil
+eCopy(SourceName=vsmav7or.mdf|model_replicatedmaster.mdf,SourceCabKey=ENG_RE_model_replicatedmaster_mdf_64,DestName=model_replicatedmaster.mdf,Attributes=512,FileSize=
+4194304,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,InstallMode=58982400,HashOptions=0,HashPart1=763944502,HashPart2=-1236701758,HashPart3=1784311705,HashPart4=14522
+06245,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2669:MSI (s) (58:7C) [11:41:37:202]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\model_replicatedmaster.mdf;	To be installed;	Won't patch;	No existing file
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2670:MSI (s) (58:7C) [11:41:37:202]: Source for file 
+'ENG_RE_model_replicatedmaster_mdf_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2671:MSI (s) (58:7C) [11:41:37:235]: Executing op: Fil
+eCopy(SourceName=modellog.ldf,SourceCabKey=ENG_RE_modellog_ldf_64,DestName=modellog.ldf,Attributes=512,FileSize=8388608,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,I
+nstallMode=58982400,HashOptions=0,HashPart1=-742455769,HashPart2=85614591,HashPart3=1556852228,HashPart4=1329491935,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2672:MSI (s) (58:7C) [11:41:37:237]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\modellog.ldf;	To be installed;	Won't patch;	No existing file
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2673:MSI (s) (58:7C) [11:41:37:237]: Source for file 
+'ENG_RE_modellog_ldf_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2790:MSI (s) (58:7C) [11:41:37:769]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\secforwarder.dll;	To be installed;	Won't patch;	No existing file
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2791:MSI (s) (58:7C) [11:41:37:769]: Source for file 
+'ENG_RE_secforwarder_64' is compressed
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2792:MSI (s) (58:7C) [11:41:37:778]: Executing op: Fil
+eCopy(SourceName=glqky8a3.dll|sqlaccess.dll,SourceCabKey=ENG_RE_sqlaccess_dll_64,DestName=sqlaccess.dll,Attributes=512,FileSize=444360,PerTick=65536,,VerifyMedia=1,,,,
+,CheckCRC=0,Version=2022.160.1000.6,Language=1033,InstallMode=58982400,,,,,,,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2793:MSI (s) (58:7C) [11:41:37:778]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\sqlaccess.dll;	To be installed;	Won't patch;	No existing file
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2794:MSI (s) (58:7C) [11:41:37:778]: Source for file 
+'ENG_RE_sqlaccess_dll_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2795:MSI (s) (58:7C) [11:41:37:797]: Executing op: Fil
+eCopy(SourceName=sqlctr.h,SourceCabKey=ENG_RE_sqlctr_h_64,DestName=sqlctr.h,Attributes=512,FileSize=27564,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,InstallMode=589
+82400,HashOptions=0,HashPart1=522889932,HashPart2=1471151641,HashPart3=-758679755,HashPart4=-1583100952,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2796:MSI (s) (58:7C) [11:41:37:797]: File: C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\sqlctr.h;	To be installed;	Won't patch;	No existing file
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:2797:MSI (s) (58:7C) [11:41:37:797]: Source for file 
+'ENG_RE_sqlctr_h_64' is compressed
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3441:MSI (s) (58:7C) [11:41:44:883]: Executing op: 
+RegOpenKey(Root=-2147483646,Key=SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022\SQLServerSCP,,BinaryType=1,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3442:MSI (s) (58:7C) [11:41:44:883]: Executing op: 
+RegCreateKey()
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3443:MSI (s) (58:7C) [11:41:44:885]: Executing op: 
+RegOpenKey(Root=-2147483646,Key=Software\Microsoft\Windows Error Reporting\Consent\SQL90Exception64,,BinaryType=1,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3444:MSI (s) (58:7C) [11:41:44:885]: Executing op: 
+RegAddValue(,Value=#3,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3445:MSI (s) (58:7C) [11:41:44:887]: Executing op: 
+RegOpenKey(Root=-2147483646,Key=SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022\MSSQLServer\Filestream,,BinaryType=1,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3446:MSI (s) (58:7C) [11:41:44:887]: Executing op: 
+RegAddValue(Name=RsFxVersion,Value=0700,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3467:MSI (s) (58:7C) [11:41:44:909]: Executing op: 
+RegAddValue(Name=EventMessageFile,Value=C:\Windows\Microsoft.NET\Framework64\v4.0.30319\EventLogMessages.dll,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3468:MSI (s) (58:7C) [11:41:44:911]: Executing op: 
+ActionStart(Name=Do_sqlFileSDDL_64,Description=Setting File Security,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3469:MSI (s) (58:7C) [11:41:44:915]: Executing op: 
+CustomActionSchedule(Action=Do_sqlFileSDDL_64,ActionType=1025,Source=BinaryData,Target=Do_sqlFileSDDL,CustomActionData=100Setting File Security50000C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\4(A;OICI;FRFX;;;BU)(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1032\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1031\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1030\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1029\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1028\\sqlevn70.rll256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\256(A;OICI;0x1200a9;;;BU)C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\256(A
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3470:MSI (s) (58:84) [11:41:45:006]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSIBEC5.tmp, Entrypoint: Do_sqlFileSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3471:<Func Name='LaunchFunction'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3472:Function=Do_sqlFileSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3473:<Func Name='GetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3474:<EndFunc Name='GetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3475:Doing Action: Do_sqlFileSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3476:PerfTime Start: Do_sqlFileSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3477:<Func Name='Do_sqlFileSDDL'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3479:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3480:     ACL: 
+(A;OICI;FRFX;;;BU)(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3481:  Action: 0x4
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3482:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3483:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3484:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1032\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3485:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3486:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3487:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3488:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3489:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1031\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3490:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3491:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3492:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3493:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3494:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1030\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3495:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3496:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3497:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3498:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3499:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1029\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3500:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3501:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3502:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3503:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3504:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1028\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3505:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3506:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3507:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3508:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3509:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3510:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3511:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3512:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3513:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3514:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3515:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3516:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3517:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3518:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3519:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\\Resources
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3520:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3521:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3522:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3523:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3524:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\\SqlResourceLoader.dll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3525:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3526:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3527:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3528:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3529:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1033\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3530:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3531:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3532:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3533:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3534:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1035\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3535:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3536:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3537:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3538:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3539:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1036\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3540:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3541:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3542:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3543:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3544:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1038\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3545:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3546:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3547:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3548:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3549:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1040\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3550:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3551:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3552:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3553:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3554:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1041\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3555:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3556:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3557:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3558:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3559:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1042\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3560:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3561:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3562:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3563:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3564:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1043\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3565:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3566:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3567:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3568:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3569:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1044\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3570:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3571:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3572:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3573:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3574:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1045\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3575:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3576:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3577:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3578:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3579:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1046\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3580:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3581:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3582:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3583:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3584:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1049\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3585:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3586:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3587:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3588:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3589:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1053\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3590:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3591:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3592:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3593:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3594:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\1055\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3595:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3596:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3597:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3598:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3599:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\2052\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3600:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3601:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3602:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3603:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3604:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\2070\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3605:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3606:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3607:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3608:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3609:  Object: C:\Program Files\Microsoft SQL 
+Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\3082\\sqlevn70.rll
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3610:     ACL: (A;OICI;0x1200a9;;;BU)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3611:  Action: 0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3612:Succeeded.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3613:<EndFunc Name='Do_sqlFileSDDL' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3614:PerfTime Stop: Do_sqlFileSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3615:MSI (s) (58:7C) [11:41:45:370]: Executing op: 
+ActionStart(Name=Do_sqlRegSDDL_64,Description=Setting Registry Security,)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3616:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3617:MSI (s) (58:7C) [11:41:45:370]: Executing op: 
+CustomActionSchedule(Action=Do_sqlRegSDDL_64,ActionType=1025,Source=BinaryData,Target=Do_sqlRegSDDL,CustomActionData=100Setting Registry 
+Security500002SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022\Security4(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)2SYSTEM\CurrentControlSet\Service
+s\Eventlog\Application\DatabaseMail256(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO))
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3618:MSI (s) (58:04) [11:41:45:452]: Invoking remote 
+custom action. DLL: C:\WINDOWS\Installer\MSIC09B.tmp, Entrypoint: Do_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3619:<Func Name='LaunchFunction'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3620:Function=Do_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3621:<Func Name='GetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3622:<EndFunc Name='GetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3623:Doing Action: Do_sqlRegSDDL
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3624:PerfTime Start: Do_sqlRegSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3625:<Func Name='Do_sqlRegSDDL'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3627:  Object: HKLM\SOFTWARE\Microsoft\Microsoft SQL 
+Server\MSSQL16.SQL2022\Security
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3628:  ACL:    
+(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3629: Action:  0x4
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3630:Succeeded.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3631:Configuring ACL:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3632:  Object: 
+HKLM\SYSTEM\CurrentControlSet\Services\Eventlog\Application\DatabaseMail
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3633:  ACL:    
+(A;OICI;FA;;;BA)(A;OICI;FA;;;SY)(A;OICI;FA;;;CO)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3634: Action:  0x100
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3635:Succeeded.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3636:<EndFunc Name='Do_sqlRegSDDL' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3637:PerfTime Stop: Do_sqlRegSDDL : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3638:MSI (s) (58:7C) [11:41:45:519]: Executing op: 
+ActionStart(Name=RegisterProduct,Description=Registering product [1],)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3639:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3640:MSI (s) (58:7C) [11:41:45:522]: Executing op: 
+ChangeMedia(MediaVolumeLabel=SQLServer2022,MediaPrompt=Please insert the disk: Please insert next 
+disk,MediaCabinet=Sql.cab,BytesPerTick=0,CopierType=2,ModuleFileName=C:\WINDOWS\Installer\46fe141.msi,,,,,IsFirstPhysicalMedia=1)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3641:MSI (s) (58:7C) [11:41:45:522]: Executing op: 
+DatabaseCopy(DatabasePath=C:\WINDOWS\Installer\46fe141.msi,ProductCode={6621C765-569C-4D46-A8E9-C69A47971357},,,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3642:MSI (s) (58:7C) [11:41:45:522]: Note: 1: 1402 2: 
+UNKNOWN\Products\567C1266C96564D48A9E6CA974793175\InstallProperties 3: 2 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3664:MSI (s) (58:7C) [11:41:46:278]: Executing op: 
+FeaturePublish(Feature=SQL_REPL_ENGINE_SUPPORT_FNI,Parent=SQL_Engine_Core_Inst,Absent=2,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3665:MSI (s) (58:7C) [11:41:46:280]: Executing op: 
+FeaturePublish(Feature=SQL_UPGRADESCRIPTS_FNI,Parent=SQL_Engine_Core_Inst,Absent=2,Component=bvm}5%@k{?=]~AutH,[JRMjhQNqcw?q'oFk2!w5x{mOLMd-Q@A?izCAKnbSi)
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3666:MSI (s) (58:7C) [11:41:46:282]: Executing op: Fea
+turePublish(Feature=SQL_Replication_Core_Inst,Parent=SQL_Engine_Core_Inst,Absent=3,Component=$.uHwwR,K=6u-=*O231hqKMeP`(R-=dFmT@9pq+x(h!kBU9m+Aux&hpUl{?Xl*KT)wP&A9k0H9
+gt('tH%VQf`J^lf=aA7*A`7fvLQd.sim_{h98bGCIUUUl?Z3ZuFC=G?9TT&UhjuuF'94!8oht.Z@RHMS'q9A}ii7RdvPC2H?8U!P2iK_AmSCdpQyi_.=t6(V$U++72eK[,XXZ9p?7Ha&@jMC}oBJ[`h^&]K9+f+f7,v8qGW
+&7Kb-1u&9~V7V[ItffuE,T9i6(*)9}}d3a@5xml]otNa1[Z3?1MZQAQz'^H`'lmFO32q9gH+p=bU`Hl,Hvhm)^$z?7&cNo0v}mB}R]D8OJXR=,TmIQcbY@@%xmkt$w)Q9rC]DL4,i8T[Oa&v12?G=00xI%}$VE.~}*kCW'0
+U?NPzG+Xc%6c_CzYhIS{'9ko@ryIkEsXT,Z,kA`%O@_ij64!S.CKFMZczA^G`Ane'I4356Yg+Ze22Gv?)9w_6?XkP'B[!le4lOz3{?B717^1OfFu5Bq?Lfmt3?!'.Rj'qD9K'2mzZ7JLcA1?cZVm5AqBzi9VkhRn6@h-(CE
+Moj-P(Ap}[g[^U?adBEUKe=`%eu8JXqvz2?lBVBbU^U=6dZPwST&I@Ak~wLV3md7`lRWl.L@xt?JkJ6y.e.Q!UD}tT5_`%9(qC5`ilmG.D)U%K1G-r=jcB*'F[h8FwxT*2D6^[@tLL,!f{i?c*%^BVSMSS?L1fS'08bi]=(
+5c6*iKk=vly5x}-UUM*-ISEV[cT=+Ls`s4%8l0$YqxHTJT2@TD4YQaI[%2'+n(OrI1F?Gc=*If$6A^s$C36@lB&9l7RaIUk9pR$[ejO&w.g8H63,L@c*9QA1M9l%!b1A~b$1f&~a1xD+$F5gRTV?ByKq.&nUH]t5l!=}dzF
+9v[LWVt)YU$N!T~Inc2RA1P[7Qhl+iP[gRuDV3@p@Jv@`PrT
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3667:MSI (s) (58:7C) [11:41:46:286]: Executing op: 
+FeaturePublish(Feature=SQL_Replication_CNI,Parent=SQL_Replication_Core_Inst,Absent=3,Component=XP22C4Lf&=oaK{]$rj9l!,d,7t{])=x(BSOE)ams^2=(RtUu1=PY1&MDS77_)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3668:MSI (s) (58:7C) [11:41:46:288]: Executing op: 
+FeaturePublish(Feature=SQL_Replication_FNI,Parent=SQL_Replication_Core_Inst,Absent=3,Component=]i56Rop,=?10RY-=r3Z.)xm`8e3]]9_5.Qrcu'm5e+mU578dV=6GdABfi1b^)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3669:MSI (s) (58:7C) [11:41:46:291]: Executing op: 
+ActionStart(Name=PublishProduct,Description=Publishing product information,)
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3725:Function=Write_NativeImage
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3726:<Func Name='SetCAContext'>
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3727:<EndFunc Name='SetCAContext' Return='T' 
+GetLastError='203'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3728:Doing Action: Write_NativeImage
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3729:PerfTime Start: Write_NativeImage : 
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3730:<Func Name='Write_NativeImage'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3758:Successfully generated native image for assembly 
+C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Microsoft.SqlAutoAdmin.SqlAutoAdmin.dll.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3759:ConfigureNativeImage ended successfully
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3760:<EndFunc Name='Write_NativeImage' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3761:PerfTime Stop: Write_NativeImage : 
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3762:<EndFunc Name='LaunchFunction' Return='0' 
+GetLastError='0'>
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3763:Action ended 11:41:48: Write_NativeImage_64. 
+Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3764:Action ended 11:41:48: INSTALL. Return value 1.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3765:Property(S): SqlInstanceBinRes_64 = C:\Program 
+Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3812:Property(S): SqlInstanceBinRes_64_2070 = 
+C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Resources\2070\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3813:Property(S): SqlInstanceTemplates_64 = 
+C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\Binn\Templates\
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3814:Property(S): SqlErrorReporting = #1
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3815:Property(S): SqlSqmReporting = #1
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3816:Property(S): ProgramFilesDir_32 = C:\Program 
+Files (x86)\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3817:Property(S): ProgramFilesDir_64 = C:\Program 
+Files\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3890:Property(S): UserExit_TextLine = Setup was 
+interrupted before Microsoft SQL Server could be completely installed.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3891:Property(S): DWTITLENAME = Microsoft SQL Server 
+Setup
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3892:Property(S): DWHEADERTEXT = Setup was unable to 
+install Microsoft SQL Server on your computer.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3893:Property(S): DWERRORTEXT = Microsoft SQL Server 
+Setup has encountered a problem and must close.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3894:Property(S): ErrorDlg_Title = Microsoft SQL 
+Server Setup
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3895:Property(S): ARPREADME = Placeholder for ARP 
+readme in case of no UI
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3896:Property(S): FatalError_Text = Installation 
+ended prematurely because of an error.
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3897:Property(S): FatalError_ContinueLater = Do you 
+want to restore the system to its previous state, or do you want to continue the installation at a later time?
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3898:Property(S): SqlRun = SqlRun01.mst
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3899:Property(S): Manufacturer = Microsoft Corporation
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3900:Property(S): ProductCode = 
+{6621C765-569C-4D46-A8E9-C69A47971357}
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3928:Property(S): VSAssemblyVersion = 8.0.0.0
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3929:Property(S): LIMITUI = 1
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3930:Property(S): ErrorDialog = ErrorDlg
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3931:Property(S): MsiHiddenProperties = FDHOSTPASSWORD
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3932:Property(S): FeatureList = 
+SQL_Engine_Core_Inst=3 SQL_DataFiles_Core_Inst=3 SQL_CMDLINETOOLS_CNI=3 SQL_DUMPER_CNI=3 SQL_Engine_CNI=3 SQL_ENGINE_CORE_CNI=3 SQL_LEGACYTOOLS_CNI=3 
+SQL_REPL_ENGINE_SUPPORT_CNI=3 SQL_SLP_ENGINE_SUPPORT_CNI=3 MPT_AGENT_CORE_CNI=3 MPT_AGENT_CORE_MNGD_CNI=3 SQL_ENGINE_DB_CNI=3 SQL_AGENT_FNI=3 SQL_DATA_COLLECTOR_FNI=3 
+SQL_LEGACYTOOLS_FNI=3 SQL_MAIL_FNI=3 SQL_REPL_ENGINE_SUPPORT_FNI=3 SQL_UPGRADESCRIPTS_FNI=3
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3933:Property(S): MsiLogFileLocation = C:\Program 
+Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3940:Property(S): INSTANCENAME = SQL2022
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3941:Property(S): SQMREPORTING = True
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3942:Property(S): ERRORREPORTING = True
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3943:Property(S): REBOOT = ReallySuppress
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3944:Property(S): MSIFASTINSTALL = 7
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3945:Property(S): MSINEWINSTANCE = 1
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3977:Property(S): MyPicturesFolder = 
+C:\Users\brodkabj\Pictures\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3978:Property(S): AdminToolsFolder = 
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3979:Property(S): StartupFolder = 
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3980:Property(S): ProgramMenuFolder = 
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3981:Property(S): StartMenuFolder = 
+C:\ProgramData\Microsoft\Windows\Start Menu\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:3982:Property(S): DesktopFolder = 
+C:\Users\Public\Desktop\
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4037:MSI (s) (58:7C) [11:41:49:027]: Product: SQL 
+Server 2022 Database Engine Services -- Installation completed successfully.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4038:
+> C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4039:MSI (s) (58:7C) [11:41:49:028]: Windows 
+Installer installed the product. Product Name: SQL Server 2022 Database Engine Services. Product Version: 16.0.1000.6. Product Language: 1033. Manufacturer: Microsoft 
+Corporation. Installation success or error status: 0.
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4040:
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4041:MSI (s) (58:7C) [11:41:49:050]: Deferring clean 
+up of packages/files, if any exist
+  C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260812_113555\sql_engine_core_inst_Cpu64_1.log:4042:MSI (s) (58:7C) [11:41:49:052]: MainEngineThread 
+is returning 0
