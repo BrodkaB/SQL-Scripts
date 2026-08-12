@@ -1,9 +1,7 @@
-SELECT
-    USER_NAME(dp.grantee_principal_id) AS Principal,
-    dp.state_desc,
-    dp.permission_name,
-    OBJECT_NAME(dp.major_id) AS ObjectName
-FROM sys.database_permissions dp
-WHERE USER_NAME(dp.grantee_principal_id) = 'UserName';
-
-EXEC sp_helprotect @username = 'UserName';
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
+              'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' |
+Get-ItemProperty |
+Where-Object {
+    $_.DisplayName -like '*SQL Server*'
+} |
+Select-Object DisplayName, DisplayVersion, PSChildName
