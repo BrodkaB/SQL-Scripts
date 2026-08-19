@@ -1,4 +1,4 @@
-PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/
+PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/Reports
 * Host resourcelink.cho.corp.ryanair.com:443 was resolved.
 * IPv6: (none)
 * IPv4: 10.118.138.160
@@ -8,7 +8,7 @@ PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/
 * ALPN: server accepted http/1.1
 * Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
 * using HTTP/1.x
-> GET / HTTP/1.1
+> GET /Reports HTTP/1.1
 > Host: resourcelink.cho.corp.ryanair.com
 > User-Agent: curl/8.13.0
 > Accept: */*
@@ -17,18 +17,10 @@ PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/
 * schannel: remote party requests renegotiation
 * schannel: renegotiating SSL/TLS connection
 * schannel: SSL/TLS connection renegotiated
-< HTTP/1.1 404 Not Found
-< Content-Type: text/html; charset=us-ascii
+< HTTP/1.1 401 Unauthorized
+< Content-Length: 0
 < Server: Microsoft-HTTPAPI/2.0
-< Date: Wed, 19 Aug 2026 10:51:01 GMT
-< Connection: close
-< Content-Length: 315
+< WWW-Authenticate: NTLM
+< Date: Wed, 19 Aug 2026 11:05:20 GMT
 <
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
-<HTML><HEAD><TITLE>Not Found</TITLE>
-<META HTTP-EQUIV="Content-Type" Content="text/html; charset=us-ascii"></HEAD>
-<BODY><h2>Not Found</h2>
-<hr><p>HTTP Error 404. The requested resource is not found.</p>
-</BODY></HTML>
-* shutting down connection #0
-PS C:\Users\brodkab>
+* Connection #0 to host resourcelink.cho.corp.ryanair.com left intact
