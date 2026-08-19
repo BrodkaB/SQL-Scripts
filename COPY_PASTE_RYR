@@ -1,4 +1,4 @@
-PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/Reports
+PS C:\Users\brodkab> curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/Reports
 * Host resourcelink.cho.corp.ryanair.com:443 was resolved.
 * IPv6: (none)
 * IPv4: 10.118.138.160
@@ -8,19 +8,76 @@ PS C:\Users\brodkab> curl.exe -vk https://resourcelink.cho.corp.ryanair.com/Repo
 * ALPN: server accepted http/1.1
 * Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
 * using HTTP/1.x
+* Server auth using Negotiate with user ''
 > GET /Reports HTTP/1.1
 > Host: resourcelink.cho.corp.ryanair.com
+> Authorization: Negotiate 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
 > User-Agent: curl/8.13.0
 > Accept: */*
 >
-* Request completely sent off
 * schannel: remote party requests renegotiation
 * schannel: renegotiating SSL/TLS connection
 * schannel: SSL/TLS connection renegotiated
-< HTTP/1.1 401 Unauthorized
-< Content-Length: 0
+< HTTP/1.1 200 OK
+< Cache-Control: no-cache
+< Transfer-Encoding: chunked
+< Content-Type: text/html; charset=UTF-8
 < Server: Microsoft-HTTPAPI/2.0
-< WWW-Authenticate: NTLM
-< Date: Wed, 19 Aug 2026 11:05:20 GMT
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< WWW-Authenticate: oYG2MIGzoAMKAQChCwYJKoZIgvcSAQICooGeBIGbYIGYBgkqhkiG9xIBAgICAG+BiDCBhaADAgEFoQMCAQ+ieTB3oAMCARKicARu61l8dP+dMoZZ7bwkgFOeYI7SmdULyHMqvI3BphiCeEoGUtGZCKUsz0B44CZm4bF+iUZpCDzfUXY+lbuj/9B1/pNP7nioUjzUbD/ZQHF7VnWPaGuFnTP9/jcrP/PYzo4nJ2TL7A/GHvBqxNdF6qc=
+< Date: Wed, 19 Aug 2026 14:07:52 GMT
 <
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=2,user-scalable=yes" name="viewport">
+    <title>Report Server Web Portal</title>
+    <base href="/Reports/" ><script>window['___portalRelativeUrl'] = document.querySelector('base').href;</script>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <script type="text/javascript">
+        // Fix for IE10 not supporting location.origin
+        // IE 10
+        // 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
+        if (navigator.userAgent.indexOf('MSIE ') > 0 && !window.location.origin) {
+            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+        }
+    </script>
+
+    <!--Favicon Related elements-->
+    <meta content="#eaeaea" name="msapplication-TileColor">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link href="favicon.ico" rel="icon">
+    <script>
+        window[ '__dynamicHeadTags' ] = [
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '57x57', href: 'apple-icon-57x57.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '114x114', href: 'apple-icon-114x114.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '72x72', href: 'apple-icon-72x72.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '144x144', href: 'apple-icon-144x144.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '60x60', href: 'apple-icon-60x60.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '120x120', href: 'apple-icon-120x120.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '76x76', href: 'apple-icon-76x76.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '152x152', href: 'apple-icon-152x152.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '180x180', href: 'apple-icon-180x180.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '192x192', href: 'android-icon-192x192.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32x32.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '96x96', href: 'favicon-96x96.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16x16.png' },
+            { tag: 'link', rel: 'manifest', crossorigin: 'use-credentials', href: 'manifest.json' },
+            { tag: 'meta', name: 'msapplication-TileImage', content: 'ms-icon-144x144.png' },
+            { tag: 'meta', name: 'msapplication-config', content: 'browserconfig.xml' }
+        ];
+    </script>
+    <!--End of Favicon Related elements-->
+<link rel="stylesheet" href="assets/styles.cd5fe520106b99b1933b.css"></head>
+<body>
+    <!-- following dom will be replaced by server when loaded in IE -->
+    <!-- Inject:IE-stub -->
+
+    <div app-main id="page"></div>
+    <div aria-busy="true" id="preloader"></div>
+<script src="assets/runtime.96a16cb2e51c3227a21a.js" defer></script><script src="assets/polyfills.a21af164959304319bc1.js" defer></script><script src="assets/main.0dc47b10e643c9b5a923.js" defer></script>
+
+</body></html>
 * Connection #0 to host resourcelink.cho.corp.ryanair.com left intact
