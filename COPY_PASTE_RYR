@@ -1,3 +1,18 @@
-Get-ItemProperty 'HKLM:\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings' -ErrorAction SilentlyContinue | Format-List *
-Get-ItemProperty 'HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings' -ErrorAction SilentlyContinue | Format-List *
+PS Z:\> setspn -Q HTTP/resourcelink.cho.corp.ryanair.com
+Checking domain DC=cho,DC=corp,DC=ryanair,DC=com
+CN=cholqs07,OU=Q!,OU=Servers,DC=cho,DC=corp,DC=ryanair,DC=com
+        HTTP/resourcelink
+        HTTP/resourcelink.cho.corp.ryanair.com
 
+Existing SPN found!
+PS Z:\> setspn -Q HTTP/resourcelink
+Checking domain DC=cho,DC=corp,DC=ryanair,DC=com
+CN=cholqs07,OU=Q!,OU=Servers,DC=cho,DC=corp,DC=ryanair,DC=com
+        HTTP/resourcelink
+        HTTP/resourcelink.cho.corp.ryanair.com
+
+Existing SPN found!
+PS Z:\> setspn -L RYANAIR_CHO\cholqs07
+Registered ServicePrincipalNames for CN=cholqs07,OU=Q!,OU=Servers,DC=cho,DC=corp,DC=ryanair,DC=com:
+        HTTP/resourcelink
+        HTTP/resourcelink.cho.corp.ryanair.com
