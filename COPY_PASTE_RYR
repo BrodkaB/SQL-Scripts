@@ -1,117 +1,21 @@
-* Host resourcelink.cho.corp.ryanair.com:443 was resolved.
-* IPv6: (none)
-* IPv4: 10.118.138.160
-*   Trying 10.118.138.160:443...
-* schannel: disabled automatic use of client certificate
-* ALPN: curl offers http/1.1
-* ALPN: server accepted http/1.1
-* Established connection to resourcelink.cho.corp.ryanair.com (10.118.138.160 port 443) from 10.118.138.160 port 50685
-* using HTTP/1.x
-* Server auth using Negotiate with user ''
-> GET /Reports HTTP/1.1
-> Host: resourcelink.cho.corp.ryanair.com
-> Authorization: Negotiate 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
-> User-Agent: curl/8.16.0
-> Accept: */*
->
-* schannel: remote party requests renegotiation
-* schannel: renegotiating SSL/TLS connection
-* schannel: SSL/TLS connection renegotiated
-< HTTP/1.1 401 Unauthorized
-< Content-Length: 0
-< Server: Microsoft-HTTPAPI/2.0
-< WWW-Authenticate: Negotiate oYGEMIGBoAMKAQGhCwYJKoZIgvcSAQICom0Ea2BpBgkqhkiG9xIBAgIDAH5aMFigAwIBBaEDAgEepBEYDzIwMjYwODIwMTMzMDA2WqUFAgML3qGmAwIBKakWGxRDSE8uQ09SUC5SWUFOQUlSLkNPTaoVMBOgAwIBAaEMMAobCGNob2xxczA3
-< Date: Thu, 20 Aug 2026 13:30:06 GMT
-* Ignoring the response-body
-* setting size while ignoring
-<
-* Connection #0 to host resourcelink.cho.corp.ryanair.com:443 left intact
-* Issue another request to this URL: 'https://resourcelink.cho.corp.ryanair.com/Reports'
-* Reusing existing https: connection with host resourcelink.cho.corp.ryanair.com
-* Server auth using Negotiate with user ''
-> GET /Reports HTTP/1.1
-> Host: resourcelink.cho.corp.ryanair.com
-> Authorization: Negotiate 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
-> User-Agent: curl/8.16.0
-> Accept: */*
->
-< HTTP/1.1 401 Unauthorized
-< Content-Length: 0
-< Server: Microsoft-HTTPAPI/2.0
-< WWW-Authenticate: Negotiate oYHKMIHHoAMKAQGigZ8EgZxggZkGCSqGSIb3EgECAgIAb4GJMIGGoAMCAQWhAwIBD6J6MHigAwIBEqJxBG/kyNSNv63vz7dy4zZCHkxoKi1WKwXYa1uVFYvx5UlqzxyIiaBOOwykwQhRuSAzX2P8AyN8meTu4rSo06ax6/sf3biyXffA5kAXDha/M/YeNZyLANNq4zCyA63oMUXjAF2q2cyCGEWH3Ph6JOEuMkejHgQcBAQF//////8AAAAAeLU36SMJsHzcif8KOdWN9w==
-< Date: Thu, 20 Aug 2026 13:30:06 GMT
-* Ignoring the response-body
-* setting size while ignoring
-<
-* Connection #0 to host resourcelink.cho.corp.ryanair.com:443 left intact
-* Issue another request to this URL: 'https://resourcelink.cho.corp.ryanair.com/Reports'
-* Reusing existing https: connection with host resourcelink.cho.corp.ryanair.com
-* Server auth using Negotiate with user ''
-> GET /Reports HTTP/1.1
-> Host: resourcelink.cho.corp.ryanair.com
-> Authorization: Negotiate oScwJaADCgEAox4EHAQEBP//////AAAAAAruvnc2uZy9KINrI3FXuB0=
-> User-Agent: curl/8.16.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Cache-Control: no-cache
-< Transfer-Encoding: chunked
-< Content-Type: text/html; charset=UTF-8
-< Server: Microsoft-HTTPAPI/2.0
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< Date: Thu, 20 Aug 2026 13:30:06 GMT
-<
-<!DOCTYPE html><html><head>
-    <meta charset="utf-8">
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=2,user-scalable=yes" name="viewport">
-    <title>Report Server Web Portal</title>
-    <base href="/Reports/" ><script>window['___portalRelativeUrl'] = document.querySelector('base').href;</script>
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+#0>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: krbtgt/CHO.CORP.RYANAIR.COM @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:20:56 (local)
+        End Time:   8/21/2026 21:20:56 (local)
+        Renew Time: 8/28/2026 11:20:56 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x41 -> PRIMARY FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
 
-    <script type="text/javascript">
-        // Fix for IE10 not supporting location.origin
-        // IE 10
-        // 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
-        if (navigator.userAgent.indexOf('MSIE ') > 0 && !window.location.origin) {
-            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-        }
-    </script>
-
-    <!--Favicon Related elements-->
-    <meta content="#eaeaea" name="msapplication-TileColor">
-    <link href="favicon.ico" rel="shortcut icon">
-    <link href="favicon.ico" rel="icon">
-    <script>
-        window[ '__dynamicHeadTags' ] = [
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '57x57', href: 'apple-icon-57x57.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '114x114', href: 'apple-icon-114x114.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '72x72', href: 'apple-icon-72x72.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '144x144', href: 'apple-icon-144x144.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '60x60', href: 'apple-icon-60x60.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '120x120', href: 'apple-icon-120x120.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '76x76', href: 'apple-icon-76x76.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '152x152', href: 'apple-icon-152x152.png' },
-            { tag: 'link', rel: 'apple-touch-icon', sizes: '180x180', href: 'apple-icon-180x180.png' },
-            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '192x192', href: 'android-icon-192x192.png' },
-            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32x32.png' },
-            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '96x96', href: 'favicon-96x96.png' },
-            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16x16.png' },
-            { tag: 'link', rel: 'manifest', crossorigin: 'use-credentials', href: 'manifest.json' },
-            { tag: 'meta', name: 'msapplication-TileImage', content: 'ms-icon-144x144.png' },
-            { tag: 'meta', name: 'msapplication-config', content: 'browserconfig.xml' }
-        ];
-    </script>
-    <!--End of Favicon Related elements-->
-<link rel="stylesheet" href="assets/styles.cd5fe520106b99b1933b.css"></head>
-<body>
-    <!-- following dom will be replaced by server when loaded in IE -->
-    <!-- Inject:IE-stub -->
-
-    <div app-main id="page"></div>
-    <div aria-busy="true" id="preloader"></div>
-<script src="assets/runtime.96a16cb2e51c3227a21a.js" defer></script><script src="assets/polyfills.a21af164959304319bc1.js" defer></script><script src="assets/main.0dc47b10e643c9b5a923.js" defer></script>
-
-</body></html>
-* Connection #0 to host resourcelink.cho.corp.ryanair.com:443 left intact
+#1>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: HTTP/resourcelink.cho.corp.ryanair.com @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:20:56 (local)
+        End Time:   8/21/2026 21:20:56 (local)
+        Renew Time: 8/28/2026 11:20:56 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x40 -> FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
