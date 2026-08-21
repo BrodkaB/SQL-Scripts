@@ -1,135 +1,81 @@
-Request URL
-https://resourcelink.cho.corp.ryanair.com/Reports
-Request Method
-GET
-Status Code
-401 Unauthorized
-Remote Address
-10.118.138.160:443
-Referrer Policy
-strict-origin-when-cross-origin
-content-length
-0
-date
-Fri, 21 Aug 2026 09:28:31 GMT
-server
-Microsoft-HTTPAPI/2.0
-www-authenticate
-Negotiate
-www-authenticate
-NTLM
-:authority
-resourcelink.cho.corp.ryanair.com
-:method
-GET
-:path
-/Reports
-:scheme
-https
-accept
-text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-accept-encoding
-gzip, deflate, br, zstd
-accept-language
-en-US,en;q=0.9
-cache-control
-max-age=0
-priority
-u=0, i
-sec-ch-ua
-"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"
-sec-ch-ua-mobile
-?0
-sec-ch-ua-platform
-"Windows"
-sec-fetch-dest
-document
-sec-fetch-mode
-navigate
-sec-fetch-site
-none
-sec-fetch-user
-?1
-upgrade-insecure-requests
-1
-user-agent
-Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+PS C:\Users\brodkab> klist purge
 
+Current LogonId is 0:0x63d9a7e8
+        Deleting all tickets:
+        Ticket(s) purged!
+PS C:\Users\brodkab> klist get HTTP/resourcelink.cho.corp.ryanair.com
 
-Request URL
-https://resourcelink.cho.corp.ryanair.com/Reports
-Referrer Policy
-strict-origin-when-cross-origin
-:authority
-resourcelink.cho.corp.ryanair.com
-:method
-GET
-:path
-/Reports
-:scheme
-https
-accept
-text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-accept-encoding
-gzip, deflate, br, zstd
-accept-language
-en-US,en;q=0.9
-cache-control
-max-age=0
-priority
-u=0, i
-sec-ch-ua
-"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"
-sec-ch-ua-mobile
-?0
-sec-ch-ua-platform
-"Windows"
-sec-fetch-dest
-document
-sec-fetch-mode
-navigate
-sec-fetch-site
-none
-sec-fetch-user
-?1
-upgrade-insecure-requests
-1
-user-agent
-Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Current LogonId is 0:0x63d9a7e8
+A ticket to HTTP/resourcelink.cho.corp.ryanair.com has been retrieved successfully.
 
+Cached Tickets: (2)
 
-Request URL
-https://resourcelink.cho.corp.ryanair.com/Reports
-Referrer Policy
-strict-origin-when-cross-origin
-accept
-text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-accept-encoding
-gzip, deflate, br, zstd
-accept-language
-en-US,en;q=0.9
-cache-control
-max-age=0
-connection
-keep-alive
-host
-resourcelink.cho.corp.ryanair.com
-sec-ch-ua
-"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"
-sec-ch-ua-mobile
-?0
-sec-ch-ua-platform
-"Windows"
-sec-fetch-dest
-document
-sec-fetch-mode
-navigate
-sec-fetch-site
-none
-sec-fetch-user
-?1
-upgrade-insecure-requests
-1
-user-agent
-Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+#0>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: krbtgt/CHO.CORP.RYANAIR.COM @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:39:55 (local)
+        End Time:   8/21/2026 21:39:55 (local)
+        Renew Time: 8/28/2026 11:39:55 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x41 -> PRIMARY FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
 
+#1>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: HTTP/resourcelink.cho.corp.ryanair.com @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:39:55 (local)
+        End Time:   8/21/2026 21:39:55 (local)
+        Renew Time: 8/28/2026 11:39:55 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x40 -> FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
+PS C:\Users\brodkab> klist
+
+Current LogonId is 0:0x63d9a7e8
+
+Cached Tickets: (2)
+
+#0>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: krbtgt/CHO.CORP.RYANAIR.COM @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:39:55 (local)
+        End Time:   8/21/2026 21:39:55 (local)
+        Renew Time: 8/28/2026 11:39:55 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x41 -> PRIMARY FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
+
+#1>     Client: brodkab @ CHO.CORP.RYANAIR.COM
+        Server: HTTP/resourcelink.cho.corp.ryanair.com @ CHO.CORP.RYANAIR.COM
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 8/21/2026 11:39:55 (local)
+        End Time:   8/21/2026 21:39:55 (local)
+        Renew Time: 8/28/2026 11:39:55 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x40 -> FAST
+        Kdc Called: CHOEDS01.cho.corp.ryanair.com
+PS C:\Users\brodkab> curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/Reports
+* Host resourcelink.cho.corp.ryanair.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 10.118.138.160
+*   Trying 10.118.138.160:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
+* using HTTP/1.x
+* Server auth using Negotiate with user ''
+> GET /Reports HTTP/1.1
+> Host: resourcelink.cho.corp.ryanair.com
+> Authorization: Negotiate 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
+> User-Agent: curl/8.13.0
+> Accept: */*
+>
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+< HTTP/1.1 200 OK
