@@ -1,21 +1,50 @@
-#0>     Client: brodkab @ CHO.CORP.RYANAIR.COM
-        Server: krbtgt/CHO.CORP.RYANAIR.COM @ CHO.CORP.RYANAIR.COM
-        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
-        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
-        Start Time: 8/21/2026 11:20:56 (local)
-        End Time:   8/21/2026 21:20:56 (local)
-        Renew Time: 8/28/2026 11:20:56 (local)
-        Session Key Type: AES-256-CTS-HMAC-SHA1-96
-        Cache Flags: 0x41 -> PRIMARY FAST
-        Kdc Called: CHOEDS01.cho.corp.ryanair.com
-
-#1>     Client: brodkab @ CHO.CORP.RYANAIR.COM
-        Server: HTTP/resourcelink.cho.corp.ryanair.com @ CHO.CORP.RYANAIR.COM
-        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
-        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
-        Start Time: 8/21/2026 11:20:56 (local)
-        End Time:   8/21/2026 21:20:56 (local)
-        Renew Time: 8/28/2026 11:20:56 (local)
-        Session Key Type: AES-256-CTS-HMAC-SHA1-96
-        Cache Flags: 0x40 -> FAST
-        Kdc Called: CHOEDS01.cho.corp.ryanair.com
+Request URL
+https://resourcelink.cho.corp.ryanair.com/Reports
+Request Method
+GET
+Status Code
+401 Unauthorized
+Remote Address
+10.118.138.160:443
+Referrer Policy
+strict-origin-when-cross-origin
+content-length
+0
+date
+Fri, 21 Aug 2026 09:23:38 GMT
+server
+Microsoft-HTTPAPI/2.0
+www-authenticate
+Negotiate
+www-authenticate
+NTLM
+accept
+text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+max-age=0
+connection
+keep-alive
+host
+resourcelink.cho.corp.ryanair.com
+sec-ch-ua
+"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+document
+sec-fetch-mode
+navigate
+sec-fetch-site
+none
+sec-fetch-user
+?1
+upgrade-insecure-requests
+1
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
