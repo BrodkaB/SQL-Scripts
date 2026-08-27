@@ -1,7 +1,16 @@
-output
-SQLState = 08001, NativeError = -2146893019
-Error = [Microsoft][ODBC Driver 18 for SQL Server]SSL Provider: The certificate chain was issued by an authority that is not trusted. 
-NULL
-SQLState = 08001, NativeError = -2146893019
-Error = [Microsoft][ODBC Driver 18 for SQL Server]Client unable to establish connection. For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2226722
-NULL
+C:\Users\brodkabj>bcp -?
+usage: bcp {dbtable | query} {in | out | queryout | format} datafile
+  [-m maxerrors]            [-f formatfile]          [-e errfile]
+  [-F firstrow]             [-L lastrow]             [-b batchsize]
+  [-n native type]          [-c character type]      [-w wide character type]
+  [-N keep non-text native] [-V file format version] [-q quoted identifier]
+  [-C code page specifier]  [-t field terminator]    [-r row terminator]
+  [-i inputfile]            [-o outfile]             [-a packetsize]
+  [-S server name]          [-U username]            [-P password or tokenfile]
+  [-T trusted connection]   [-v version]             [-R regional enable]
+  [-k keep null values]     [-E keep identity values][-G Microsoft Entra ID Authentication]
+  [-h "load hints"]         [-x generate xml format file]
+  [-d database name]        [-K application intent]  [-l login timeout]
+  [-Y[s|m|o] encrypt option][-u trust server certificate]
+  [-z[0|1] enable vector data-type support]
+  [-H hostname in the certificate]         [-J Server certificate]
