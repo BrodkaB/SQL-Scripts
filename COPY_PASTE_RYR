@@ -1,11 +1,7 @@
-DECLARE @cmd VARCHAR(8000);
-
-SET @cmd =
-    '"C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\bcp.exe" ' +
-    '"SELECT * FROM dba.dbo.ConsolidatedAuditLogs" ' +
-    'queryout "C:\Temp\SQLAudit.csv" -c -t, -T -S ' +
-    @@SERVERNAME;
-
-PRINT @cmd;
-
-EXEC xp_cmdshell @cmd;
+output
+SQLState = 08001, NativeError = -2146893019
+Error = [Microsoft][ODBC Driver 18 for SQL Server]SSL Provider: The certificate chain was issued by an authority that is not trusted. 
+NULL
+SQLState = 08001, NativeError = -2146893019
+Error = [Microsoft][ODBC Driver 18 for SQL Server]Client unable to establish connection. For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2226722
+NULL
