@@ -1,57 +1,18 @@
-Ja bym teraz zrobił jedną rzecz
+Msg 33224, Level 16, State 4, Line 18
+The specified pattern did not return any files or does not represent a valid file share. Verify the pattern parameter and rerun the command.
+The statement has been terminated.
 
-Na jednej z tych instancji, najlepiej takiej, gdzie konto ma najwięcej uprawnień, sprawdziłbym:
+DECLARE @LastCheckTime DATETIME;
+SELECT @LastCheckTime = MAX(CheckTime) FROM DBA.dbo.AuditCheckLog;
 
-SELECT
-    sp.name,
-    sp.type_desc,
-    sp.is_disabled,
-    sp.create_date,
-    sp.modify_date
-FROM sys.server_principals sp
-WHERE sp.name = 'SQL2014Proxy_svc';
+INSERT INTO DBA.dbo.ConsolidatedAuditLogs (ServerName, LoginName, LoginDate, Succes1Failed0, ClientNameOrIP)
 
-Potem:
+		SELECT DISTINCT server_instance_name, server_principal_name, MIN(event_time) AS LoginDate, succeeded, client_ip
+		FROM sys.fn_get_audit_file ('\\chofs17\SQLDrop\Instance_Access_Audit\CHODWETL01\*.sqlaudit', DEFAULT, DEFAULT)
+		WHERE event_time >@LastCheckTime
+		GROUP BY server_instance_name, server_principal_name, succeeded, client_ip
 
-SELECT
-    sp.name AS LoginName,
-    rp.name AS ServerRole
-FROM sys.server_role_members srm
-JOIN sys.server_principals rp
-    ON srm.role_principal_id = rp.principal_id
-JOIN sys.server_principals sp
-    ON srm.member_principal_id = sp.principal_id
-WHERE sp.name = 'SQL2014Proxy_svc';
+INSERT INTO DBA.dbo.ConsolidatedAuditLogs (ServerName, LoginName, LoginDate, Succes1Failed0, ClientNameOrIP)
+VALUES (NULL, NULL, NULL, NULL, NULL);
 
-I dla baz:
-
-SELECT
-    DB_NAME() AS DatabaseName,
-    dp.name AS UserName,
-    rp.name AS DatabaseRole
-FROM sys.database_role_members drm
-JOIN sys.database_principals rp
-    ON drm.role_principal_id = rp.principal_id
-JOIN sys.database_principals dp
-    ON drm.member_principal_id = dp.principal_id
-WHERE dp.name = 'SQL2014Proxy_svc';
-
-Oczywiście ostatnie odpalać w konkretnych bazach.
-
-Najważniejsze natomiast: sprawdziłbym, czy konto jest nadal faktycznie używane przez xp_cmdshell, a nie tylko czy credential istnieje.
-
-SELECT
-    name,
-    credential_identity
-FROM sys.credentials
-WHERE name = '##xp_cmdshell_proxy_account##';
-
-oraz:
-
-SELECT
-    name,
-    value_in_use
-FROM sys.configurations
-WHERE name = 'xp_cmdshell';
-
-Jeśli xp_cmdshell = 0, to nie znaczy jeszcze, że credential jest niepotrzebny, ale mocno zwiększa prawdopodobieństwo, że jest to pozostałość.
+GO
