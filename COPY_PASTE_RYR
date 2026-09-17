@@ -1,13 +1,16 @@
+EXEC sp_helpindex 'dbo.D996M';
+
 SELECT
-    SUM(total_pages) * 8.0 / 1024 AS TotalMB,
-    SUM(used_pages) * 8.0 / 1024 AS UsedMB,
-    SUM(data_pages) * 8.0 / 1024 AS DataMB,
-    (SUM(total_pages) - SUM(used_pages)) * 8.0 / 1024 AS UnusedMB
-FROM sys.allocation_units
-WHERE container_id IN
-(
-    SELECT hobt_id
-    FROM sys.partitions
-    WHERE object_id = OBJECT_ID('dbo.D996M')
-      AND index_id = 0
-);
+    c.name AS column_name,
+    ic.key_ordinal,
+    ic.is_descending_key
+FROM sys.indexes i
+JOIN sys.index_columns ic
+    ON i.object_id = ic.object_id
+    AND i.index_id = ic.index_id
+JOIN sys.columns c
+    ON ic.object_id = c.object_id
+    AND ic.column_id = c.column_id
+WHERE i.object_id = OBJECT_ID('dbo.D996M')
+  AND i.index_id = 2
+ORDER BY ic.key_ordinal;
