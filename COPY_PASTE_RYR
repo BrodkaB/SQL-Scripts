@@ -1,12 +1,18 @@
-EXECUTE [dbo].[IndexOptimize]
-@Databases		= 'USER_DATABASES,-ReportServerTempDB',
-@FragmentationLow	= NULL,
-@FragmentationMedium	= 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
-@FragmentationHigh	= 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
-@FragmentationLevel1	=  5,
-@FragmentationLevel2	 = 30,
-@LogToTable		= 'Y',
-@MaxDOP		= 4,
-@SortInTempdb		= 'N',
-@MinNumberOfPages	= "1",
-@TimeLimit 		= 43200;
+USE RLL;
+GO
+
+SELECT TOP (20)
+    ID,
+    StartTime,
+    EndTime,
+    DatabaseName,
+    SchemaName,
+    ObjectName,
+    IndexName,
+    CommandType,
+    Command,
+    ErrorNumber,
+    ErrorMessage
+FROM dbo.CommandLog
+WHERE ObjectName = 'D996M'
+ORDER BY ID DESC;
