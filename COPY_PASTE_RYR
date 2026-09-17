@@ -1,23 +1,34 @@
 SELECT
-    r.session_id,
-    r.status,
-    r.command,
-    r.percent_complete,
-    r.start_time,
-    DATEDIFF(MINUTE, r.start_time, GETDATE()) AS elapsed_min,
-    DB_NAME(r.database_id) AS database_name,
-    SUBSTRING(
-        t.text,
-        (r.statement_start_offset / 2) + 1,
-        (
-            CASE r.statement_end_offset
-                WHEN -1 THEN DATALENGTH(t.text)
-                ELSE r.statement_end_offset
-            END - r.statement_start_offset
-        ) / 2 + 1
-    ) AS current_statement
-FROM sys.dm_exec_requests r
-CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
-WHERE r.command LIKE '%INDEX%'
-   OR t.text LIKE '%ALTER INDEX%'
-ORDER BY r.start_time;
+    i.name,
+    i.type_desc,
+    p.rows,
+    au.total_pages,
+    au.total_pages * 8 / 1024.0 AS SizeMB
+FROM sys.indexes i
+JOIN sys.partitions p 
+    ON i.object_id = p.object_id 
+    AND i.index_id = p.index_id
+JOIN sys.allocation_units au 
+    ON p.partition_id = au.container_id
+WHERE i.object_id = OBJECT_ID('dbo.D996M')
+ORDER BY SizeMB DESC;
+
+name	type_desc	rows	total_pages	SizeMB
+NULL	HEAP	660716066	13028028	101781.468750
+PK_D996M	NONCLUSTERED	660716066	9107484	71152.218750
+
+---checking fragmentation percent
+SELECT
+    i.name,
+    ps.avg_fragmentation_in_percent,
+    ps.page_count
+FROM sys.dm_db_index_physical_stats
+    (DB_ID(), OBJECT_ID('dbo.D996M'), NULL, NULL, 'LIMITED') ps
+JOIN sys.indexes i
+    ON ps.object_id = i.object_id
+    AND ps.index_id = i.index_id
+ORDER BY ps.avg_fragmentation_in_percent DESC;
+
+name	avg_fragmentation_in_percent	page_count
+NULL	67.6168650698618	13026209
+PK_D996M	6.89439309891768	8760365
