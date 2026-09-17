@@ -1,2 +1,13 @@
-schema_name	table_name	index_id	index_type_desc	forwarded_record_count	page_count	record_count	avg_fragmentation_in_percent
-dbo	D996M	0	HEAP	0	13026209	660716066	67.6168650698618
+SELECT
+    SUM(total_pages) * 8.0 / 1024 AS TotalMB,
+    SUM(used_pages) * 8.0 / 1024 AS UsedMB,
+    SUM(data_pages) * 8.0 / 1024 AS DataMB,
+    (SUM(total_pages) - SUM(used_pages)) * 8.0 / 1024 AS UnusedMB
+FROM sys.allocation_units
+WHERE container_id IN
+(
+    SELECT hobt_id
+    FROM sys.partitions
+    WHERE object_id = OBJECT_ID('dbo.D996M')
+      AND index_id = 0
+);
