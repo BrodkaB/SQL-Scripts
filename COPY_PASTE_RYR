@@ -4,25 +4,20 @@ SELECT
     r.command,
     r.percent_complete,
     r.start_time,
-    r.total_elapsed_time / 1000 / 60 AS elapsed_min,
+    DATEDIFF(MINUTE, r.start_time, GETDATE()) AS elapsed_min,
     DB_NAME(r.database_id) AS database_name,
-    OBJECT_SCHEMA_NAME(p.object_id, r.database_id) AS schema_name,
-    OBJECT_NAME(p.object_id, r.database_id) AS table_name,
-    i.name AS index_name,
-    i.type_desc AS index_type
+    SUBSTRING(
+        t.text,
+        (r.statement_start_offset / 2) + 1,
+        (
+            CASE r.statement_end_offset
+                WHEN -1 THEN DATALENGTH(t.text)
+                ELSE r.statement_end_offset
+            END - r.statement_start_offset
+        ) / 2 + 1
+    ) AS current_statement
 FROM sys.dm_exec_requests r
-LEFT JOIN sys.dm_db_index_physical_stats
-(
-    r.database_id,
-    NULL,
-    NULL,
-    NULL,
-    'LIMITED'
-) p
-    ON r.database_id = DB_ID()
-LEFT JOIN sys.indexes i
-    ON p.object_id = i.object_id
-    AND p.index_id = i.index_id
-WHERE r.database_id = DB_ID()
-  AND r.command IN ('ALTER INDEX', 'DBCC')
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
+WHERE r.command LIKE '%INDEX%'
+   OR t.text LIKE '%ALTER INDEX%'
 ORDER BY r.start_time;
