@@ -1,30 +1,12 @@
-EXEC sp_helpindex 'dbo.D996M';
-
-index_name	index_description	index_keys
-PK_D996M	nonclustered, unique, primary key located on AUDIT	OPERATOR_ID, SESSION_NO, DATE_R, R_TIME, ENTITY_NO, ENTITY_KEY, DATA_ELEMENT, R_TYPE
-
-
-SELECT
-    c.name AS column_name,
-    ic.key_ordinal,
-    ic.is_descending_key
-FROM sys.indexes i
-JOIN sys.index_columns ic
-    ON i.object_id = ic.object_id
-    AND i.index_id = ic.index_id
-JOIN sys.columns c
-    ON ic.object_id = c.object_id
-    AND ic.column_id = c.column_id
-WHERE i.object_id = OBJECT_ID('dbo.D996M')
-  AND i.index_id = 2
-ORDER BY ic.key_ordinal;
-
-column_name	key_ordinal	is_descending_key
-OPERATOR_ID	1	0
-SESSION_NO	2	0
-DATE_R	3	0
-R_TIME	4	0
-ENTITY_NO	5	0
-ENTITY_KEY	6	0
-DATA_ELEMENT	7	0
-R_TYPE	8	0
+EXECUTE [dbo].[IndexOptimize]
+@Databases		= 'USER_DATABASES,-ReportServerTempDB',
+@FragmentationLow	= NULL,
+@FragmentationMedium	= 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+@FragmentationHigh	= 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
+@FragmentationLevel1	=  5,
+@FragmentationLevel2	 = 30,
+@LogToTable		= 'Y',
+@MaxDOP		= 4,
+@SortInTempdb		= 'N',
+@MinNumberOfPages	= "1",
+@TimeLimit 		= 43200;
