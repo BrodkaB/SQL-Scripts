@@ -1,34 +1,14 @@
 SELECT
-    i.name,
-    i.type_desc,
-    p.rows,
-    au.total_pages,
-    au.total_pages * 8 / 1024.0 AS SizeMB
-FROM sys.indexes i
-JOIN sys.partitions p 
-    ON i.object_id = p.object_id 
-    AND i.index_id = p.index_id
-JOIN sys.allocation_units au 
-    ON p.partition_id = au.container_id
-WHERE i.object_id = OBJECT_ID('dbo.D996M')
-ORDER BY SizeMB DESC;
-
-name	type_desc	rows	total_pages	SizeMB
-NULL	HEAP	660716066	13028028	101781.468750
-PK_D996M	NONCLUSTERED	660716066	9107484	71152.218750
-
----checking fragmentation percent
-SELECT
-    i.name,
-    ps.avg_fragmentation_in_percent,
-    ps.page_count
+    OBJECT_NAME(object_id) AS table_name,
+    forwarded_record_count,
+    page_count,
+    record_count
 FROM sys.dm_db_index_physical_stats
-    (DB_ID(), OBJECT_ID('dbo.D996M'), NULL, NULL, 'LIMITED') ps
-JOIN sys.indexes i
-    ON ps.object_id = i.object_id
-    AND ps.index_id = i.index_id
-ORDER BY ps.avg_fragmentation_in_percent DESC;
-
-name	avg_fragmentation_in_percent	page_count
-NULL	67.6168650698618	13026209
-PK_D996M	6.89439309891768	8760365
+(
+    DB_ID(),
+    OBJECT_ID('dbo.D996M'),
+    0,
+    NULL,
+    'DETAILED'
+)
+WHERE index_id = 0;
