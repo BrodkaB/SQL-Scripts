@@ -1,18 +1,3 @@
-USE RLL;
-GO
-
-SELECT TOP (20)
-    ID,
-    StartTime,
-    EndTime,
-    DatabaseName,
-    SchemaName,
-    ObjectName,
-    IndexName,
-    CommandType,
-    Command,
-    ErrorNumber,
-    ErrorMessage
-FROM dbo.CommandLog
-WHERE ObjectName = 'D996M'
-ORDER BY ID DESC;
+7077	2026-09-17 08:56:55.623	NULL	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	NULL	NULL
+6844	2026-09-14 12:51:13.580	NULL	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	NULL	NULL
+6589	2026-09-13 08:22:04.860	2026-09-13 09:06:34.047	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	9002	The transaction log for database 'RLL' is full due to 'LOG_BACKUP' and the holdup lsn is (243007:125823:1).
