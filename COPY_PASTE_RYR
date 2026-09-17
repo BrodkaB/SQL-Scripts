@@ -1,16 +1,13 @@
-C:\Users\brodkabj>bcp -?
-usage: bcp {dbtable | query} {in | out | queryout | format} datafile
-  [-m maxerrors]            [-f formatfile]          [-e errfile]
-  [-F firstrow]             [-L lastrow]             [-b batchsize]
-  [-n native type]          [-c character type]      [-w wide character type]
-  [-N keep non-text native] [-V file format version] [-q quoted identifier]
-  [-C code page specifier]  [-t field terminator]    [-r row terminator]
-  [-i inputfile]            [-o outfile]             [-a packetsize]
-  [-S server name]          [-U username]            [-P password or tokenfile]
-  [-T trusted connection]   [-v version]             [-R regional enable]
-  [-k keep null values]     [-E keep identity values][-G Microsoft Entra ID Authentication]
-  [-h "load hints"]         [-x generate xml format file]
-  [-d database name]        [-K application intent]  [-l login timeout]
-  [-Y[s|m|o] encrypt option][-u trust server certificate]
-  [-z[0|1] enable vector data-type support]
-  [-H hostname in the certificate]         [-J Server certificate]
+SELECT
+    r.session_id,
+    r.status,
+    r.command,
+    r.percent_complete,
+    r.start_time,
+    DATEDIFF(MINUTE, r.start_time, GETDATE()) AS elapsed_min,
+    DB_NAME(r.database_id) AS database_name,
+    t.text AS sql_text
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
+WHERE r.database_id = DB_ID()
+ORDER BY r.start_time;
