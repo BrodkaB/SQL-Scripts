@@ -1,8 +1,7 @@
-name	recovery_model_desc	log_reuse_wait_desc
-RLL	FULL	NOTHING
-
-name	SizeMB	UsedMB	growth	is_percent_growth
-RL_LOG	10050.000000	2.750000	64000	0
-
-LogSizeGB	LogUsedGB	LogUsedPercent
-9.8144454956054687	0.0026860237121582	0.02736806
+SELECT
+    name,
+    type_desc,
+    physical_name,
+    size * 8.0 / 1024 AS SizeGB
+FROM RLL.sys.database_files
+ORDER BY type_desc, name;
