@@ -1,25 +1,8 @@
-USE RLL;
-GO
+name	recovery_model_desc	log_reuse_wait_desc
+RLL	FULL	NOTHING
 
-SELECT
-    name,
-    recovery_model_desc,
-    log_reuse_wait_desc
-FROM sys.databases
-WHERE name = 'RLL';
+name	SizeMB	UsedMB	growth	is_percent_growth
+RL_LOG	10050.000000	2.750000	64000	0
 
-SELECT
-    name,
-    size * 8.0 / 1024 AS SizeMB,
-    FILEPROPERTY(name, 'SpaceUsed') * 8.0 / 1024 AS UsedMB,
-    growth,
-    is_percent_growth
-FROM sys.database_files
-WHERE type_desc = 'LOG';
-
-
-SELECT
-    total_log_size_in_bytes / 1024.0 / 1024 / 1024 AS LogSizeGB,
-    used_log_space_in_bytes / 1024.0 / 1024 / 1024 AS LogUsedGB,
-    used_log_space_in_percent AS LogUsedPercent
-FROM sys.dm_db_log_space_usage;
+LogSizeGB	LogUsedGB	LogUsedPercent
+9.8144454956054687	0.0026860237121582	0.02736806
