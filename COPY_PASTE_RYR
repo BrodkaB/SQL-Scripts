@@ -1,5 +1,4 @@
 SELECT
-    OBJECT_NAME(object_id) AS table_name,
     forwarded_record_count,
     page_count,
     record_count
@@ -8,6 +7,25 @@ FROM sys.dm_db_index_physical_stats
     DB_ID(),
     OBJECT_ID('dbo.D996M'),
     0,
+    NULL,
+    'LIMITED'
+)
+WHERE index_id = 0;
+
+SELECT
+    OBJECT_SCHEMA_NAME(object_id) AS schema_name,
+    OBJECT_NAME(object_id) AS table_name,
+    index_id,
+    index_type_desc,
+    forwarded_record_count,
+    page_count,
+    record_count,
+    avg_fragmentation_in_percent
+FROM sys.dm_db_index_physical_stats
+(
+    DB_ID(),
+    OBJECT_ID('dbo.D996M'),
+    NULL,
     NULL,
     'DETAILED'
 )
