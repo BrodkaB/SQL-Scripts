@@ -1,3 +1,25 @@
-7077	2026-09-17 08:56:55.623	NULL	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	NULL	NULL
-6844	2026-09-14 12:51:13.580	NULL	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	NULL	NULL
-6589	2026-09-13 08:22:04.860	2026-09-13 09:06:34.047	RLL	dbo	D996M	PK_D996M	ALTER_INDEX	ALTER INDEX [PK_D996M] ON [dbo].[D996M] REORGANIZE WITH (LOB_COMPACTION = ON)	9002	The transaction log for database 'RLL' is full due to 'LOG_BACKUP' and the holdup lsn is (243007:125823:1).
+USE RLL;
+GO
+
+SELECT
+    name,
+    recovery_model_desc,
+    log_reuse_wait_desc
+FROM sys.databases
+WHERE name = 'RLL';
+
+SELECT
+    name,
+    size * 8.0 / 1024 AS SizeMB,
+    FILEPROPERTY(name, 'SpaceUsed') * 8.0 / 1024 AS UsedMB,
+    growth,
+    is_percent_growth
+FROM sys.database_files
+WHERE type_desc = 'LOG';
+
+
+SELECT
+    total_log_size_in_bytes / 1024.0 / 1024 / 1024 AS LogSizeGB,
+    used_log_space_in_bytes / 1024.0 / 1024 / 1024 AS LogUsedGB,
+    used_log_space_in_percent AS LogUsedPercent
+FROM sys.dm_db_log_space_usage;
