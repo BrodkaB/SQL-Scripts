@@ -1,4 +1,4 @@
-Z:\>curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/
+Z:\>curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/Reports
 * Uses proxy env variable no_proxy == 'frbiweprdvmboot.blob.core.windows.net,frbineprd3dpartybs.blob.core.windows.net,frbineprd3dpartydl.blob.core.windows.net,frbineprd3dpartypoc.blob.core.windows.net,frbineprdadobedl.blob.core.windows.net,frbineprdawssharebs.blob.core.windows.net,frbineprdawssharedl.blob.core.windows.net,frbineprdbs.blob.core.windows.net,frbineprdcostanalysis.blob.core.windows.net,frbineprddl.blob.core.windows.net,frbineprddsdl.blob.core.windows.net,frbineprdmanagement.blob.core.windows.net,frbineprdvmboot.blob.core.windows.net,frbinetradbrmlflow.blob.core.windows.net,frbinetrasqlrefresh.blob.core.windows.net,frbinetraunitycatalog.blob.core.windows.net,frbinedev3dpartybs.blob.core.windows.net,frbinedev3dpartydl.blob.core.windows.net,frbinedevadobedl.blob.core.windows.net,frbinedevawssharebs.blob.core.windows.net,frbinedevawssharedl.blob.core.windows.net,frbinedevbs.blob.core.windows.net,frbinedevbswebapps.blob.core.windows.net,frbinedevdl.blob.core.windows.net,frbinedevdsdl.blob.core.windows.net,frbinedevmanagement.blob.core.windows.net,frbinedevvmboot.blob.core.windows.net,.vault.azure.net,login.microsoftonline.com,prod-ai-gateway.fr164-81.ryanair.com,adb-7405611997702959.19.azuredatabricks.net,127.0.0.1,.cho.corp.ryanair.com'
 * Host resourcelink.cho.corp.ryanair.com:443 was resolved.
 * IPv6: (none)
@@ -10,27 +10,117 @@ Z:\>curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/
 * Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
 * using HTTP/1.x
 * Server auth using Negotiate with user ''
-> GET / HTTP/1.1
+> GET /Reports HTTP/1.1
 > Host: resourcelink.cho.corp.ryanair.com
-> Authorization: Negotiate YIIJ5QYGKwYBBQUCoIIJ2TCCCdWgMDAuBgkqhkiC9xIBAgIGCSqGSIb3EgECAgYKKwYBBAGCNwICHgYKKwYBBAGCNwICCqKCCZ8EggmbYIIJlwYJKoZIhvcSAQICAQBuggmGMIIJgqADAgEFoQMCAQ6iBwMFACAAAACjggeAYYIHfDCCB3igAwIBBaEWGxRDSE8uQ09SUC5SWUFOQUlSLkNPTaI0MDKgAwIBAqErMCkbBEhUVFAbIXJlc291cmNlbGluay5jaG8uY29ycC5yeWFuYWlyLmNvbaOCByEwggcdoAMCARKhAwIBAqKCBw8EggcLIyJBo5X0NC/YjljdedsP7zXK6fDRJbyuQrrCZk/Eb6DzxHKqsE6W/q3nqdc12/w1GxGKn0GlSFudCo2c8lI0thQOEVPjJ/gB/a0nVeW2QfjF2fDmdE9+OX7GRuAhHAnSGTvCtTDmODaXO8w+ZLQRJARhl1YeO0/lHJrl0Tvrmq0ZiuCdniF+4r47J5ozeq6fFQaKeuH885glMjs68PFki+phUzEECAtBpi8vhIb2bVqksbDqHECy+Zd/tBrsHewXEdEO4LVupCsZRrdNfmCKCZWS2LcliTZd1rauxfTAyf5AV/cAUxszxxaAzjWZXAO62NBsoZp4thDCH7CtKkSaKL7nKyt4vwuhMDerIOqV8DaGVp1Jly7KZIfGfob82JGQcjYrIqnJHZ+TZoL89WRWbxiHQEPzOzvQUa1ewxN/o42KJUAA8Zm7/wcvtNmgsWwv6QoSQg7DNqNm/PjmfVM3s2oEBGMAKVqFzPqO03HQEuNgJYoMeEu8tkY6p/lYFknXSfSqomA/BwYWzfCoccrjDE0S3yTnvXWb5GP5IQ5RKcKxfzKkAsJ+kTwYGxca6lPPJDoy5Ds2W8MhpM0KuqVXLUoBx2KdaVtOltikPm2QHUSAbx8d3WXu2HklA31ood6FSY4BtxIJegLezNmUM2Y17xMs97RS4TenKYorOOdg9bYmo5bq+dIsgz6SZoqrMvnmMcLRYxJngQUYVePa1ZmSZdGP9B/JhV2cIG+ufsfeZR2RKSOKbcTVX/QticCXShWacVhjOV3oTBDEUIPNNnhdeROlE6GcRZTEGmFM1WgjF61uhDysQ0x+t0D8kYmY0s9wUL3MWjUeD8kKs8el+orBhumGU3m8enHeNzmP22qoCdu8X9t4xf/fcS1bWSQUa5AU6MHlpqVJ0Ie+3kZddWOlhTMsXJomPA813u48gE6PwMruXPdsWhbWNvTNgRxBSG+bzF2s0e0zUoIShRXPD6oEhBvfp8MZ47R6dKZFPtLUXmyZxqZK2uwsmO/psjVY2Tzo6oed5Y+SUj2r+vddnRT5g68nQvSuumUH3U0F34Bm0gz0pCCza5f5QxPXMhwiAE5mA1v5FbOQ2qi5+3Tefk5Jh+dEeLZ9U7woKk1WB5h3k8eEeAR4Ktp+5jKXwquvH6uooLX5Ce8ztTh9Mt0cyfoXalLVW8cXkUuz/W+C4oMIKGB+ohnwRNiAhWxJ5xiTXHhcXoZNRHTs7ViPVlqX6NuaFpAgYl2pCC+v6HAWjY0oaj5JPwMTibuWo+vtkYyLCSf44cTjSfQGmKJ0dUaO86Cvy51W78pDsDsdMZvQcpf5ATRrgu3KeXBZlwZq9yy4tCRIjaBo3UBEo8AShrXt8ZxjB9uA2Fj48OThjqeEd2Di5n5jZ//SACCQPGf5gKnTl2OuV5yILzjmo4u3/XbwCFzaKE/qisq8aouf/s8XmLb9V3zfOSkAQkOKJBhBIdTR3JJhWqOegqXL3wRBKgn5Wkd7c6lWS7wuFU7I4ucfFbDR4AxMQUhWCNvwklpXsLEFmWm22PxfM5tfuCprj/74AEtkXLUonP8R+uj0qDqfxMaLXifp8Kwq2cq/UAlaKAACuW0jHwh8UiaLeeIGN1lmkU28agnPyIbR4ZPeYpEvQiN00JH7e5PiBXIOZTTIBcrRmnYYupNxaX3QDyp1h/7ErVTHhJAL9/hfkTfbS+YWNtBkt8UXcYmOUDwDxQmfQz3rTLEoj5hhvvxin3sPoGZz66MHvsG37mADFzHQ0Vf7wxhnVVlPfmJE4M9yDCMAlUZfyaiq3idnJY1LZHAzKhhIds8pr0zdFCkU38SKAL3ATIpS4JRdRqTLohBR7a5ZqkvqJXf06VPSYjwhUj53eaKrf26yb1ty1aICAtAZ9kx3a5E2kz1/5b5Oay0p1/Ll5KJsdwT8FYLDY/72yrQU6yTffDgQmSFzY9rnEXV/S34uteXj4QwolZqcL4uheOVYet3myP+66orIo/mZTML2uiOf4t5VWQ+cs6o7V6dI81ODWFZagM1SegrrKZ+UxDvg7djPLAc43byLWzjUexKloCHXc7V0sAjyUXgXQjmF0cCJf6TkLgxIPSh1LfWoqUa7P4C72Bi+EMIMRi4GBq6FGgwEEFm2VIGAPkEtGEEMpNxoC7NzhDSU2Pg4dH6ruNamqnvSwfLiKlUL3FWhfFL09ac1sR3kFnaVZmSh0IMU1yIlms7Bhp/hgL7XzXhoLgHhxdi7tD2g4Ngd1bUMloMa2t4SEY/NYHrQxQ40gOZGCcxnLMm14oelsaJNhRQDMCMiVdr8wkSWbVtxNEXtEXiBsZuO3PtMNhgbrGGMWZYnbzyaqvJgdkKedaoXCr7jOUGQxDcb0tkiqWnXxoIm9hr4dT7gWXM24XBjh4IF9rtQ0rP8pIIB5zCCAeOgAwIBEqKCAdoEggHWWTfuwlf7iO0QopSXGX++4m/OlP5jQIlqnFImcPJBFhGaKHFKPVuAgyIWSAtqMNMqYmWt/B0te1CsdIDZ3HLjyMk0SWpk5RxqKhtgf52AEuhbb5Uj+VIdTUBeC3i4mL6mc58tYe90h81Zktyl926tkkypz60x1KKstMp4z6oE6BWnyyzNDLXyW5iDCu6WuUTL38CORQL/aMMIx5pz/DvMVxl4srrn+or94+4hcFKIsP0ykalSzOfJkmppACmeKePaLEFBuiaK9z9Kxf8MrmTvH94FCIX4jLU5ljReF6VGCwi8XkdWTynmKqVpUlNCxtx+YTcPQQzaXt4el+IiWvoHDSwkF/Lvu5mEDs0/eOOSuUZBswWgZ1xipeyn2UG9nrJxOq/QJw3+b/JsvD+mAnX32mRHSz7e+PnOYWTklVmGH98EVzkGs+FpL6zFjZjkfT+7e/p6Z3GFAM2pw3ZwRkfJhhaSSjFaEZfc5PLcjC749d4VAXb7Wo3uUYS/UBwc209w9mnnTP2/SpGUDPylNgqJGdVaqU6gfMR8CkrPL8wX7nRGbeJsHE7Jer5WoSBO66IkffMddMmNGQcqEl5IyJ/pm61PT3NgoC0l6wb1J9SGD7whkW35do4=
+> Authorization: Negotiate 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
 > User-Agent: curl/8.13.0
 > Accept: */*
 >
-< HTTP/1.1 404 Not Found
-< Content-Type: text/html; charset=us-ascii
+< HTTP/1.1 200 OK
+< Cache-Control: no-cache
+< Transfer-Encoding: chunked
+< Content-Type: text/html; charset=UTF-8
 < Server: Microsoft-HTTPAPI/2.0
-< Date: Thu, 24 Sep 2026 11:05:05 GMT
-< Connection: close
-< Content-Length: 315
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< WWW-Authenticate: oYG2MIGzoAMKAQChCwYJKoZIgvcSAQICooGeBIGbYIGYBgkqhkiG9xIBAgICAG+BiDCBhaADAgEFoQMCAQ+ieTB3oAMCARKicARu6mRPBmsBSsrmu8YOUasEh+ILfocQ0rDgoSNcHk+PfR4xvFp3DuIdGFyFA9e2UgxGe4ZUvQ+d/UnPVQNKZ7aUHLeZV3U5ozvyyN4DQyfHje654zEwusVIGV4v+pTFyw6alNLT7GXT1cvGL3tMq5M=
+< Date: Thu, 24 Sep 2026 11:10:11 GMT
 <
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
-<HTML><HEAD><TITLE>Not Found</TITLE>
-<META HTTP-EQUIV="Content-Type" Content="text/html; charset=us-ascii"></HEAD>
-<BODY><h2>Not Found</h2>
-<hr><p>HTTP Error 404. The requested resource is not found.</p>
-</BODY></HTML>
-* we are done reading and this is set to close, stop send
-* abort upload
-* shutting down connection #0
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=2,user-scalable=yes" name="viewport">
+    <title>Report Server Web Portal</title>
+    <base href="/Reports/" ><script>window['___portalRelativeUrl'] = document.querySelector('base').href;</script>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <script type="text/javascript">
+        // Fix for IE10 not supporting location.origin
+        // IE 10
+        // 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
+        if (navigator.userAgent.indexOf('MSIE ') > 0 && !window.location.origin) {
+            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+        }
+    </script>
+
+    <!--Favicon Related elements-->
+    <meta content="#eaeaea" name="msapplication-TileColor">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link href="favicon.ico" rel="icon">
+    <script>
+        window[ '__dynamicHeadTags' ] = [
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '57x57', href: 'apple-icon-57x57.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '114x114', href: 'apple-icon-114x114.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '72x72', href: 'apple-icon-72x72.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '144x144', href: 'apple-icon-144x144.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '60x60', href: 'apple-icon-60x60.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '120x120', href: 'apple-icon-120x120.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '76x76', href: 'apple-icon-76x76.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '152x152', href: 'apple-icon-152x152.png' },
+            { tag: 'link', rel: 'apple-touch-icon', sizes: '180x180', href: 'apple-icon-180x180.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '192x192', href: 'android-icon-192x192.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32x32.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '96x96', href: 'favicon-96x96.png' },
+            { tag: 'link', rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16x16.png' },
+            { tag: 'link', rel: 'manifest', crossorigin: 'use-credentials', href: 'manifest.json' },
+            { tag: 'meta', name: 'msapplication-TileImage', content: 'ms-icon-144x144.png' },
+            { tag: 'meta', name: 'msapplication-config', content: 'browserconfig.xml' }
+        ];
+    </script>
+    <!--End of Favicon Related elements-->
+<link rel="stylesheet" href="assets/styles.cd5fe520106b99b1933b.css"></head>
+<body>
+    <!-- following dom will be replaced by server when loaded in IE -->
+    <!-- Inject:IE-stub -->
+
+    <div app-main id="page"></div>
+    <div aria-busy="true" id="preloader"></div>
+<script src="assets/runtime.96a16cb2e51c3227a21a.js" defer></script><script src="assets/polyfills.a21af164959304319bc1.js" defer></script><script src="assets/main.0dc47b10e643c9b5a923.js" defer></script>
+
+</body></html>
+* Connection #0 to host resourcelink.cho.corp.ryanair.com left intact
+
+Z:\>curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/ReportServer
+* Uses proxy env variable no_proxy == 'frbiweprdvmboot.blob.core.windows.net,frbineprd3dpartybs.blob.core.windows.net,frbineprd3dpartydl.blob.core.windows.net,frbineprd3dpartypoc.blob.core.windows.net,frbineprdadobedl.blob.core.windows.net,frbineprdawssharebs.blob.core.windows.net,frbineprdawssharedl.blob.core.windows.net,frbineprdbs.blob.core.windows.net,frbineprdcostanalysis.blob.core.windows.net,frbineprddl.blob.core.windows.net,frbineprddsdl.blob.core.windows.net,frbineprdmanagement.blob.core.windows.net,frbineprdvmboot.blob.core.windows.net,frbinetradbrmlflow.blob.core.windows.net,frbinetrasqlrefresh.blob.core.windows.net,frbinetraunitycatalog.blob.core.windows.net,frbinedev3dpartybs.blob.core.windows.net,frbinedev3dpartydl.blob.core.windows.net,frbinedevadobedl.blob.core.windows.net,frbinedevawssharebs.blob.core.windows.net,frbinedevawssharedl.blob.core.windows.net,frbinedevbs.blob.core.windows.net,frbinedevbswebapps.blob.core.windows.net,frbinedevdl.blob.core.windows.net,frbinedevdsdl.blob.core.windows.net,frbinedevmanagement.blob.core.windows.net,frbinedevvmboot.blob.core.windows.net,.vault.azure.net,login.microsoftonline.com,prod-ai-gateway.fr164-81.ryanair.com,adb-7405611997702959.19.azuredatabricks.net,127.0.0.1,.cho.corp.ryanair.com'
+* Host resourcelink.cho.corp.ryanair.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 10.118.138.160
+*   Trying 10.118.138.160:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
+* using HTTP/1.x
+* Server auth using Negotiate with user ''
+> GET /ReportServer HTTP/1.1
+> Host: resourcelink.cho.corp.ryanair.com
+> Authorization: Negotiate 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
+> User-Agent: curl/8.13.0
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Length: 533
+< Content-Type: text/html; charset=utf-8
+< Server: Microsoft-HTTPAPI/2.0
+< X-AspNet-Version: 4.0.30319
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< Date: Thu, 24 Sep 2026 11:10:23 GMT
+<
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="Generator" content="Microsoft SQL Server Reporting Services Version 16.0.1116.38">
+    <title>resourcelink.cho.corp.ryanair.com/ReportServer - /</title>
+  </head>
+  <body><H1>resourcelink.cho.corp.ryanair.com/ReportServer - /</H1><hr>
+
+<pre>  Thursday, September 24, 2026 8:46 AM        &lt;dir&gt; <A HREF="?%2fResourcelink&amp;rs:Command=ListChildren">Resourcelink</A>
+</pre><hr>
+Microsoft SQL Server Reporting Services Version 16.0.1116.38
+
+  </body>
+</html>* Connection #0 to host resourcelink.cho.corp.ryanair.com left intact
 
 Z:\>
