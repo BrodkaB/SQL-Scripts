@@ -1,5 +1,36 @@
-Couldn't connect
-The report server couldn't connect to the data source using the information you entered. Make sure you've entered the connection string and any credentials correctly.
+Z:\>curl.exe -vk --negotiate -u : https://resourcelink.cho.corp.ryanair.com/
+* Uses proxy env variable no_proxy == 'frbiweprdvmboot.blob.core.windows.net,frbineprd3dpartybs.blob.core.windows.net,frbineprd3dpartydl.blob.core.windows.net,frbineprd3dpartypoc.blob.core.windows.net,frbineprdadobedl.blob.core.windows.net,frbineprdawssharebs.blob.core.windows.net,frbineprdawssharedl.blob.core.windows.net,frbineprdbs.blob.core.windows.net,frbineprdcostanalysis.blob.core.windows.net,frbineprddl.blob.core.windows.net,frbineprddsdl.blob.core.windows.net,frbineprdmanagement.blob.core.windows.net,frbineprdvmboot.blob.core.windows.net,frbinetradbrmlflow.blob.core.windows.net,frbinetrasqlrefresh.blob.core.windows.net,frbinetraunitycatalog.blob.core.windows.net,frbinedev3dpartybs.blob.core.windows.net,frbinedev3dpartydl.blob.core.windows.net,frbinedevadobedl.blob.core.windows.net,frbinedevawssharebs.blob.core.windows.net,frbinedevawssharedl.blob.core.windows.net,frbinedevbs.blob.core.windows.net,frbinedevbswebapps.blob.core.windows.net,frbinedevdl.blob.core.windows.net,frbinedevdsdl.blob.core.windows.net,frbinedevmanagement.blob.core.windows.net,frbinedevvmboot.blob.core.windows.net,.vault.azure.net,login.microsoftonline.com,prod-ai-gateway.fr164-81.ryanair.com,adb-7405611997702959.19.azuredatabricks.net,127.0.0.1,.cho.corp.ryanair.com'
+* Host resourcelink.cho.corp.ryanair.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 10.118.138.160
+*   Trying 10.118.138.160:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Connected to resourcelink.cho.corp.ryanair.com (10.118.138.160) port 443
+* using HTTP/1.x
+* Server auth using Negotiate with user ''
+> GET / HTTP/1.1
+> Host: resourcelink.cho.corp.ryanair.com
+> Authorization: Negotiate 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
+> User-Agent: curl/8.13.0
+> Accept: */*
+>
+< HTTP/1.1 404 Not Found
+< Content-Type: text/html; charset=us-ascii
+< Server: Microsoft-HTTPAPI/2.0
+< Date: Thu, 24 Sep 2026 11:05:05 GMT
+< Connection: close
+< Content-Length: 315
+<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
+<HTML><HEAD><TITLE>Not Found</TITLE>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=us-ascii"></HEAD>
+<BODY><h2>Not Found</h2>
+<hr><p>HTTP Error 404. The requested resource is not found.</p>
+</BODY></HTML>
+* we are done reading and this is set to close, stop send
+* abort upload
+* shutting down connection #0
 
-Hide error details
-Log on failed. Ensure the user name and password are correct.
+Z:\>
