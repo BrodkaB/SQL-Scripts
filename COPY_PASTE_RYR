@@ -1,7 +1,6 @@
-EXECUTE [dbo].[DatabaseBackup]
-@Databases = 'USER_DATABASES',
-@Directory = 'F:\MSSQL17.MSSQLSERVER\MSSQL\Backup',
-@BackupType = 'LOG',
-@CleanupTime = '23',
-@Compress = 'Y',
-@CopyOnly = 'N'
+Credentials
+Log into the data source
+As the user viewing the report
+Using the following credentials
+By prompting the user viewing the report for credentials
+Without any credentials
