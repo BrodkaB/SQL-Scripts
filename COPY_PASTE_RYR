@@ -1,6 +1,5 @@
-Credentials
-Log into the data source
-As the user viewing the report
-Using the following credentials
-By prompting the user viewing the report for credentials
-Without any credentials
+Couldn't connect
+The report server couldn't connect to the data source using the information you entered. Make sure you've entered the connection string and any credentials correctly.
+
+Hide error details
+Log on failed. Ensure the user name and password are correct.
