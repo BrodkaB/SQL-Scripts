@@ -41,3 +41,15 @@ WHERE dp.type IN ('S', 'U', 'G')
       ('dbo', 'guest', 'INFORMATION_SCHEMA', 'sys')
   AND dp.name NOT LIKE '##%'
 ORDER BY dp.name;
+
+
+
+
+dbHawkAccess
+JACKSONLEWIS\JL SQL Admins
+JACKSONLEWIS\JLSL_BigHand
+JACKSONLEWIS\JLSLUser
+JACKSONLEWIS\msaDB_Dev03$
+JACKSONLEWIS\svc_iridium_dev
+JACKSONLEWIS\SVC_LogicM
+JACKSONLEWIS\svc_Rubrik
