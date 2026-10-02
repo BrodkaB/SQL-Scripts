@@ -53,3 +53,43 @@ JACKSONLEWIS\msaDB_Dev03$
 JACKSONLEWIS\svc_iridium_dev
 JACKSONLEWIS\SVC_LogicM
 JACKSONLEWIS\svc_Rubrik
+
+
+USE [YourDatabaseName];
+GO
+
+DECLARE @Users TABLE
+(
+    UserName sysname
+);
+
+INSERT INTO @Users (UserName)
+VALUES
+    (N'dbHawkAccess'),
+    (N'JACKSONLEWIS\JL SQL Admins'),
+    (N'JACKSONLEWIS\JLSL_BigHand'),
+    (N'JACKSONLEWIS\JLSLUser'),
+    (N'JACKSONLEWIS\msaDB_Dev03$'),
+    (N'JACKSONLEWIS\svc_iridium_dev'),
+    (N'JACKSONLEWIS\SVC_LogicM'),
+    (N'JACKSONLEWIS\svc_Rubrik');
+
+SELECT
+    u.UserName AS [RequestedUser],
+    CASE
+        WHEN dp.principal_id IS NOT NULL THEN 'YES'
+        ELSE 'NO'
+    END AS [ExistsInDatabase],
+    dp.type_desc AS [UserType],
+    dp.authentication_type_desc AS [AuthenticationType],
+    r.name AS [DatabaseRole]
+FROM @Users u
+LEFT JOIN sys.database_principals dp
+    ON dp.name = u.UserName
+LEFT JOIN sys.database_role_members drm
+    ON drm.member_principal_id = dp.principal_id
+LEFT JOIN sys.database_principals r
+    ON r.principal_id = drm.role_principal_id
+ORDER BY
+    u.UserName,
+    r.name;
