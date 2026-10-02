@@ -93,3 +93,15 @@ LEFT JOIN sys.database_principals r
 ORDER BY
     u.UserName,
     r.name;
+
+
+
+Permissions for ADR_LIVE on JLDB-DEV-03
+dbHawkAccess no permissions
+JACKSONLEWIS\JL SQL Admins no permissions
+JACKSONLEWIS\JLSL_BigHand no permissions
+JACKSONLEWIS\JLSLUser reader
+JACKSONLEWIS\msaDB_Dev03$ no permissions
+JACKSONLEWIS\svc_iridium_dev no permissions
+JACKSONLEWIS\SVC_LogicM no permissions
+JACKSONLEWIS\svc_Rubrik as usual
