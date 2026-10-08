@@ -1,4 +1,7 @@
 Select-String -Path "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini" -Pattern "Gen2ServerKey"
 
 
+Copy-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini" "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini.bak" -Force
+Get-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini.bak"
+
 Get-ChildItem "C:\Program Files\Microsoft SQL Server" -Recurse -Filter msmdsrv.ini -ErrorAction SilentlyContinue | Select-Object FullName
