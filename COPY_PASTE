@@ -11,3 +11,16 @@ Get-ChildItem "C:\Program Files\Microsoft SQL Server" -Recurse -Filter msmdsrv.i
 $config = "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini"; (Get-Content $config) -replace '<Gen2ServerKey>1</Gen2ServerKey>', '<Gen2ServerKey>0</Gen2ServerKey>' | Set-Content $config
 ---
 Select-String -Path $config -Pattern "Gen2ServerKey"
+
+
+
+
+
+
+
+PS C:\Users\Brodkab> Select-String -Path $config -Pattern "Gen2ServerKey"
+
+C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini:528:           <Gen2ServerKeyWithRoamingSupport>1</Gen2ServerKeyWithRoamingSupport>
+C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini:547:   <Gen2ServerKey>0</Gen2ServerKey>
+
+PS C:\Users\Brodkab>
