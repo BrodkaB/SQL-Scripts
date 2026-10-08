@@ -1,3 +1,9 @@
-Executing the query ...
-The StorageLocation element at line 12, column 20 (namespace http://schemas.microsoft.com/analysisservices/2003/engine) cannot appear under Envelope/Body/Execute/Command/Create/ObjectDefinition/Database.
-Run complete
+<Create xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ObjectDefinition>
+    <Database xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <Name>TestDB_XMLA</Name>
+      <Description>Test database</Description>
+    </Database>
+  </ObjectDefinition>
+</Create>
