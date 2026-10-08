@@ -1,1 +1,1 @@
-icacls "D:\SSASData" /grant "SQLServerMSASUser$AVS-SSAS-T01$MSSQLSERVER:(OI)(CI)(F)"
+D:\Backup\|E:\OLAPLog\|D:\OLAPData\|D:\SSASData\
