@@ -5,3 +5,9 @@ Copy-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\
 Get-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini.bak"
 
 Get-ChildItem "C:\Program Files\Microsoft SQL Server" -Recurse -Filter msmdsrv.ini -ErrorAction SilentlyContinue | Select-Object FullName
+
+
+
+$config = "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini"; (Get-Content $config) -replace '<Gen2ServerKey>1</Gen2ServerKey>', '<Gen2ServerKey>0</Gen2ServerKey>' | Set-Content $config
+---
+Select-String -Path $config -Pattern "Gen2ServerKey"
