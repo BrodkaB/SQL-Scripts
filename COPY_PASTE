@@ -1,3 +1,1 @@
-Executing the query ...
-Internal error: An unexpected error occurred (file 'pcserialize.cpp', line 1593, function 'ASDatabase::Serialize').
-Run complete
+Select-String -Path "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini" -Pattern "Gen2ServerKey"
