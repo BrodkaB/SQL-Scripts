@@ -1,9 +1,3 @@
-<Create xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <ObjectDefinition>
-    <Database xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <Name>TestDB_XMLA</Name>
-      <Description>Test database</Description>
-    </Database>
-  </ObjectDefinition>
-</Create>
+Executing the query ...
+Internal error: An unexpected error occurred (file 'pcserialize.cpp', line 1593, function 'ASDatabase::Serialize').
+Run complete
