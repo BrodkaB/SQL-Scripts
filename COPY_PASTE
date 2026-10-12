@@ -71,3 +71,13 @@ WHERE drs.is_local = 0
 ORDER BY
     database_name,
     ar.replica_server_name;
+
+
+SELECT
+    DB_NAME(database_id) AS database_name,
+    synchronization_state_desc,
+    synchronization_health_desc,
+    is_suspended,
+    suspend_reason_desc
+FROM sys.dm_hadr_database_replica_states
+WHERE is_local = 1;
