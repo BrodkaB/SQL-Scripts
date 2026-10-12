@@ -81,3 +81,23 @@ SELECT
     suspend_reason_desc
 FROM sys.dm_hadr_database_replica_states
 WHERE is_local = 1;
+
+SQL Server Investigation – Expert Billing, Aderant Appshell Timetrix360 Applications issues
+
+Following several reports from the Billing team regarding applications performance and functionality issues in early and mid-September, an investigation of the SQL Server environment was carried out.
+
+Findings:
+
+SQL Server error logs were reviewed for the reported timestamps, with no relevant errors or abnormalities identified that could explain the reported issues.
+
+No database maintenance activities were running during the reported incidents.
+
+No evidence was found in the reviewed logs to indicate that SQL Server was the root cause of the reported problems.
+
+Additional Context:
+
+In May, a meeting was held with the AAC team to discuss the configuration of our Aderant environment. Given the findings of the current investigation, it may be worth revisiting the environment configuration and considering other potential causes, including application-level issues, network connectivity, or the underlying virtual machine (VM) infrastructure.
+
+Conclusion:
+
+Based on the available evidence, no direct link between the reported incidents and SQL Server has been established. Further investigation involving the application support, network, and infrastructure teams is recommended to identify the root cause.
