@@ -1,26 +1,73 @@
-Select-String -Path "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini" -Pattern "Gen2ServerKey"
+SELECT
+    d.name AS database_name,
+    d.recovery_model_desc,
+    d.log_reuse_wait_desc,
+    ls.total_log_size_mb,
+    ls.used_log_space_mb,
+    ls.used_log_space_in_percent
+FROM sys.databases AS d
+CROSS APPLY sys.dm_db_log_space_usage AS ls
+WHERE d.database_id > 4
+ORDER BY ls.used_log_space_in_percent DESC;
 
 
-Copy-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini" "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini.bak" -Force
-Get-Item "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini.bak"
+DROP TABLE IF EXISTS #LogUsage;
 
-Get-ChildItem "C:\Program Files\Microsoft SQL Server" -Recurse -Filter msmdsrv.ini -ErrorAction SilentlyContinue | Select-Object FullName
+CREATE TABLE #LogUsage
+(
+    database_name sysname,
+    recovery_model_desc nvarchar(60),
+    log_reuse_wait_desc nvarchar(60),
+    total_log_size_mb decimal(19,2),
+    used_log_space_mb decimal(19,2),
+    used_log_space_in_percent decimal(9,2)
+);
+
+DECLARE @sql nvarchar(max) = N'';
+
+SELECT @sql += N'
+USE ' + QUOTENAME(name) + N';
+
+INSERT INTO #LogUsage
+SELECT
+    DB_NAME(),
+    d.recovery_model_desc,
+    d.log_reuse_wait_desc,
+    l.total_log_size_in_bytes / 1048576.0,
+    l.used_log_space_in_bytes / 1048576.0,
+    l.used_log_space_in_percent
+FROM sys.databases AS d
+CROSS JOIN sys.dm_db_log_space_usage AS l
+WHERE d.database_id = DB_ID();'
+FROM sys.databases
+WHERE database_id > 4
+  AND state_desc = 'ONLINE';
+
+EXEC sys.sp_executesql @sql;
+
+SELECT *
+FROM #LogUsage
+ORDER BY used_log_space_in_percent DESC;
 
 
-
-$config = "C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini"; (Get-Content $config) -replace '<Gen2ServerKey>1</Gen2ServerKey>', '<Gen2ServerKey>0</Gen2ServerKey>' | Set-Content $config
----
-Select-String -Path $config -Pattern "Gen2ServerKey"
-
-
-
-
-
-
-
-PS C:\Users\Brodkab> Select-String -Path $config -Pattern "Gen2ServerKey"
-
-C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini:528:           <Gen2ServerKeyWithRoamingSupport>1</Gen2ServerKeyWithRoamingSupport>
-C:\Program Files\Microsoft SQL Server\MSAS17.MSSQLSERVER\OLAP\Config\msmdsrv.ini:547:   <Gen2ServerKey>0</Gen2ServerKey>
-
-PS C:\Users\Brodkab>
+SELECT
+    DB_NAME(drs.database_id) AS database_name,
+    ar.replica_server_name,
+    ar.availability_mode_desc,
+    drs.synchronization_state_desc,
+    drs.synchronization_health_desc,
+    drs.is_suspended,
+    drs.log_send_queue_size,
+    drs.log_send_rate,
+    drs.redo_queue_size,
+    drs.redo_rate,
+    drs.last_sent_time,
+    drs.last_hardened_time,
+    drs.last_redone_time
+FROM sys.dm_hadr_database_replica_states AS drs
+JOIN sys.availability_replicas AS ar
+    ON drs.replica_id = ar.replica_id
+WHERE drs.is_local = 0
+ORDER BY
+    database_name,
+    ar.replica_server_name;
