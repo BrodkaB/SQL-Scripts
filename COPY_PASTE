@@ -8,3 +8,17 @@ Where-Object { $_.PSChildName -match 'SQLNCLI|MSOLEDBSQL' } |
 Select-Object -ExpandProperty PSChildName
 
 Provider=MSOLEDBSQL.1;Data Source=JLDB-DEV-03;Persist Security Info=True;Integrated Security=SSPI;Initial Catalog=BI-DEV;Packet Size=32767;MultiSubnetFailover=True
+
+<Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
+  <RequestType>DISCOVER_DATASOURCES</RequestType>
+  <Restrictions>
+    <RestrictionList>
+      <DataSourceName>BI-Relational</DataSourceName>
+    </RestrictionList>
+  </Restrictions>
+  <Properties>
+    <PropertyList>
+      <Catalog>BI-DEV</Catalog>
+    </PropertyList>
+  </Properties>
+</Discover>
