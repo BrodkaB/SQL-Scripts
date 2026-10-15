@@ -1,13 +1,2 @@
-PS C:\Windows\system32> Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19' |
-    Select-Object '(default)'
-
-(default)                                
----------                                
-Microsoft OLE DB Driver 19 for SQL Server
-
-
-
-PS C:\Windows\system32> Test-Path 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19'
-True
-
-PS C:\Windows\system32> 
+Get-ChildItem 'C:\Program Files\Microsoft SQL Server' -Filter 'MSOLEDBSQL19.dll' -Recurse -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty FullName
