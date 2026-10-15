@@ -1,4 +1,4 @@
-$thumb = '17F821987A94DF450E7A10F7B9533F758A3BE3AF'
+PS C:\Windows\system32> $thumb = '17F821987A94DF450E7A10F7B9533F758A3BE3AF'
 $cert = Get-ChildItem Cert:\LocalMachine\My |
     Where-Object Thumbprint -eq $thumb
 
@@ -17,3 +17,11 @@ $chain.ChainElements |
             Thumbprint = $_.Certificate.Thumbprint
         }
     } | Format-Table -AutoSize
+Chain valid: True
+
+Subject                                                Issuer                                                 Thumbprint                              
+-------                                                ------                                                 ----------                              
+                                                       CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net 17F821987A94DF450E7A10F7B9533F758A3BE3AF
+CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net CN=JL-RCA-E01-CA                                       52B8AB154FB86EC90A8A2E8B208257CA9DD0DC32
+CN=JL-RCA-E01-CA                                       CN=JL-RCA-E01-CA                                       18C8417BEB366B0F04DD8FEC1633F9D9FD2D50C5
+
