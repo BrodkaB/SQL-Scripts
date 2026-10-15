@@ -1,4 +1,23 @@
-Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19\CLSID'
+PS C:\Windows\system32> Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19\CLSID'
 
-Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' |
+
+
+(default)    : {EE5DE99A-4453-4C96-861C-F8832A7F59FE}
+PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19\CLSID
+PSParentPath : Microsoft.PowerShell.Core\Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19
+PSChildName  : CLSID
+PSProvider   : Microsoft.PowerShell.Core\Registry
+
+
+
+
+PS C:\Windows\system32> Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' |
     Select-Object Version, PatchLevel
+
+Version  PatchLevel
+-------  ----------
+19.4.2.0 19.4.2.0  
+
+
+
+PS C:\Windows\system32> 
