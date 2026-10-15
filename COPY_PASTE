@@ -1,7 +1,10 @@
-Get-ItemProperty `
-  "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" ,
-  "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" |
-Where-Object {
-    $_.DisplayName -match "OLE DB Driver|MSOLEDBSQL|SQL Server Native Client"
-} |
-Select-Object DisplayName, DisplayVersion, Publisher
+Get-ChildItem "HKLM:\SOFTWARE\Classes\CLSID" |
+ForEach-Object {
+    $p = Get-ItemProperty $_.PSPath -ErrorAction SilentlyContinue
+    if ($p.'ProgID' -like '*MSOLEDBSQL*') {
+        [PSCustomObject]@{
+            CLSID = $_.PSChildName
+            ProgID = $p.ProgID
+        }
+    }
+}
