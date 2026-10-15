@@ -1,2 +1,7 @@
-Get-ChildItem 'C:\Program Files\Microsoft SQL Server' -Filter 'MSOLEDBSQL19.dll' -Recurse -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty FullName
+Get-ItemProperty `
+  'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' `
+  -ErrorAction SilentlyContinue
+
+Get-ChildItem 'C:\Program Files\Common Files\System\Ole DB' `
+  -Filter '*MSOLEDBSQL*' -Recurse -ErrorAction SilentlyContinue |
+  Select-Object -ExpandProperty FullName
