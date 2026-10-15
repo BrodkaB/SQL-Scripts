@@ -1,24 +1,34 @@
-Get-ChildItem "HKLM:\SOFTWARE\Classes" -ErrorAction SilentlyContinue |
-Where-Object { $_.PSChildName -match 'SQLNCLI|MSOLEDBSQL' } |
-Select-Object -ExpandProperty PSChildName
-
-
-Get-ChildItem "HKLM:\SOFTWARE\Classes\WOW6432Node" -ErrorAction SilentlyContinue |
-Where-Object { $_.PSChildName -match 'SQLNCLI|MSOLEDBSQL' } |
-Select-Object -ExpandProperty PSChildName
-
-Provider=MSOLEDBSQL.1;Data Source=JLDB-DEV-03;Persist Security Info=True;Integrated Security=SSPI;Initial Catalog=BI-DEV;Packet Size=32767;MultiSubnetFailover=True
-
-<Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
-  <RequestType>DISCOVER_DATASOURCES</RequestType>
-  <Restrictions>
-    <RestrictionList>
-      <DataSourceName>BI-Relational</DataSourceName>
-    </RestrictionList>
-  </Restrictions>
-  <Properties>
-    <PropertyList>
-      <Catalog>BI-DEV</Catalog>
-    </PropertyList>
-  </Properties>
-</Discover>
+<return xmlns="urn:schemas-microsoft-com:xml-analysis">
+  <root xmlns="urn:schemas-microsoft-com:xml-analysis:rowset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msxmla="http://schemas.microsoft.com/analysisservices/2003/xmla">
+    <xsd:schema targetNamespace="urn:schemas-microsoft-com:xml-analysis:rowset" xmlns:sql="urn:schemas-microsoft-com:xml-sql" elementFormDefault="qualified">
+      <xsd:element name="root">
+        <xsd:complexType>
+          <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="row" type="row" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="uuid">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="xmlDocument">
+        <xsd:sequence>
+          <xsd:any />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="row">
+        <xsd:sequence>
+          <xsd:element sql:field="DataSourceName" name="DataSourceName" type="xsd:string" />
+          <xsd:element sql:field="DataSourceDescription" name="DataSourceDescription" type="xsd:string" minOccurs="0" />
+          <xsd:element sql:field="URL" name="URL" type="xsd:string" minOccurs="0" />
+          <xsd:element sql:field="DataSourceInfo" name="DataSourceInfo" type="xsd:string" minOccurs="0" />
+          <xsd:element sql:field="ProviderName" name="ProviderName" type="xsd:string" />
+          <xsd:element sql:field="ProviderType" name="ProviderType" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element sql:field="AuthenticationMode" name="AuthenticationMode" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </root>
+</return>
