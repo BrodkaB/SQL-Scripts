@@ -1,36 +1,10 @@
-
-PS C:\Windows\system32> $cs = "Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;Encrypt=No"
-
-$conn = New-Object System.Data.OleDb.OleDbConnection($cs)
-
-try {
-    $conn.Open()
-    "CONNECTED"
-}
-catch {
-    $_.Exception.ToString()
-}
-finally {
-    $conn.Dispose()
-}
-System.Management.Automation.MethodInvocationException: Exception calling "Open" with "0" argument(s): "Client unable to establish connection. For solutions relat
-ed to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2227882.
-SSL Provider: The certificate chain was issued by an authority that is not trusted." ---> System.Data.OleDb.OleDbException: Client unable to establish connection.
- For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2227882.
-SSL Provider: The certificate chain was issued by an authority that is not trusted.
-   at System.Data.OleDb.OleDbConnectionInternal..ctor(OleDbConnectionString constr, OleDbConnection connection)
-   at System.Data.OleDb.OleDbConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnecti
-onPool pool, DbConnection owningObject)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup, DbConnectionOptions u
-serOptions)
-   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, 
-DbConnectionInternal oldConnection, DbConnectionInternal& connection)
-   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionS
-ource`1 retry, DbConnectionOptions userOptions)
-   at System.Data.ProviderBase.DbConnectionInternal.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.OleDb.OleDbConnection.Open()
-   at CallSite.Target(Closure , CallSite , Object )
-   --- End of inner exception stack trace ---
-   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
-   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
-   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+Get-ChildItem Cert:\LocalMachine\My |
+    Select-Object Subject, Thumbprint, HasPrivateKey,
+        NotBefore, NotAfter,
+        @{Name='DNS'; Expression={
+            ($_.DnsNameList | ForEach-Object { $_.Unicode }) -join ', '
+        }},
+        @{Name='EKU'; Expression={
+            ($_.EnhancedKeyUsageList | ForEach-Object { $_.FriendlyName }) -join ', '
+        }} |
+    Format-List
