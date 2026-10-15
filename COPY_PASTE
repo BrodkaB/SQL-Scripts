@@ -1,14 +1,3 @@
-$cs = "Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;TrustServerCertificate=Yes"
-
-$conn = New-Object System.Data.OleDb.OleDbConnection($cs)
-
-try {
-    $conn.Open()
-    "CONNECTED"
-}
-catch {
-    $_.Exception.ToString()
-}
-finally {
-    $conn.Dispose()
-}
+Get-ChildItem Cert:\LocalMachine\My |
+    Select-Object Subject, Issuer, Thumbprint, NotBefore, NotAfter,
+        @{Name='HasPrivateKey';Expression={$_.HasPrivateKey}}
