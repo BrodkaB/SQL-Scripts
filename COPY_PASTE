@@ -1,3 +1,23 @@
-Get-ChildItem Cert:\LocalMachine\My |
+PS C:\Windows\system32> Get-ChildItem Cert:\LocalMachine\My |
     Select-Object Subject, Issuer, Thumbprint, NotBefore, NotAfter,
         @{Name='HasPrivateKey';Expression={$_.HasPrivateKey}}
+
+
+Subject       : 
+Issuer        : CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net
+Thumbprint    : E6BC542664D073B989B42DA4EE57B2733FBBD9DE
+NotBefore     : 11/24/2025 1:21:36 PM
+NotAfter      : 11/24/2027 1:31:36 PM
+HasPrivateKey : True
+
+Subject       : 
+Issuer        : CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net
+Thumbprint    : 17F821987A94DF450E7A10F7B9533F758A3BE3AF
+NotBefore     : 6/1/2026 12:57:08 PM
+NotAfter      : 6/1/2027 12:57:08 PM
+HasPrivateKey : True
+
+
+
+
+PS C:\Windows\system32> 
