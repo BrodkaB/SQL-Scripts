@@ -1,12 +1,23 @@
-Get-ChildItem "HKLM:\SOFTWARE\Classes" |
+PS C:\Windows\system32> Get-ChildItem "HKLM:\SOFTWARE\Classes" |
+Where-Object {
+    $_.PSChildName -match "MSOLEDBSQL"
+} |
+Select-Object -ExpandProperty PSChildName
+MSOLEDBSQL19
+MSOLEDBSQL19.1
+MSOLEDBSQL19.AdvancedPage
+MSOLEDBSQL19.AdvancedPage.1
+MSOLEDBSQL19.ConnectionPage
+MSOLEDBSQL19.ConnectionPage.1
+MSOLEDBSQL19.Enumerator
+MSOLEDBSQL19.Enumerator.1
+MSOLEDBSQL19.ErrorLookup
+MSOLEDBSQL19.ErrorLookup.1
+
+PS C:\Windows\system32> Get-ChildItem "HKLM:\SOFTWARE\Classes\WOW6432Node" -ErrorAction SilentlyContinue |
 Where-Object {
     $_.PSChildName -match "MSOLEDBSQL"
 } |
 Select-Object -ExpandProperty PSChildName
 
-
-Get-ChildItem "HKLM:\SOFTWARE\Classes\WOW6432Node" -ErrorAction SilentlyContinue |
-Where-Object {
-    $_.PSChildName -match "MSOLEDBSQL"
-} |
-Select-Object -ExpandProperty PSChildName
+PS C:\Windows\system32> 
