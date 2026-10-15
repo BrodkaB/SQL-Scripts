@@ -1,2 +1,8 @@
-Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' |
-    Format-List *
+Version          : 19.4.2.0
+CSDVersionNumber : 0
+PatchLevel       : 19.4.2.0
+PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion
+PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19
+PSChildName      : CurrentVersion
+PSDrive          : HKLM
+PSProvider       : Microsoft.PowerShell.Core\Registry
