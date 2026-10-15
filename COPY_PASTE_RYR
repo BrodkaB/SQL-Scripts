@@ -1,18 +1,43 @@
-Name                   Value                           
-----                   -----                           
-Name                   DR_SITE_LIS                     
-DnsName                DR_SITE_LIS                     
-Aliases                                                
-RemapPipeNames         1                               
-HostRecordTTL          1200                            
-RegisterAllProvidersIP 1                               
-PublishPTRRecords      0                               
-ADAware                1                               
-ResourceData           {2, 0, 0, 0...}                 
-StatusNetBIOS          0                               
-StatusDNS              9005                            
-StatusKerberos         0                               
-CreatingDC             \\NSKYADS04.nsky.ryanair.com    
-LastDNSUpdateTime      15/10/2026 10:14:36             
-ObjectGUID             5f731dbbe1b88c42b3dba78d36d29cdd
-DnsSuffix              nsky.ryanair.com                
+
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8648:00001cac.00002490::2026/10/15-11:14:35.584 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Starting Authenticated DNS Call dance, 
+Label="RegisterInDns"
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8649:00001cac.00002490::2026/10/15-11:14:35.584 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Getting DnsCredentials for VCO
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8657:00001cac.00002490::2026/10/15-11:14:35.704 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: GetDnsCredentials: Password Selected: Primary, 
+User: 'DR_SITE_LIS$', Domain: 'nsky.ryanair.com'
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8658:00001cac.00002490::2026/10/15-11:14:35.704 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: GetDnsCredentials: DnsAcquireContextHandle_W 
+Suceeded, User: 'DR_SITE_LIS$', Domain: 'nsky.ryanair.com'
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8659:00001cac.00002490::2026/10/15-11:14:35.704 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Impersonating VCO. IsCore? false
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8677:00001cac.00002490::2026/10/15-11:14:36.110 WARN  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Failed to unregister DNS records while 
+impersonating VCO user 'DR_SITE_LIS$' with error 9005. Falling back to Attempting using the CNO account
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8678:00001cac.00002490::2026/10/15-11:14:36.110 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Getting DnsCredentials for CNO
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8686:00001cac.00002490::2026/10/15-11:14:36.251 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: GetDnsCredentials: Password Selected: Primary, 
+User: 'AOHA_NSKY_DR$', Domain: 'nsky.ryanair.com'
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8687:00001cac.00002490::2026/10/15-11:14:36.251 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: GetDnsCredentials: DnsAcquireContextHandle_W 
+Suceeded, User: 'AOHA_NSKY_DR$', Domain: 'nsky.ryanair.com'
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8688:00001cac.00002490::2026/10/15-11:14:36.251 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Impersonating CNO
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8706:00001cac.00002490::2026/10/15-11:14:36.625 WARN  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Failed DNS registration with error 9005 for Name: 
+DR_SITE_LIS (Type: Singleton)
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8707:00001cac.00002490::2026/10/15-11:14:36.626 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Dns: Updating status after a DNS registration
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8708:00001cac.00002490::2026/10/15-11:14:36.626 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Configuration: Last Dns Update time changed
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8710:00001cac.00002490::2026/10/15-11:14:36.630 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Configuration: Setting Last Dns Update time in clusdb 
+returned status 0
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8711:00001cac.00002490::2026/10/15-11:14:36.630 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Client: Synching with slow operation
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8731:00001cac.00002490::2026/10/15-11:14:36.647 INFO  [RES] Network Name: [NNLIB] DNS Dynamic Registration Enabled on Adapter: Ethernet0, added 2 of 2 
+Valid DNS Servers (Network: Cluster Network 1 [0])
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8734:00001cac.00002490::2026/10/15-11:14:36.648 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Client: Final alias is 10.6.4.227
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8735:00001cac.00002490::2026/10/15-11:14:36.648 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Client: RegisterFqdnWithLsa - Found FQDN 
+DR_SITE_LIS.nsky.ryanair.com that is already registered with LSA
+\\DRNSKYSQL03\admin$\Cluster\Reports\Cluster.log:8736:00001cac.00002490::2026/10/15-11:14:36.648 INFO  [RES] Network Name <AG_DR_SITE_DR_SITE_LIS>: Configuration: InternalReplyHandler: 0
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:33:e63d78bb-29a0-4ad2-ad07-0ba8b50babfc,AG_DR_SITE_DR_SITE_LIS,Unknown,2e6aab96-99f6-4e19-bc5f-98b3bc61099a,Network 
+Name,0,0,0,0,0,false,2,false,false,false,OfflineSavingCheckpoints,9,false,false,false,false,false,0,13d15:14:54.422,0,0,5000,60000,300000,180000,0,0,2,600000,1,500,1,2,false,false,false,0,No Cached 
+value,0,0,0,0,0,0,0,0,false,false,0,false,2026/10/01-13:51:23.918,N/A,
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:657:[Verbose] 0000104c.00002724::2026/10/15-02:59:35.535 DBG   [RCM] Posting property change notification for resource 'AG_DR_SITE_DR_SITE_LIS'
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:664:[Verbose] 0000104c.00002c70::2026/10/15-02:59:35.544 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_NAME)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:665:[Verbose] 0000104c.00001688::2026/10/15-02:59:35.544 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_NAME)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:675:[Verbose] 0000104c.00001688::2026/10/15-02:59:35.640 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_ID)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:676:[Verbose] 0000104c.00001688::2026/10/15-02:59:35.640 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_ID)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:1802:[Verbose] 0000104c.000033c8::2026/10/15-03:14:36.595 DBG   [RCM] Posting property change notification for resource 'AG_DR_SITE_DR_SITE_LIS'
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:1809:[Verbose] 0000104c.000033c8::2026/10/15-03:14:36.607 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_NAME)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:1810:[Verbose] 0000104c.000033c8::2026/10/15-03:14:36.607 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_NAME)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:1820:[Verbose] 0000104c.000033c8::2026/10/15-03:14:36.712 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_ID)
+\\DRNSKYSQL04\admin$\Cluster\Reports\Cluster.log:1821:[Verbose] 0000104c.000033c8::2026/10/15-03:14:36.712 DBG   [RCM] rcm::RcmResource::Control: (AG_DR_SITE_DR_SITE_LIS, GET_ID)
