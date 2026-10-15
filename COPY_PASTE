@@ -1,1 +1,4 @@
-            <ConnectionString>Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;TrustServerCertificate=True</ConnectionString>
+Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19' |
+    Select-Object '(default)'
+
+Test-Path 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19'
