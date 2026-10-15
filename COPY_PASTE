@@ -1,7 +1,22 @@
-Get-ItemProperty `
+PS C:\Windows\system32> Get-ItemProperty `
   'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' `
   -ErrorAction SilentlyContinue
 
-Get-ChildItem 'C:\Program Files\Common Files\System\Ole DB' `
+
+Version          : 19.4.2.0
+CSDVersionNumber : 0
+PatchLevel       : 19.4.2.0
+PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion
+PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19
+PSChildName      : CurrentVersion
+PSDrive          : HKLM
+PSProvider       : Microsoft.PowerShell.Core\Registry
+
+
+
+
+PS C:\Windows\system32> Get-ChildItem 'C:\Program Files\Common Files\System\Ole DB' `
   -Filter '*MSOLEDBSQL*' -Recurse -ErrorAction SilentlyContinue |
   Select-Object -ExpandProperty FullName
+
+PS C:\Windows\system32> 
