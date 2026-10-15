@@ -1,14 +1,15 @@
+Get-ItemProperty `
+  "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\SQLNCLI11" `
+  -ErrorAction SilentlyContinue
 
-$keys = @(
-    "HKLM:\SOFTWARE\Classes\MSOLEDBSQL",
-    "HKLM:\SOFTWARE\Classes\MSOLEDBSQL.1",
-    "HKLM:\SOFTWARE\WOW6432Node\Classes\MSOLEDBSQL",
-    "HKLM:\SOFTWARE\WOW6432Node\Classes\MSOLEDBSQL.1"
-)
+Get-ItemProperty `
+  "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL" `
+  -ErrorAction SilentlyContinue
 
-foreach ($key in $keys) {
-    [PSCustomObject]@{
-        RegistryKey = $key
-        Exists      = Test-Path $key
-    }
-}
+Get-ItemProperty `
+  "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19" `
+  -ErrorAction SilentlyContinue
+
+Get-ChildItem "C:\Program Files\Microsoft SQL Server" `
+  -Filter "msoledbsql*.dll" -Recurse -ErrorAction SilentlyContinue |
+  Select-Object -ExpandProperty FullName
