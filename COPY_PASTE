@@ -1,8 +1,14 @@
-Version          : 19.4.2.0
-CSDVersionNumber : 0
-PatchLevel       : 19.4.2.0
-PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion
-PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19
-PSChildName      : CurrentVersion
-PSDrive          : HKLM
-PSProvider       : Microsoft.PowerShell.Core\Registry
+$cs = "Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;Encrypt=No"
+
+$conn = New-Object System.Data.OleDb.OleDbConnection($cs)
+
+try {
+    $conn.Open()
+    "CONNECTED"
+}
+catch {
+    $_.Exception.ToString()
+}
+finally {
+    $conn.Dispose()
+}
