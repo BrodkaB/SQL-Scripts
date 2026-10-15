@@ -1,7 +1,14 @@
-SELECT
-    session_id,
-    encrypt_option,
-    auth_scheme,
-    net_transport
-FROM sys.dm_exec_connections
-WHERE session_id = @@SPID;
+$cs = "Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;TrustServerCertificate=Yes"
+
+$conn = New-Object System.Data.OleDb.OleDbConnection($cs)
+
+try {
+    $conn.Open()
+    "CONNECTED"
+}
+catch {
+    $_.Exception.ToString()
+}
+finally {
+    $conn.Dispose()
+}
