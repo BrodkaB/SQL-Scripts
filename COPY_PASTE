@@ -11,19 +11,23 @@
   </Parallel>
 </Batch>
 	Processing Dimension 'Bill' completed.
-		Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+		Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute '(All)' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
+		Processing Dimension Attribute 'Bill Adjustment' completed.
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute 'Bill Date' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute 'Bill Group' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
+		Processing Dimension Attribute 'Disb Adjustment' completed.
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute 'Internal ID' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute 'Last Payment Date' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 		Processing Dimension Attribute 'Time Adjustment' completed.
-			Start time: 10/15/2026 10:52:39 AM; End time: 10/15/2026 10:52:39 AM; Duration: 0:00:00
+			Start time: 10/15/2026 10:54:38 AM; End time: 10/15/2026 10:54:38 AM; Duration: 0:00:00
 Errors and Warnings from Response
 	Internal error: The operation terminated unsuccessfully.
 	OLE DB error: OLE DB or ODBC error: Client unable to establish connection. For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2227882., 08001, SSL Provider: The certificate chain was issued by an authority that is not trusted.
@@ -47,3 +51,13 @@ Errors and Warnings from Response
 	Errors in the high-level relational engine. A connection could not be made to the data source with the DataSourceID of 'BI-Relational', Name of 'BI-Relational'.
 	Errors in the OLAP storage engine: An error occurred while the dimension, with the ID of 'Bill', Name of 'Bill' was being processed.
 	Errors in the OLAP storage engine: An error occurred while the 'Bill Group' attribute of the 'Bill' dimension from the 'BI-DEV' database was being processed.
+	OLE DB error: OLE DB or ODBC error: Client unable to establish connection. For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2227882., 08001, SSL Provider: The certificate chain was issued by an authority that is not trusted.
+, 08001.
+	Errors in the high-level relational engine. A connection could not be made to the data source with the DataSourceID of 'BI-Relational', Name of 'BI-Relational'.
+	Errors in the OLAP storage engine: An error occurred while the dimension, with the ID of 'Bill', Name of 'Bill' was being processed.
+	Errors in the OLAP storage engine: An error occurred while the 'Time Adjustment' attribute of the 'Bill' dimension from the 'BI-DEV' database was being processed.
+	OLE DB error: OLE DB or ODBC error: Client unable to establish connection. For solutions related to encryption errors, see https://go.microsoft.com/fwlink/?linkid=2227882., 08001, SSL Provider: The certificate chain was issued by an authority that is not trusted.
+, 08001.
+	Errors in the high-level relational engine. A connection could not be made to the data source with the DataSourceID of 'BI-Relational', Name of 'BI-Relational'.
+	Errors in the OLAP storage engine: An error occurred while the dimension, with the ID of 'Bill', Name of 'Bill' was being processed.
+	Errors in the OLAP storage engine: An error occurred while the 'Disb Adjustment' attribute of the 'Bill' dimension from the 'BI-DEV' database was being processed.
