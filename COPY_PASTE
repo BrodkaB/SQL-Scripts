@@ -1,8 +1,16 @@
-Get-ChildItem Cert:\LocalMachine\Root |
+PS C:\Windows\system32> Get-ChildItem Cert:\LocalMachine\Root |
     Where-Object { $_.Subject -like '*jacksonlewis-JL-ICA-E01-CA*' } |
     Select-Object Subject, Issuer, Thumbprint
 
-
-Get-ChildItem Cert:\LocalMachine\CA |
+PS C:\Windows\system32> Get-ChildItem Cert:\LocalMachine\CA |
     Where-Object { $_.Subject -like '*jacksonlewis-JL-ICA-E01-CA*' } |
     Select-Object Subject, Issuer, Thumbprint
+
+Subject                                                Issuer           Thumbprint                              
+-------                                                ------           ----------                              
+CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net CN=JL-RCA-E01-CA 5EE0F550F4A35AA7D9BB49B1E63B6E61963147A3
+CN=jacksonlewis-JL-ICA-E01-CA, DC=jacksonlewis, DC=net CN=JL-RCA-E01-CA 52B8AB154FB86EC90A8A2E8B208257CA9DD0DC32
+
+
+
+PS C:\Windows\system32> 
