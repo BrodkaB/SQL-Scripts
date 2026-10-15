@@ -6,3 +6,5 @@ Select-Object -ExpandProperty PSChildName
 Get-ChildItem "HKLM:\SOFTWARE\Classes\WOW6432Node" -ErrorAction SilentlyContinue |
 Where-Object { $_.PSChildName -match 'SQLNCLI|MSOLEDBSQL' } |
 Select-Object -ExpandProperty PSChildName
+
+Provider=MSOLEDBSQL.1;Data Source=JLDB-DEV-03;Persist Security Info=True;Integrated Security=SSPI;Initial Catalog=BI-DEV;Packet Size=32767;MultiSubnetFailover=True
