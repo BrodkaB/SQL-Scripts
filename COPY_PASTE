@@ -1,13 +1,19 @@
-Thumbprint       : E6BC542664D073B989B42DA4EE57B2733FBBD9DE
-Subject          : 
-DNSNames         : JLDB-DEV-03.jacksonlewis.net
-EnhancedKeyUsage : GlobalProtect2, Client Authentication
-NotBefore        : 11/24/2025 1:21:36 PM
-NotAfter         : 11/24/2027 1:31:36 PM
+$thumb = '17F821987A94DF450E7A10F7B9533F758A3BE3AF'
+$cert = Get-ChildItem Cert:\LocalMachine\My |
+    Where-Object Thumbprint -eq $thumb
 
-Thumbprint       : 17F821987A94DF450E7A10F7B9533F758A3BE3AF
-Subject          : 
-DNSNames         : JLDB-DEV-03.jacksonlewis.net
-EnhancedKeyUsage : Server Authentication, Client Authentication
-NotBefore        : 6/1/2026 12:57:08 PM
-NotAfter         : 6/1/2027 12:57:08 PM
+$chain = New-Object System.Security.Cryptography.X509Certificates.X509Chain
+$ok = $chain.Build($cert)
+
+"Chain valid: $ok"
+$chain.ChainStatus |
+    Format-Table Status, StatusInformation -AutoSize
+
+$chain.ChainElements |
+    ForEach-Object {
+        [PSCustomObject]@{
+            Subject    = $_.Certificate.Subject
+            Issuer     = $_.Certificate.Issuer
+            Thumbprint = $_.Certificate.Thumbprint
+        }
+    } | Format-Table -AutoSize
