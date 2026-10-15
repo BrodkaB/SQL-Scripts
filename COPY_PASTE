@@ -1,34 +1,13 @@
-<return xmlns="urn:schemas-microsoft-com:xml-analysis">
-  <root xmlns="urn:schemas-microsoft-com:xml-analysis:rowset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msxmla="http://schemas.microsoft.com/analysisservices/2003/xmla">
-    <xsd:schema targetNamespace="urn:schemas-microsoft-com:xml-analysis:rowset" xmlns:sql="urn:schemas-microsoft-com:xml-sql" elementFormDefault="qualified">
-      <xsd:element name="root">
-        <xsd:complexType>
-          <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-            <xsd:element name="row" type="row" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:simpleType name="uuid">
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="xmlDocument">
-        <xsd:sequence>
-          <xsd:any />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="row">
-        <xsd:sequence>
-          <xsd:element sql:field="DataSourceName" name="DataSourceName" type="xsd:string" />
-          <xsd:element sql:field="DataSourceDescription" name="DataSourceDescription" type="xsd:string" minOccurs="0" />
-          <xsd:element sql:field="URL" name="URL" type="xsd:string" minOccurs="0" />
-          <xsd:element sql:field="DataSourceInfo" name="DataSourceInfo" type="xsd:string" minOccurs="0" />
-          <xsd:element sql:field="ProviderName" name="ProviderName" type="xsd:string" />
-          <xsd:element sql:field="ProviderType" name="ProviderType" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
-          <xsd:element sql:field="AuthenticationMode" name="AuthenticationMode" type="xsd:string" minOccurs="0" />
-        </xsd:sequence>
-      </xsd:complexType>
-    </xsd:schema>
-  </root>
-</return>
+<Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
+  <RequestType>DISCOVER_XML_METADATA</RequestType>
+  <Restrictions>
+    <RestrictionList>
+      <DatabaseID>BI-DEV</DatabaseID>
+    </RestrictionList>
+  </Restrictions>
+  <Properties>
+    <PropertyList>
+      <ObjectExpansion>ObjectProperties</ObjectExpansion>
+    </PropertyList>
+  </Properties>
+</Discover>
