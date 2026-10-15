@@ -1,1 +1,2 @@
-Test-Path 'Cert:\LocalMachine\Root\18C8417BEB366B0F04DD8FEC1633F9D9FD2D50C5'
+Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSOLEDBSQL19\CurrentVersion' |
+    Format-List *
