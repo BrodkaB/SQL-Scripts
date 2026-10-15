@@ -1,1 +1,17 @@
-
+Get-ChildItem Cert:\LocalMachine\My |
+    Where-Object {
+        $_.Thumbprint -in @(
+            'E6BC542664D073B989B42DA4EE57B2733FBBD9DE',
+            '17F821987A94DF450E7A10F7B9533F758A3BE3AF'
+        )
+    } |
+    ForEach-Object {
+        [PSCustomObject]@{
+            Thumbprint      = $_.Thumbprint
+            Subject         = $_.Subject
+            FriendlyName    = $_.FriendlyName
+            DnsNames        = ($_.DnsNameList | ForEach-Object Unicode) -join ', '
+            EnhancedKeyUsage = ($_.EnhancedKeyUsageList | ForEach-Object FriendlyName) -join ', '
+            HasPrivateKey   = $_.HasPrivateKey
+        }
+    } | Format-List
