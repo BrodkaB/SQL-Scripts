@@ -1,4 +1,13 @@
-Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19' |
+PS C:\Windows\system32> Get-ItemProperty 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19' |
     Select-Object '(default)'
 
-Test-Path 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19'
+(default)                                
+---------                                
+Microsoft OLE DB Driver 19 for SQL Server
+
+
+
+PS C:\Windows\system32> Test-Path 'Registry::HKEY_CLASSES_ROOT\MSOLEDBSQL19'
+True
+
+PS C:\Windows\system32> 
