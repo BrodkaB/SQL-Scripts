@@ -1,29 +1,29 @@
-$cs = "Provider=MSOLEDBSQL19;Data Source=JLDB-DEV-03;Integrated Security=SSPI;Initial Catalog=BI-DEV;Encrypt=Mandatory;TrustServerCertificate=True"
+USE master;
+GO
 
-$conn = New-Object System.Data.OleDb.OleDbConnection($cs)
+DECLARE @TargetSizeMB BIGINT;
+DECLARE @SQL NVARCHAR(MAX);
 
-try {
-    $conn.Open()
-    Write-Host "CONNECTED - OLE DB connection successful" -ForegroundColor Green
+SELECT @TargetSizeMB = CEILING(MAX(size) / 128.0)
+FROM sys.master_files
+WHERE database_id = DB_ID(N'tempdb')
+  AND type_desc = N'ROWS';
 
-    $cmd = $conn.CreateCommand()
-    $cmd.CommandText = "SELECT @@SERVERNAME AS ServerName, DB_NAME() AS DatabaseName"
-    $reader = $cmd.ExecuteReader()
+SELECT @SQL = STRING_AGG(
+    CAST(
+        N'ALTER DATABASE [tempdb] MODIFY FILE ' +
+        N'(NAME = ' + QUOTENAME(name, '''') +
+        N', SIZE = ' + CONVERT(NVARCHAR(20), @TargetSizeMB) +
+        N'MB);'
+        AS NVARCHAR(MAX)
+    ),
+    CHAR(13) + CHAR(10)
+)
+FROM sys.master_files
+WHERE database_id = DB_ID(N'tempdb')
+  AND type_desc = N'ROWS'
+  AND size < @TargetSizeMB * 128;
 
-    while ($reader.Read()) {
-        Write-Host "Server:   $($reader['ServerName'])"
-        Write-Host "Database: $($reader['DatabaseName'])"
-    }
-
-    $reader.Close()
-}
-catch {
-    Write-Host "CONNECTION FAILED" -ForegroundColor Red
-    Write-Host $_.Exception.ToString()
-}
-finally {
-    if ($conn.State -ne 'Closed') {
-        $conn.Close()
-    }
-    $conn.Dispose()
-}
+SELECT
+    @TargetSizeMB AS TargetSizeMB,
+    @SQL AS GeneratedScript;
