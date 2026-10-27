@@ -1,98 +1,60 @@
 
-#requires -Version 5.1
-#requires -RunAsAdministrator
+$ServerList = 'C:\DBA\SQLServers.txt'
 
-[CmdletBinding()]
-param(
-    [string]$ServerList = 'C:\DBA\SQLServers.txt',
-    [string]$OutputCsv  = 'C:\DBA\SSMSInventory.csv'
-)
-
-if (-not (Test-Path -LiteralPath $ServerList)) {
-    throw "Nie znaleziono pliku z lista serwerow: $ServerList"
-}
-
-$servers = @(
-    Get-Content -LiteralPath $ServerList |
+$servers = Get-Content $ServerList |
     ForEach-Object { $_.Trim() } |
     Where-Object { $_ -and -not $_.StartsWith('#') } |
     Sort-Object -Unique
-)
 
 $results = foreach ($server in $servers) {
-    Write-Host "Sprawdzam $server ..." -ForegroundColor Cyan
+    $winrm = 'Unknown'
+    $registry = 'Unknown'
+    $details = ''
 
     try {
-        $remoteResults = Invoke-Command -ComputerName $server `
-            -ErrorAction Stop -ScriptBlock {
-
-            $paths = @(
-                'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
-                'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
-            )
-
-            $apps = @(
-                Get-ItemProperty -Path $paths -ErrorAction SilentlyContinue |
-                Where-Object {
-                    $_.DisplayName -match '^(Microsoft )?SQL Server Management Studio(?:\s|$)'
-                }
-            )
-
-            if ($apps.Count -eq 0) {
-                [PSCustomObject]@{
-                    ComputerName = $env:COMPUTERNAME
-                    SSMSName     = $null
-                    SSMSVersion  = $null
-                    InstallDate  = $null
-                    InstallPath  = $null
-                    Status       = 'Nie znaleziono w rejestrze'
-                }
-            }
-            else {
-                foreach ($app in $apps) {
-                    [PSCustomObject]@{
-                        ComputerName = $env:COMPUTERNAME
-                        SSMSName     = $app.DisplayName
-                        SSMSVersion  = $app.DisplayVersion
-                        InstallDate  = $app.InstallDate
-                        InstallPath  = $app.InstallLocation
-                        Status       = 'OK'
-                    }
-                }
-            }
-        }
-
-        foreach ($item in $remoteResults) {
-            $item
-        }
+        Test-WSMan -ComputerName $server -ErrorAction Stop |
+            Out-Null
+        $winrm = 'Available'
     }
     catch {
-        [PSCustomObject]@{
-            ComputerName = $server
-            SSMSName     = $null
-            SSMSVersion  = $null
-            InstallDate  = $null
-            InstallPath  = $null
-            Status       = "BLAD: $($_.Exception.Message)"
+        $winrm = 'Failed'
+        $details = $_.Exception.Message
+    }
+
+    try {
+        $baseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey(
+            [Microsoft.Win32.RegistryHive]::LocalMachine,
+            $server
+        )
+
+        $key = $baseKey.OpenSubKey(
+            'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall'
+        )
+
+        if ($key) {
+            $registry = 'Available'
+            $key.Close()
         }
+        else {
+            $registry = 'Connected'
+        }
+
+        $baseKey.Close()
+    }
+    catch {
+        $registry = 'Failed'
+        if (-not $details) {
+            $details = $_.Exception.Message
+        }
+    }
+
+    [PSCustomObject]@{
+        Server         = $server
+        WinRM          = $winrm
+        RemoteRegistry = $registry
+        Error          = $details
     }
 }
 
-$results |
-    Sort-Object ComputerName, SSMSVersion |
-    Export-Csv -LiteralPath $OutputCsv -NoTypeInformation -Encoding UTF8
-
-$results |
-    Sort-Object ComputerName, SSMSVersion |
-    Format-Table ComputerName, SSMSName, SSMSVersion, Status -AutoSize
-
-Write-Host "`nRaport zapisany: $OutputCsv" -ForegroundColor Green
-
-
-
-
-
-
-
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-C:\DBA\Get-SSMSInventory.ps1
+$results | Format-Table -AutoSize -Wrap
+$results | Export-Csv 'C:\DBA\SSMSConnectivity.csv' -NoTypeInformation -Encoding UTF8
