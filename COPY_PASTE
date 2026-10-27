@@ -1,29 +1,98 @@
-USE master;
-GO
 
-DECLARE @TargetSizeMB BIGINT;
-DECLARE @SQL NVARCHAR(MAX);
+#requires -Version 5.1
+#requires -RunAsAdministrator
 
-SELECT @TargetSizeMB = CEILING(MAX(size) / 128.0)
-FROM sys.master_files
-WHERE database_id = DB_ID(N'tempdb')
-  AND type_desc = N'ROWS';
-
-SELECT @SQL = STRING_AGG(
-    CAST(
-        N'ALTER DATABASE [tempdb] MODIFY FILE ' +
-        N'(NAME = ' + QUOTENAME(name, '''') +
-        N', SIZE = ' + CONVERT(NVARCHAR(20), @TargetSizeMB) +
-        N'MB);'
-        AS NVARCHAR(MAX)
-    ),
-    CHAR(13) + CHAR(10)
+[CmdletBinding()]
+param(
+    [string]$ServerList = 'C:\DBA\SQLServers.txt',
+    [string]$OutputCsv  = 'C:\DBA\SSMSInventory.csv'
 )
-FROM sys.master_files
-WHERE database_id = DB_ID(N'tempdb')
-  AND type_desc = N'ROWS'
-  AND size < @TargetSizeMB * 128;
 
-SELECT
-    @TargetSizeMB AS TargetSizeMB,
-    @SQL AS GeneratedScript;
+if (-not (Test-Path -LiteralPath $ServerList)) {
+    throw "Nie znaleziono pliku z lista serwerow: $ServerList"
+}
+
+$servers = @(
+    Get-Content -LiteralPath $ServerList |
+    ForEach-Object { $_.Trim() } |
+    Where-Object { $_ -and -not $_.StartsWith('#') } |
+    Sort-Object -Unique
+)
+
+$results = foreach ($server in $servers) {
+    Write-Host "Sprawdzam $server ..." -ForegroundColor Cyan
+
+    try {
+        $remoteResults = Invoke-Command -ComputerName $server `
+            -ErrorAction Stop -ScriptBlock {
+
+            $paths = @(
+                'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
+                'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
+            )
+
+            $apps = @(
+                Get-ItemProperty -Path $paths -ErrorAction SilentlyContinue |
+                Where-Object {
+                    $_.DisplayName -match '^(Microsoft )?SQL Server Management Studio(?:\s|$)'
+                }
+            )
+
+            if ($apps.Count -eq 0) {
+                [PSCustomObject]@{
+                    ComputerName = $env:COMPUTERNAME
+                    SSMSName     = $null
+                    SSMSVersion  = $null
+                    InstallDate  = $null
+                    InstallPath  = $null
+                    Status       = 'Nie znaleziono w rejestrze'
+                }
+            }
+            else {
+                foreach ($app in $apps) {
+                    [PSCustomObject]@{
+                        ComputerName = $env:COMPUTERNAME
+                        SSMSName     = $app.DisplayName
+                        SSMSVersion  = $app.DisplayVersion
+                        InstallDate  = $app.InstallDate
+                        InstallPath  = $app.InstallLocation
+                        Status       = 'OK'
+                    }
+                }
+            }
+        }
+
+        foreach ($item in $remoteResults) {
+            $item
+        }
+    }
+    catch {
+        [PSCustomObject]@{
+            ComputerName = $server
+            SSMSName     = $null
+            SSMSVersion  = $null
+            InstallDate  = $null
+            InstallPath  = $null
+            Status       = "BLAD: $($_.Exception.Message)"
+        }
+    }
+}
+
+$results |
+    Sort-Object ComputerName, SSMSVersion |
+    Export-Csv -LiteralPath $OutputCsv -NoTypeInformation -Encoding UTF8
+
+$results |
+    Sort-Object ComputerName, SSMSVersion |
+    Format-Table ComputerName, SSMSName, SSMSVersion, Status -AutoSize
+
+Write-Host "`nRaport zapisany: $OutputCsv" -ForegroundColor Green
+
+
+
+
+
+
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+C:\DBA\Get-SSMSInventory.ps1
