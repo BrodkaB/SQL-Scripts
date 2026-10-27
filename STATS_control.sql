@@ -83,5 +83,48 @@ FROM StatsCTE
 WHERE rn <= 5
 ORDER BY rn;
 
+--------------------------------
+
+WITH StatsCTE AS (
+    SELECT
+        OBJECT_SCHEMA_NAME(s.object_id) AS schema_name,
+        OBJECT_NAME(s.object_id) AS table_name,
+        s.name AS stats_name,
+        sp.last_updated,
+        sp.rows,
+        sp.modification_counter,
+        CAST(
+            100.0 * sp.modification_counter
+            / NULLIF(sp.rows, 0)
+            AS DECIMAL(10, 2)
+        ) AS modification_percent,
+        ROW_NUMBER() OVER (
+            ORDER BY sp.modification_counter DESC
+        ) AS rn
+    FROM sys.stats AS s
+    CROSS APPLY sys.dm_db_stats_properties(
+        s.object_id,
+        s.stats_id
+    ) AS sp
+    WHERE OBJECTPROPERTY(s.object_id, 'IsUserTable') = 1
+      AND sp.last_updated IS NOT NULL
+      AND sp.modification_counter > 0
+)
+SELECT
+    'UPDATE STATISTICS '
+        + QUOTENAME(schema_name) + '.'
+        + QUOTENAME(table_name) + ' '
+        + QUOTENAME(stats_name)
+        + ' WITH SAMPLE 5 PERCENT;'
+        AS update_statement,
+    last_updated,
+    rows,
+    modification_counter,
+    modification_percent
+FROM StatsCTE
+WHERE rn <= 5
+ORDER BY modification_counter DESC;
+
+
 
 
