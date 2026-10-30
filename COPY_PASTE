@@ -1,8 +1,2 @@
-SELECT
-    SYSDATETIME() AS sql_server_local_time,
-    SYSDATETIMEOFFSET() AS sql_server_time_with_offset,
-    GETDATE() AS getdate_time,
-    GETUTCDATE() AS utc_time,
-    SYSUTCDATETIME() AS sysutcdatetime_time,
-    CURRENT_TIMESTAMP AS current_timestamp_time,
-    SYSDATETIMEOFFSET() - SYSUTCDATETIME() AS calculated_offset;
+sql_server_local_time	sql_server_time_with_offset	getdate_time	utc_time	sysutcdatetime_time	current_timestamp_time
+2026-10-30 09:46:01.6685581	2026-10-30 09:46:01.6685581 -04:00	2026-10-30 09:46:01.680	2026-10-30 13:46:01.673	2026-10-30 13:46:01.6841877	2026-10-30 09:46:01.680
