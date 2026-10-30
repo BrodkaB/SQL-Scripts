@@ -1,34 +1,10 @@
-USE [ADR_LIVE];
-GO
-
-SELECT
-    OBJECT_SCHEMA_NAME(st.objectid, st.dbid) AS schema_name,
-    OBJECT_NAME(st.objectid, st.dbid) AS object_name,
-    SUM(qs.execution_count) AS execution_count,
-    SUM(qs.total_elapsed_time) / 1000.0 AS total_elapsed_time_ms,
-    SUM(qs.total_worker_time) / 1000.0 AS total_worker_time_ms,
-    SUM(qs.total_logical_reads) AS total_logical_reads,
-    SUM(qs.total_logical_writes) AS total_logical_writes,
-    MAX(qs.last_execution_time) AS last_execution_time
-FROM sys.dm_exec_query_stats AS qs
-CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS st
-WHERE st.dbid = DB_ID(N'ADR_LIVE')
-  AND
-  (
-      OBJECT_NAME(st.objectid, st.dbid) IN
-      (
-          N'sp_cms_matter_log',
-          N'BPP_PostBill',
-          N'TR_TBM_MATTER',
-          N'BPP_PostBillIUpdateTahSummaruGLBPP_InserZeroPaidFeesRA'
-      )
-      OR st.text LIKE N'%sp_cms_matter_log%'
-      OR st.text LIKE N'%BPP_PostBill%'
-  )
-GROUP BY
-    st.dbid,
-    st.objectid,
-    OBJECT_SCHEMA_NAME(st.objectid, st.dbid),
-    OBJECT_NAME(st.objectid, st.dbid)
-ORDER BY SUM(qs.total_logical_reads) DESC;
-GO
+schema_name	object_name	execution_count	total_elapsed_time_ms	total_worker_time_ms	total_logical_reads	total_logical_writes	last_execution_time
+dbo	BPP_PostBill	11654	38068.546000	19466.710000	1121377	14004	2026-10-30 11:30:32.907
+dbo	TR_HBM_MATTER	4956	1900.290000	1141.745000	327773	834	2026-10-30 11:30:32.900
+dbo	TR_TBM_MATTER	4035	2100.412000	945.264000	154277	462	2026-10-30 11:30:32.900
+dbo	BPP_PostBillUpdateTahSummaryGL	39	21.212000	6.870000	669	11	2026-10-30 11:30:32.877
+dbo	SP_EXPERT_MATTER_LOG	10	1.831000	1.828000	311	4	2026-10-30 11:29:00.057
+dbo	BPP_PostBillUpdateCdhSummaryGL	34	19.300000	4.746000	205	2	2026-10-30 11:30:32.897
+dbo	BPP_InsertZeroPaidDisbursementsRA	100	49.645000	41.532000	141	0	2026-10-30 11:30:32.890
+dbo	BPP_InsertZeroPaidFeesRA	100	46.678000	45.028000	134	0	2026-10-30 11:30:32.887
+dbo	SP_CMS_MATTER_LOG	51	1.886000	1.879000	102	0	2026-10-30 11:30:32.900
