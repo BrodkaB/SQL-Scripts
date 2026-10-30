@@ -1,21 +1,8 @@
-
--- Retrieve recent deadlock graphs from system_health event files.
-
 SELECT
-    object_name,
-    TRY_CONVERT(
-        xml,
-        event_data
-    ).value(
-        '(/event/@timestamp)[1]',
-        'datetime2(3)'
-    ) AS event_time_utc,
-    TRY_CONVERT(xml, event_data) AS event_xml
-FROM sys.fn_xe_file_target_read_file(
-    N'system_health*.xel',
-    NULL,
-    NULL,
-    NULL
-)
-WHERE object_name = N'xml_deadlock_report'
-ORDER BY event_time_utc DESC;
+    SYSDATETIME() AS sql_server_local_time,
+    SYSDATETIMEOFFSET() AS sql_server_time_with_offset,
+    GETDATE() AS getdate_time,
+    GETUTCDATE() AS utc_time,
+    SYSUTCDATETIME() AS sysutcdatetime_time,
+    CURRENT_TIMESTAMP AS current_timestamp_time,
+    SYSDATETIMEOFFSET() - SYSUTCDATETIME() AS calculated_offset;
