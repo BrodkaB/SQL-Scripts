@@ -1,54 +1,83 @@
 SELECT
-    name,
-    value AS configured_value,
-    value_in_use
-FROM sys.configurations
-WHERE name IN
-(
-    'min server memory (MB)',
-    'max server memory (MB)',
-    'max degree of parallelism',
-    'cost threshold for parallelism'
-)
-ORDER BY name;
-GO
-
-SELECT
-    physical_memory_kb / 1024 AS physical_memory_mb,
-    committed_kb / 1024 AS sql_committed_memory_mb,
-    committed_target_kb / 1024 AS sql_target_memory_mb,
-    visible_target_kb / 1024 AS visible_target_memory_mb
-FROM sys.dm_os_sys_info;
-GO
-
-SELECT
     counter_name,
     cntr_value,
     CASE
         WHEN counter_name IN
         (
-            'Total Server Memory (KB)',
-            'Target Server Memory (KB)',
-            'Database Cache Memory (KB)',
-            'Free Memory (KB)',
-            'Stolen Server Memory (KB)',
-            'Granted Workspace Memory (KB)',
-            'Memory Grants Pending'
+            'Page life expectancy',
+            'Memory Grants Pending',
+            'Memory Grants Outstanding',
+            'Lazy writes/sec',
+            'Free list stalls/sec',
+            'Buffer cache hit ratio',
+            'Buffer cache hit ratio base'
         )
-        THEN cntr_value / 1024.0
+        THEN cntr_value
         ELSE NULL
-    END AS value_mb_or_count
+    END AS counter_value
 FROM sys.dm_os_performance_counters
-WHERE object_name LIKE '%Memory Manager%'
-  AND counter_name IN
-  (
-      'Total Server Memory (KB)',
-      'Target Server Memory (KB)',
-      'Database Cache Memory (KB)',
-      'Free Memory (KB)',
-      'Stolen Server Memory (KB)',
-      'Granted Workspace Memory (KB)',
-      'Memory Grants Pending'
-  )
-ORDER BY counter_name;
+WHERE
+    (
+        object_name LIKE '%Buffer Manager%'
+        AND counter_name IN
+        (
+            'Page life expectancy',
+            'Lazy writes/sec',
+            'Free list stalls/sec',
+            'Buffer cache hit ratio',
+            'Buffer cache hit ratio base'
+        )
+    )
+    OR
+    (
+        object_name LIKE '%Memory Manager%'
+        AND counter_name IN
+        (
+            'Memory Grants Pending',
+            'Memory Grants Outstanding'
+        )
+    )
+ORDER BY object_name, counter_name;
+GO
+
+SELECT
+    total_physical_memory_kb / 1024 AS total_physical_memory_mb,
+    available_physical_memory_kb / 1024 AS available_physical_memory_mb,
+    system_memory_state_desc
+FROM sys.dm_os_sys_memory;
+GO
+
+SELECT
+    record_id,
+    SQLProcessUtilization,
+    SystemIdle,
+    100 - SystemIdle - SQLProcessUtilization AS OtherProcessUtilization,
+    DATEADD
+    (
+        SECOND,
+        -1 * (si.ms_ticks - rb.[timestamp]) / 1000,
+        SYSDATETIME()
+    ) AS sample_time
+FROM sys.dm_os_ring_buffers AS rb
+CROSS JOIN sys.dm_os_sys_info AS si
+CROSS APPLY
+(
+    SELECT
+        CONVERT(XML, rb.record) AS record_xml
+) AS x
+CROSS APPLY
+(
+    SELECT
+        x.record_xml.value(
+            '(./Record/SchedulerMonitorEvent/SystemHealth/ProcessUtilization)[1]',
+            'int'
+        ) AS SQLProcessUtilization,
+        x.record_xml.value(
+            '(./Record/SchedulerMonitorEvent/SystemHealth/SystemIdle)[1]',
+            'int'
+        ) AS SystemIdle
+) AS p
+WHERE rb.ring_buffer_type = N'RING_BUFFER_SCHEDULER_MONITOR'
+  AND rb.record LIKE '%<SystemHealth>%'
+ORDER BY rb.record_id DESC;
 GO
