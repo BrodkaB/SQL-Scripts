@@ -1,51 +1,13 @@
-<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T20:55:57.111Z">
-  <data name="xml_report">
-    <value>
-      <deadlock>
-        <victim-list>
-          <victimProcess id="process14bc0d89c28" />
-        </victim-list>
-        <process-list>
-          <process id="process14bc0d89c28" taskpriority="0" logused="0" waitresource="KEY: 9:72058789994561536 (7dd4a5b6dc8e)" waittime="2308" ownerId="19146079761" transactionname="user_transaction" lasttranstarted="2026-10-21T16:55:46.463" XDES="0x1a42af10460" lockMode="S" schedulerid="1" kpid="5572" status="suspended" spid="533" sbid="2" ecid="0" priority="0" trancount="1" lastbatchstarted="2026-10-21T16:55:46.477" lastbatchcompleted="2026-10-21T16:55:46.473" lastattention="1900-01-01T00:00:00.473" clientapp="PROD_ApplicationServices_FileOpening" hostname="JLERP9-AS-E05" hostpid="23328" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="19146079761" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
-            <executionStack>
-              <frame procname="adhoc" line="1" stmtstart="34" stmtend="18486" sqlhandle="0x02000000fba2c206a0af0f8f7bbcce6fbc2ad591be7de19b0000000000000000000000000000000000000000">
-unknown    </frame>
-              <frame procname="unknown" line="1" sqlhandle="0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
-unknown    </frame>
-            </executionStack>
-            <inputbuf>
-(@p0 int,@p1 int)select TOP (1)  matter0_.MATTER_UNO as MATTER1_1766_, matter0_.CLAIM_NUMBER as CLAIM2_1766_, matter0_.CLIENT_UNO as CLIENT3_1766_, matter0_.CLNT_MATT_CODE as CLNT4_1766_, matter0_.CLIENT_MAT_NAME as CLIENT5_1766_, matter0_.INACTIVE as INACTIVE1766_, matter0_.LAST_MODIFIED as LAST7_1766_, matter0_.MATTER_CODE as MATTER8_1766_, matter0_.LONG_MATT_NAME as LONG9_1766_, matter0_.MATTER_NAME as MATTER10_1766_, matter0_.MATTER_NUMBER as MATTER11_1766_, matter0_.PENDING as PENDING1766_, matter0_.CLOSE_DATE as CLOSE13_1766_, matter0_.CLOSE_EMPL_UNO as CLOSE14_1766_, matter0_.PURGE_REVW_DATE as PURGE15_1766_, matter0_.ASSIGN_EMPL_UNO as ASSIGN16_1766_, matter0_.BILL_EMPL_UNO as BILL17_1766_, matter0_.RESP_EMPL_UNO as RESP18_1766_, matter0_.OFFC as OFFC1766_, matter0_.DEPT as DEPT1766_, matter0_.PROF as PROF1766_, matter0_.OPEN_DATE as OPEN22_1766_, matter0_.OPEN_EMPL_UNO as OPEN23_1766_, matter0_.MATT_CLASS_CODE as MATT24_1766_, matter0_.STATUS_CODE as STATUS25_1766_, matter0_.MATT_CAT_CODE as MATT26_   </inputbuf>
-          </process>
-          <process id="process14add272ca8" taskpriority="0" logused="9832" waitresource="OBJECT: 9:147092360:15 " waittime="7474" ownerId="19146010165" transactionguid="0x58fe16ed27868743af4fdabe2248f5fb" transactionname="user_transaction" lasttranstarted="2026-10-21T16:55:46.267" XDES="0x1e06bc00460" lockMode="IX" schedulerid="16" kpid="21244" status="suspended" spid="779" sbid="0" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T16:55:49.630" lastbatchcompleted="2026-10-21T16:55:49.630" lastattention="1900-01-01T00:00:00.630" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-WS-E01" hostpid="13012" loginname="CMSADM" isolationlevel="read committed (2)" xactid="19146010165" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
-            <executionStack>
-              <frame procname="adhoc" line="1" stmtstart="4648" stmtend="17920" sqlhandle="0x02000000ab3d9f34e30c5e21cc7353b56321a6b3f761cfea0000000000000000000000000000000000000000">
-unknown    </frame>
-              <frame procname="unknown" line="1" sqlhandle="0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
-unknown    </frame>
-            </executionStack>
-            <inputbuf>
-(@p1 int,@p2 int,@p3 datetime,@p4 varchar(8000),@p5 varchar(8000),@p6 varchar(8000),@p7 char(8000),@p8 varchar(8000),@p9 char(8000),@p10 int,@p11 varchar(1),@p12 int,@p13 varchar(1),@p14 int,@p15 decimal(25,10),@p16 int,@p17 int,@p18 int,@p19 varchar(1),@p20 int,@p21 varchar(1),@p22 int,@p23 varchar(1),@p24 int,@p25 decimal(16,4),@p26 int,@p27 varchar(1),@p28 int,@p29 varchar(1),@p30 int,@p31 decimal(25,10),@p32 int,@p33 varchar(2),@p34 int,@p35 datetime,@p36 int,@p37 datetime,@p38 int,@p39 varchar(3),@p40 int,@p41 varchar(1),@p42 int,@p43 varchar(1),@p44 int,@p45 datetime,@p46 int,@p47 varchar(1),@p48 int,@p49 int,@p50 varchar(1),@p51 int,@p52 decimal(16,4),@p53 int,@p54 int,@p55 int,@p56 varchar(1),@p57 int,@p58 int,@p59 int,@p60 varchar(1),@p61 int,@p62 datetime,@p63 int,@p64 decimal(25,10),@p65 int,@p66 decimal(25,10),@p67 int,@p68 datetime,@p69 int,@p70 datetime,@p71 int,@p72 datetime,@p73 int,@p74 varchar(1),@p75 int,@p76 varchar(1),@p77 int,@p78 varchar(1),@p79 int,@p80 varchar(1),@p81 int,@p82 varcha   </inputbuf>
-          </process>
-        </process-list>
-        <resource-list>
-          <keylock hobtid="72058789994561536" dbid="9" objectname="ADR_LIVE.dbo.HBM_MATTER" indexname="HBM_MATTER17" id="lock1c23f007a00" mode="X" associatedObjectId="72058789994561536">
-            <owner-list>
-              <owner id="process14add272ca8" mode="X" />
-            </owner-list>
-            <waiter-list>
-              <waiter id="process14bc0d89c28" mode="S" requestType="wait" />
-            </waiter-list>
-          </keylock>
-          <objectlock lockPartition="15" objid="147092360" subresource="FULL" dbid="9" objectname="ADR_LIVE.dbo.TBM_MATTER" id="lock151c69a5300" mode="S" associatedObjectId="147092360">
-            <owner-list>
-              <owner id="process14bc0d89c28" mode="S" />
-            </owner-list>
-            <waiter-list>
-              <waiter id="process14add272ca8" mode="IX" requestType="wait" />
-            </waiter-list>
-          </objectlock>
-        </resource-list>
-      </deadlock>
-    </value>
-  </data>
-</event>
+SELECT
+    qs.last_execution_time,
+    qs.execution_count,
+    st.text AS batch_text,
+    qp.query_plan
+FROM sys.dm_exec_query_stats AS qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS st
+OUTER APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
+WHERE qs.sql_handle IN
+(
+    0x02000000fba2c206a0af0f8f7bbcce6fbc2ad591be7de19b0000000000000000000000000000000000000000,
+    0x02000000ab3d9f34e30c5e21cc7353b56321a6b3f761cfea0000000000000000000000000000000000000000
+);
