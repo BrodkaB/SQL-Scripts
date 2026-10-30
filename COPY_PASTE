@@ -1,44 +1,34 @@
+USE [ADR_LIVE];
+GO
+
 SELECT
-    DB_NAME(st.dbid) AS database_name,
     OBJECT_SCHEMA_NAME(st.objectid, st.dbid) AS schema_name,
     OBJECT_NAME(st.objectid, st.dbid) AS object_name,
-    qs.execution_count,
-    qs.last_execution_time,
-    qs.total_elapsed_time / 1000.0 AS total_elapsed_time_ms,
-    qs.total_logical_reads,
-    qs.total_logical_writes,
-    qs.plan_handle,
-    qs.sql_handle,
-    SUBSTRING
-    (
-        st.text,
-        (qs.statement_start_offset / 2) + 1,
-        (
-            (
-                CASE qs.statement_end_offset
-                    WHEN -1 THEN DATALENGTH(st.text)
-                    ELSE qs.statement_end_offset
-                END
-                - qs.statement_start_offset
-            ) / 2
-        ) + 1
-    ) AS statement_text,
-    qp.query_plan
+    SUM(qs.execution_count) AS execution_count,
+    SUM(qs.total_elapsed_time) / 1000.0 AS total_elapsed_time_ms,
+    SUM(qs.total_worker_time) / 1000.0 AS total_worker_time_ms,
+    SUM(qs.total_logical_reads) AS total_logical_reads,
+    SUM(qs.total_logical_writes) AS total_logical_writes,
+    MAX(qs.last_execution_time) AS last_execution_time
 FROM sys.dm_exec_query_stats AS qs
 CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS st
-OUTER APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
-WHERE
-    (
-        st.dbid = DB_ID(N'ADR_LIVE')
-        AND
-        (
-            OBJECT_NAME(st.objectid, st.dbid) IN
-            (
-                N'sp_cms_matter_log',
-                N'BPP_PostBill'
-            )
-            OR st.text LIKE N'%sp_cms_matter_log%'
-            OR st.text LIKE N'%BPP_PostBill%'
-        )
-    )
-ORDER BY qs.last_execution_time DESC;
+WHERE st.dbid = DB_ID(N'ADR_LIVE')
+  AND
+  (
+      OBJECT_NAME(st.objectid, st.dbid) IN
+      (
+          N'sp_cms_matter_log',
+          N'BPP_PostBill',
+          N'TR_TBM_MATTER',
+          N'BPP_PostBillIUpdateTahSummaruGLBPP_InserZeroPaidFeesRA'
+      )
+      OR st.text LIKE N'%sp_cms_matter_log%'
+      OR st.text LIKE N'%BPP_PostBill%'
+  )
+GROUP BY
+    st.dbid,
+    st.objectid,
+    OBJECT_SCHEMA_NAME(st.objectid, st.dbid),
+    OBJECT_NAME(st.objectid, st.dbid)
+ORDER BY SUM(qs.total_logical_reads) DESC;
+GO
