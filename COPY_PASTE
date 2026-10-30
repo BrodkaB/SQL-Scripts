@@ -1,1 +1,22 @@
 
+SELECT
+    ag.name AS availability_group_name,
+    ar.replica_server_name,
+    drs.is_local,
+    drs.is_primary_replica,
+    drs.synchronization_state_desc,
+    drs.synchronization_health_desc,
+    drs.log_send_queue_size,
+    drs.log_send_rate,
+    drs.redo_queue_size,
+    drs.redo_rate,
+    drs.last_sent_time,
+    drs.last_received_time,
+    drs.last_hardened_time,
+    drs.last_redone_time
+FROM sys.dm_hadr_database_replica_states AS drs
+INNER JOIN sys.availability_replicas AS ar
+    ON drs.replica_id = ar.replica_id
+INNER JOIN sys.availability_groups AS ag
+    ON ar.group_id = ag.group_id
+WHERE drs.database_id = DB_ID(N'YourDatabaseName');
