@@ -1,13 +1,54 @@
 SELECT
-    qs.last_execution_time,
-    qs.execution_count,
-    st.text AS batch_text,
-    qp.query_plan
-FROM sys.dm_exec_query_stats AS qs
-CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS st
-OUTER APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
-WHERE qs.sql_handle IN
+    name,
+    value AS configured_value,
+    value_in_use
+FROM sys.configurations
+WHERE name IN
 (
-    0x02000000fba2c206a0af0f8f7bbcce6fbc2ad591be7de19b0000000000000000000000000000000000000000,
-    0x02000000ab3d9f34e30c5e21cc7353b56321a6b3f761cfea0000000000000000000000000000000000000000
-);
+    'min server memory (MB)',
+    'max server memory (MB)',
+    'max degree of parallelism',
+    'cost threshold for parallelism'
+)
+ORDER BY name;
+GO
+
+SELECT
+    physical_memory_kb / 1024 AS physical_memory_mb,
+    committed_kb / 1024 AS sql_committed_memory_mb,
+    committed_target_kb / 1024 AS sql_target_memory_mb,
+    visible_target_kb / 1024 AS visible_target_memory_mb
+FROM sys.dm_os_sys_info;
+GO
+
+SELECT
+    counter_name,
+    cntr_value,
+    CASE
+        WHEN counter_name IN
+        (
+            'Total Server Memory (KB)',
+            'Target Server Memory (KB)',
+            'Database Cache Memory (KB)',
+            'Free Memory (KB)',
+            'Stolen Server Memory (KB)',
+            'Granted Workspace Memory (KB)',
+            'Memory Grants Pending'
+        )
+        THEN cntr_value / 1024.0
+        ELSE NULL
+    END AS value_mb_or_count
+FROM sys.dm_os_performance_counters
+WHERE object_name LIKE '%Memory Manager%'
+  AND counter_name IN
+  (
+      'Total Server Memory (KB)',
+      'Target Server Memory (KB)',
+      'Database Cache Memory (KB)',
+      'Free Memory (KB)',
+      'Stolen Server Memory (KB)',
+      'Granted Workspace Memory (KB)',
+      'Memory Grants Pending'
+  )
+ORDER BY counter_name;
+GO
