@@ -1,2 +1,602 @@
-sql_server_local_time	sql_server_time_with_offset	getdate_time	utc_time	sysutcdatetime_time	current_timestamp_time
-2026-10-30 09:46:01.6685581	2026-10-30 09:46:01.6685581 -04:00	2026-10-30 09:46:01.680	2026-10-30 13:46:01.673	2026-10-30 13:46:01.6841877	2026-10-30 09:46:01.680
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:00:18.259Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process1323a18d848" />
+        </victim-list>
+        <process-list>
+          <process id="process1323a18d848" taskpriority="0" logused="0" waitresource="KEY: 9:72057874372034560 (2cebb1b7ed89)" waittime="1240" ownerId="18829264535" transactionname="SELECT INTO" lasttranstarted="2026-10-21T15:00:11.107" XDES="0x1312af63ac0" lockMode="S" schedulerid="10" kpid="15204" status="suspended" spid="785" sbid="2" ecid="6" priority="0" trancount="0" lastbatchstarted="2026-10-21T15:00:00.390" lastbatchcompleted="2026-10-21T15:00:00.390" lastattention="1900-01-01T00:00:00.390" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" isolationlevel="read committed (2)" xactid="18829264535" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+          <process id="process1301f683848" taskpriority="0" logused="952" waitresource="OBJECT: 9:62977376:6 " waittime="4970" ownerId="18829361841" transactionguid="0x8c90fd7f8438e043960e18e0919d0734" transactionname="user_transaction" lasttranstarted="2026-10-21T15:00:12.967" XDES="0x13325590460" lockMode="IX" schedulerid="7" kpid="13492" status="suspended" spid="192" sbid="0" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:13.073" lastbatchcompleted="2026-10-21T15:00:13.070" lastattention="1900-01-01T00:00:00.070" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-WS-E02" hostpid="9668" loginname="CMSADM" isolationlevel="read committed (2)" xactid="18829361841" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="538968096" clientoption2="128024">
+            <executionStack>
+              <frame procname="ADR_LIVE.dbo.sp_cmstatepost" line="416" stmtstart="28614" stmtend="30558" sqlhandle="0x0300090062ba0f0982d151012fad000001000000000000000000000000000000000000000000000000000000">
+update TAT_TIME  
+set BASE_AMT     = @TAT_TIME_base_amt,  
+STD_AMT          = @TAT_TIME_std_amt,  
+BILLABLE_FLAG    = @TAT_TIME_billable_flag,  
+TOBILL_AMT       = @TAT_TIME_tobill_amt,  
+RANK_CODE        = @TAT_TIME_rank_code,  
+RATE_METHOD      = @TAT_TIME_rate_method,  
+OFFC             = @TAT_TIME_offc,  
+DEPT             = @TAT_TIME_dept,  
+PROF             = @TAT_TIME_prof,  
+DRUNO   = @TAT_TIME_druno,     /* 08/29/97 JWR 614424 Making multicurrency changes */  
+TAXABLE          = @TAL_ACTION_taxable,  
+LATEST_PERIOD    = @JEPER_from_tran_date,  
+PERIOD   = @JEPER_from_tran_date,  
+POST_DATE        = @todays_date,  
+WIP_STATUS       = 'W',  
+ENTRY_STATUS     = 'U',  
+ACTIVITY_COUNT   = 0,  
+BILLED_EMPL_UNO  = 0,  
+BILLED_HRS       = 0,  
+BILLED_AMT       = 0,  
+BILL_TRAN_UNO    = 0,  
+GROSS_AMT        = @TAT_TIME_gross_amt,
+ADV_PREMDISC_AMT = @TAT_TIME_adv_premdisc_amt,
+LAST_MODIFIED    = getdate()  
+where   TIME_UNO = @time_un    </frame>
+              <frame procname="ADR_LIVE.dbo.SP_CMSTATEPOST_POST" line="175" stmtstart="14304" stmtend="14470" sqlhandle="0x0300090043455a696aa31a0030ad000001000000000000000000000000000000000000000000000000000000">
+insert into #postreturncode exec sp_cmstatepost @TimeUno, @JEPeriod, @TranDatePerio    </frame>
+              <frame procname="adhoc" line="1" stmtstart="2" stmtend="886" sqlhandle="0x0100090049342a33c08109214a01000000000000000000000000000000000000000000000000000000000000">
+exec sp_cmstatepost_Post @TimeUno=87819249, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=    </frame>
+            </executionStack>
+            <inputbuf>
+ exec sp_cmstatepost_Post @TimeUno=87819249, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=0    </inputbuf>
+          </process>
+          <process id="process158c23228c8" taskpriority="0" logused="10000" waittime="1205" schedulerid="6" kpid="6232" status="suspended" spid="785" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:00.390" lastbatchcompleted="2026-10-21T15:00:00.390" lastattention="1900-01-01T00:00:00.390" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18829264535" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <keylock hobtid="72057874372034560" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME_NEW" indexname="TAT_TIME_NEW3" id="lock15c3f9d1b80" mode="X" associatedObjectId="72057874372034560">
+            <owner-list>
+              <owner id="process1301f683848" mode="X" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process1323a18d848" mode="S" requestType="wait" />
+            </waiter-list>
+          </keylock>
+          <objectlock lockPartition="6" objid="62977376" subresource="FULL" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME" id="lock1592af9f180" mode="S" associatedObjectId="62977376">
+            <owner-list>
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process1301f683848" mode="IX" requestType="wait" />
+            </waiter-list>
+          </objectlock>
+          <exchangeEvent id="Pipe156cecbc400" WaitType="e_waitPipeGetRow" waiterType="Coordinator" nodeId="0" tid="0" ownerActivity="sentData" waiterActivity="needMoreData" merging="false" spilling="false" waitingToClose="false">
+            <owner-list>
+              <owner id="process1323a18d848" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process158c23228c8" />
+            </waiter-list>
+          </exchangeEvent>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
+
+
+
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:00:23.251Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process1548f5a1c28" />
+        </victim-list>
+        <process-list>
+          <process id="process1548f5a1c28" taskpriority="0" logused="0" waitresource="KEY: 9:72059461666734080 (84e9e3f2f959)" waittime="479" ownerId="18829552912" transactionname="user_transaction" lasttranstarted="2026-10-21T15:00:22.770" XDES="0x148e8d38460" lockMode="S" schedulerid="5" kpid="7724" status="suspended" spid="255" sbid="2" ecid="0" priority="0" trancount="1" lastbatchstarted="2026-10-21T15:00:22.770" lastbatchcompleted="2026-10-21T15:00:22.760" lastattention="1900-01-01T00:00:00.760" clientapp="PROD_ApplicationServices_Billing" hostname="JLERP9-AS-E06" hostpid="5028" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18829552912" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="536870944" clientoption2="128024">
+            <executionStack>
+              <frame procname="ADR_LIVE.dbo.SP_CMSMAKEPOSTLOCKCIO" line="102" stmtstart="7862" stmtend="8298" sqlhandle="0x03000900dfaa3e21c37f6b019eaf000001000000000000000000000000000000000000000000000000000000">
+SELECT @lockfound = 1 where exists (
+SELECT LOGIN_ID
+FROM CMS_LOCK
+WHERE TABLE_NAME = @table and LOGIN_ID = @login_id and NETWORK_ID = @networkID and GUID = @guid and JOB_UNO = @jobuno and MODULE_NAME = @module_name    </frame>
+            </executionStack>
+            <inputbuf>
+Proc [Database Id = 9 Object Id = 557755103]   </inputbuf>
+          </process>
+          <process id="process159fa8cfc28" taskpriority="0" logused="708" waitresource="KEY: 9:72059461666930688 (7f2443e6e608)" waittime="478" ownerId="18829552658" transactionname="user_transaction" lasttranstarted="2026-10-21T15:00:22.757" XDES="0x1afaff9c460" lockMode="X" schedulerid="16" kpid="14428" status="suspended" spid="809" sbid="0" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:22.770" lastbatchcompleted="2026-10-21T15:00:22.763" lastattention="1900-01-01T00:00:00.763" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-WS-E02" hostpid="9668" loginname="CMSADM" isolationlevel="read committed (2)" xactid="18829552658" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="536870944" clientoption2="128024">
+            <executionStack>
+              <frame procname="ADR_LIVE.dbo.SP_CMSBREAKLOCKCIO" line="42" stmtstart="3226" stmtend="3618" sqlhandle="0x030009009f87e203f72c0a0030ad000001000000000000000000000000000000000000000000000000000000">
+delete cms_lock where   
+    TABLE_NAME = @table and MODULE_NAME = @module_name  
+    and GUID = @guid and JOB_UNO = @job_uno and KPID = @kpid and LOGIN_ID = @login_id and NETWORK_ID = @networkI    </frame>
+              <frame procname="adhoc" line="1" stmtend="352" sqlhandle="0x01000900049b0102309f65d13601000000000000000000000000000000000000000000000000000000000000">
+execute sp_cmsbreaklockcio  @networkID='', @login_id='intap, time',
+					@kpid=0, @guid='', @job_uno=0, @lock_owner='S', @LOCK_TYPE='', @table='POSTING', @module_name='CMS.Net    </frame>
+            </executionStack>
+            <inputbuf>
+execute sp_cmsbreaklockcio  @networkID='', @login_id='intap, time',
+					@kpid=0, @guid='', @job_uno=0, @lock_owner='S', @LOCK_TYPE='', @table='POSTING', @module_name='CMS.Net'   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <keylock hobtid="72059461666734080" dbid="9" objectname="ADR_LIVE.dbo.CMS_LOCK" indexname="CMS_LOCK4" id="lock14166372d80" mode="X" associatedObjectId="72059461666734080">
+            <owner-list>
+              <owner id="process159fa8cfc28" mode="X" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process1548f5a1c28" mode="S" requestType="wait" />
+            </waiter-list>
+          </keylock>
+          <keylock hobtid="72059461666930688" dbid="9" objectname="ADR_LIVE.dbo.CMS_LOCK" indexname="CMS_LOCK2" id="lock14166373c80" mode="U" associatedObjectId="72059461666930688">
+            <owner-list>
+              <owner id="process1548f5a1c28" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process159fa8cfc28" mode="X" requestType="convert" />
+            </waiter-list>
+          </keylock>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
+
+
+
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:00:34.530Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process1a3aab7b468" />
+        </victim-list>
+        <process-list>
+          <process id="process1a3aab7b468" taskpriority="0" logused="0" waitresource="KEY: 9:72057874372034560 (a44d4699a706)" waittime="592" ownerId="18829935139" transactionname="SELECT INTO" lasttranstarted="2026-10-21T15:00:32.070" XDES="0x147d5d1f270" lockMode="S" schedulerid="8" kpid="12364" status="suspended" spid="785" sbid="2" ecid="4" priority="0" trancount="0" lastbatchstarted="2026-10-21T15:00:23.340" lastbatchcompleted="2026-10-21T15:00:22.660" lastattention="1900-01-01T00:00:00.660" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" isolationlevel="read committed (2)" xactid="18829935139" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+          <process id="process13058ac1c28" taskpriority="0" logused="952" waitresource="OBJECT: 9:62977376:10 " waittime="1687" ownerId="18829940137" transactionguid="0x7f5e36653d6d50458e2fff692ce4ec33" transactionname="user_transaction" lasttranstarted="2026-10-21T15:00:32.627" XDES="0x1d976d04460" lockMode="IX" schedulerid="11" kpid="6352" status="suspended" spid="630" sbid="0" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:32.697" lastbatchcompleted="2026-10-21T15:00:32.693" lastattention="1900-01-01T00:00:00.693" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-WS-E02" hostpid="9668" loginname="CMSADM" isolationlevel="read committed (2)" xactid="18829940137" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="538968096" clientoption2="128024">
+            <executionStack>
+              <frame procname="ADR_LIVE.dbo.sp_cmstatepost" line="416" stmtstart="28614" stmtend="30558" sqlhandle="0x0300090062ba0f0982d151012fad000001000000000000000000000000000000000000000000000000000000">
+update TAT_TIME  
+set BASE_AMT     = @TAT_TIME_base_amt,  
+STD_AMT          = @TAT_TIME_std_amt,  
+BILLABLE_FLAG    = @TAT_TIME_billable_flag,  
+TOBILL_AMT       = @TAT_TIME_tobill_amt,  
+RANK_CODE        = @TAT_TIME_rank_code,  
+RATE_METHOD      = @TAT_TIME_rate_method,  
+OFFC             = @TAT_TIME_offc,  
+DEPT             = @TAT_TIME_dept,  
+PROF             = @TAT_TIME_prof,  
+DRUNO   = @TAT_TIME_druno,     /* 08/29/97 JWR 614424 Making multicurrency changes */  
+TAXABLE          = @TAL_ACTION_taxable,  
+LATEST_PERIOD    = @JEPER_from_tran_date,  
+PERIOD   = @JEPER_from_tran_date,  
+POST_DATE        = @todays_date,  
+WIP_STATUS       = 'W',  
+ENTRY_STATUS     = 'U',  
+ACTIVITY_COUNT   = 0,  
+BILLED_EMPL_UNO  = 0,  
+BILLED_HRS       = 0,  
+BILLED_AMT       = 0,  
+BILL_TRAN_UNO    = 0,  
+GROSS_AMT        = @TAT_TIME_gross_amt,
+ADV_PREMDISC_AMT = @TAT_TIME_adv_premdisc_amt,
+LAST_MODIFIED    = getdate()  
+where   TIME_UNO = @time_un    </frame>
+              <frame procname="ADR_LIVE.dbo.SP_CMSTATEPOST_POST" line="175" stmtstart="14304" stmtend="14470" sqlhandle="0x0300090043455a696aa31a0030ad000001000000000000000000000000000000000000000000000000000000">
+insert into #postreturncode exec sp_cmstatepost @TimeUno, @JEPeriod, @TranDatePerio    </frame>
+              <frame procname="adhoc" line="1" stmtstart="2" stmtend="886" sqlhandle="0x01000900c9f79c0480abb6d16601000000000000000000000000000000000000000000000000000000000000">
+exec sp_cmstatepost_Post @TimeUno=87819233, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=    </frame>
+            </executionStack>
+            <inputbuf>
+ exec sp_cmstatepost_Post @TimeUno=87819233, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=0    </inputbuf>
+          </process>
+          <process id="process14fb6b6e108" taskpriority="0" logused="10000" waittime="510" schedulerid="6" kpid="17860" status="suspended" spid="785" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:23.340" lastbatchcompleted="2026-10-21T15:00:22.660" lastattention="1900-01-01T00:00:00.660" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18829935139" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <keylock hobtid="72057874372034560" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME_NEW" indexname="TAT_TIME_NEW3" id="lock1ebc60fe780" mode="X" associatedObjectId="72057874372034560">
+            <owner-list>
+              <owner id="process13058ac1c28" mode="X" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process1a3aab7b468" mode="S" requestType="wait" />
+            </waiter-list>
+          </keylock>
+          <objectlock lockPartition="10" objid="62977376" subresource="FULL" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME" id="lock161f9a6a080" mode="S" associatedObjectId="62977376">
+            <owner-list>
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+              <owner id="process14fb6b6e108" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process13058ac1c28" mode="IX" requestType="wait" />
+            </waiter-list>
+          </objectlock>
+          <exchangeEvent id="Pipe131812d8400" WaitType="e_waitPipeGetRow" waiterType="Coordinator" nodeId="0" tid="0" ownerActivity="sentData" waiterActivity="needMoreData" merging="false" spilling="false" waitingToClose="false">
+            <owner-list>
+              <owner id="process1a3aab7b468" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process14fb6b6e108" />
+            </waiter-list>
+          </exchangeEvent>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
+
+
+
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:01:02.056Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process130394f48c8" />
+        </victim-list>
+        <process-list>
+          <process id="process130394f48c8" taskpriority="0" logused="0" waitresource="KEY: 9:72057874372034560 (1d422b9ee874)" waittime="8354" ownerId="18831282817" transactionname="SELECT INTO" lasttranstarted="2026-10-21T15:00:50.247" XDES="0x163a0d63c50" lockMode="S" schedulerid="4" kpid="15256" status="suspended" spid="785" sbid="2" ecid="1" priority="0" trancount="0" lastbatchstarted="2026-10-21T15:00:41.373" lastbatchcompleted="2026-10-21T15:00:40.153" lastattention="1900-01-01T00:00:00.153" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" isolationlevel="read committed (2)" xactid="18831282817" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+          <process id="process15907e07848" taskpriority="0" logused="952" waitresource="OBJECT: 9:62977376:10 " waittime="9542" ownerId="18831404896" transactionguid="0x7bf147b781c99642a71ad6f80bb0a31a" transactionname="user_transaction" lasttranstarted="2026-10-21T15:00:51.917" XDES="0x14954b60460" lockMode="IX" schedulerid="11" kpid="388" status="suspended" spid="630" sbid="0" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:52.140" lastbatchcompleted="2026-10-21T15:00:52.123" lastattention="1900-01-01T00:00:00.123" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-WS-E02" hostpid="9668" loginname="CMSADM" isolationlevel="read committed (2)" xactid="18831404896" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="538968096" clientoption2="128024">
+            <executionStack>
+              <frame procname="ADR_LIVE.dbo.sp_cmstatepost" line="416" stmtstart="28614" stmtend="30558" sqlhandle="0x0300090062ba0f0982d151012fad000001000000000000000000000000000000000000000000000000000000">
+update TAT_TIME  
+set BASE_AMT     = @TAT_TIME_base_amt,  
+STD_AMT          = @TAT_TIME_std_amt,  
+BILLABLE_FLAG    = @TAT_TIME_billable_flag,  
+TOBILL_AMT       = @TAT_TIME_tobill_amt,  
+RANK_CODE        = @TAT_TIME_rank_code,  
+RATE_METHOD      = @TAT_TIME_rate_method,  
+OFFC             = @TAT_TIME_offc,  
+DEPT             = @TAT_TIME_dept,  
+PROF             = @TAT_TIME_prof,  
+DRUNO   = @TAT_TIME_druno,     /* 08/29/97 JWR 614424 Making multicurrency changes */  
+TAXABLE          = @TAL_ACTION_taxable,  
+LATEST_PERIOD    = @JEPER_from_tran_date,  
+PERIOD   = @JEPER_from_tran_date,  
+POST_DATE        = @todays_date,  
+WIP_STATUS       = 'W',  
+ENTRY_STATUS     = 'U',  
+ACTIVITY_COUNT   = 0,  
+BILLED_EMPL_UNO  = 0,  
+BILLED_HRS       = 0,  
+BILLED_AMT       = 0,  
+BILL_TRAN_UNO    = 0,  
+GROSS_AMT        = @TAT_TIME_gross_amt,
+ADV_PREMDISC_AMT = @TAT_TIME_adv_premdisc_amt,
+LAST_MODIFIED    = getdate()  
+where   TIME_UNO = @time_un    </frame>
+              <frame procname="ADR_LIVE.dbo.SP_CMSTATEPOST_POST" line="175" stmtstart="14304" stmtend="14470" sqlhandle="0x0300090043455a696aa31a0030ad000001000000000000000000000000000000000000000000000000000000">
+insert into #postreturncode exec sp_cmstatepost @TimeUno, @JEPeriod, @TranDatePerio    </frame>
+              <frame procname="adhoc" line="1" stmtstart="2" stmtend="886" sqlhandle="0x0100090062500111103a6a40a401000000000000000000000000000000000000000000000000000000000000">
+exec sp_cmstatepost_Post @TimeUno=87819387, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=    </frame>
+            </executionStack>
+            <inputbuf>
+ exec sp_cmstatepost_Post @TimeUno=87819387, @TKUno=6576, @MergeDisb='N',
+					 @DisbSessionUno=0, @TDMergeRowUno=0, @DisbUno=0, @DisbNarTextID=0, @DisbPBTextID=0, 
+					 @SplitNum=0, @TatTimeOrigUno=0, @TatTimeOrigNarTextID=0, @TatTimeOrigPBTextID=0,  
+					 @BaseSplitTimeUno=0, @BaseSplitTimeNarTextID=0, @BaseSplitTimePBTextID=0, 
+					 @SplitNumDisb=0, @BaseSplitDisbUno=0, @BaseSplitDisbNarTextID=0, @BaseSplitDisbPBTextID=0, @DEBUG=0    </inputbuf>
+          </process>
+          <process id="process158c23228c8" taskpriority="0" logused="10000" waittime="3746" schedulerid="6" kpid="6232" status="suspended" spid="785" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:00:41.373" lastbatchcompleted="2026-10-21T15:00:40.153" lastattention="1900-01-01T00:00:00.153" clientapp=".Net SqlClient Data Provider" hostname="JLERP9-AS-E03" hostpid="21172" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18831282817" currentdb="9" currentdbname="ADR_LIVE" lockTimeout="4294967295" clientoption1="539035744" clientoption2="128024">
+            <executionStack>
+              <frame procname="adhoc" line="2" stmtstart="4" stmtend="2336" sqlhandle="0x0200000089f0030ef2c70b7541e3b66f7de0c3de380c12290000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="mssqlsystemresource.sys.sp_executesql" line="1" stmtstart="-1" sqlhandle="0x0400ff7f427f99d9010000000000000000000000000000000000000000000000000000000000000000000000">
+sp_executesql    </frame>
+              <frame procname="ADR_LIVE.dbo.SUP_SYNC_DETAIL_TABLES" line="364" stmtstart="32726" stmtend="32786" sqlhandle="0x03000900aa490c1f724271019eaf000001000000000000000000000000000000000000000000000000000000">
+EXECUTE sp_executesql @sqlQuer    </frame>
+              <frame procname="adhoc" line="2" stmtstart="66" stmtend="118" sqlhandle="0x010009001970c40540bdfc6f6101000000000000000000000000000000000000000000000000000000000000">
+Exec SUP_SYNC_DETAIL_TABLE    </frame>
+            </executionStack>
+            <inputbuf>
+--Detail table Incremental Sync
+Exec SUP_SYNC_DETAIL_TABLES   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <keylock hobtid="72057874372034560" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME_NEW" indexname="TAT_TIME_NEW3" id="lock133e5c94100" mode="X" associatedObjectId="72057874372034560">
+            <owner-list>
+              <owner id="process15907e07848" mode="X" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process130394f48c8" mode="S" requestType="wait" />
+            </waiter-list>
+          </keylock>
+          <objectlock lockPartition="10" objid="62977376" subresource="FULL" dbid="9" objectname="ADR_LIVE.dbo.TAT_TIME" id="lock160f29b3600" mode="S" associatedObjectId="62977376">
+            <owner-list>
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+              <owner id="process158c23228c8" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process15907e07848" mode="IX" requestType="wait" />
+            </waiter-list>
+          </objectlock>
+          <exchangeEvent id="Pipe1c2ad5dc400" WaitType="e_waitPipeGetRow" waiterType="Coordinator" nodeId="0" tid="0" ownerActivity="sentData" waiterActivity="needMoreData" merging="false" spilling="false" waitingToClose="false">
+            <owner-list>
+              <owner id="process130394f48c8" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process158c23228c8" />
+            </waiter-list>
+          </exchangeEvent>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
+
+
+
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:01:34.618Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process13034e544e8" />
+        </victim-list>
+        <process-list>
+          <process id="process13034e544e8" taskpriority="0" logused="0" waitresource="PAGE: 11:1:8605456 " waittime="2673" ownerId="18833152561" transactionname="SELECT" lasttranstarted="2026-10-21T15:01:29.150" XDES="0x1550f9b9c08" lockMode="S" schedulerid="9" kpid="19896" status="suspended" spid="773" sbid="2" ecid="0" priority="0" trancount="0" lastbatchstarted="2026-10-21T15:01:29.150" lastbatchcompleted="2026-10-21T15:01:29.163" lastattention="1900-01-01T00:00:00.163" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E01" hostpid="17536" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833152561" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtstart="116" stmtend="1622" sqlhandle="0x020000003690aa037d2568eea6b1b5ae4f2195a76e8725700000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="unknown" line="1" sqlhandle="0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+(@p__linq__0 int,@p__linq__1 int,@p__linq__2 datetime2(7))SELECT TOP (5) 
+    [Project1].[C2] AS [C1], 
+    [Project1].[SESSIONDATA] AS [SESSIONDATA], 
+    [Project1].[C3] AS [C2]
+    FROM ( SELECT 
+        [GroupBy1].[A1] AS [C1], 
+        [GroupBy1].[K1] AS [SESSIONDATA], 
+        1 AS [C2], 
+         CAST( [GroupBy1].[A2] AS bigint) AS [C3]
+        FROM ( SELECT 
+            [Extent1].[SESSIONDATA] AS [K1], 
+            COUNT(1) AS [A1], 
+            COUNT(1) AS [A2]
+            FROM [Instrumentation].[FWM_MONITOR] AS [Extent1]
+            WHERE ([Extent1].[TYPE] = @p__linq__0) AND ([Extent1].[ACTIVITYTYPE] = @p__linq__1) AND ([Extent1].[DATE] &gt; @p__linq__2)
+            GROUP BY [Extent1].[SESSIONDATA]
+        )  AS [GroupBy1]
+    )  AS [Project1]
+    ORDER BY [Project1].[C1] DESC   </inputbuf>
+          </process>
+          <process id="process13a16e9a108" taskpriority="0" logused="1716" waitresource="PAGE: 11:1:7690456 " waittime="5119" ownerId="18833175091" transactionname="BULK INSERT" lasttranstarted="2026-10-21T15:01:29.483" XDES="0x145b088c460" lockMode="IX" schedulerid="16" kpid="2072" status="suspended" spid="118" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:01:29.470" lastbatchcompleted="2026-10-21T15:01:29.460" lastattention="1900-01-01T00:00:00.460" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E05" hostpid="20352" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833175091" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtend="1724" sqlhandle="0x0200000009410017029a3c1a62029552c222d4f0a8634b680000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+insert bulk [Instrumentation].[FWM_MONITOR] ([SESSIONID] UniqueIdentifier, [SESSIONDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [ACTIVITYID] UniqueIdentifier, [ACTIVITYDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [SERVICECALLID] UniqueIdentifier, [SERVICECALLDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DATE] DateTime, [THREAD] Char(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOGIN] VarChar(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [MESSAGE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DURATION] Int, [TYPE] Int, [ACTIVITYTYPE] Int, [APPLICATION] VarChar(400) COLLATE SQL_Latin1_General_CP1_CI_AS, [DOMAIN] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [MACHINE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOCATION] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [PROXYIDENTITY] UniqueIdentifier)   </inputbuf>
+          </process>
+          <process id="process13034c19c28" taskpriority="0" logused="3300" waitresource="PAGE: 11:1:7690456 " waittime="5329" ownerId="18833160246" transactionname="BULK INSERT" lasttranstarted="2026-10-21T15:01:29.280" XDES="0x155f2d38460" lockMode="IX" schedulerid="15" kpid="15104" status="suspended" spid="158" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:01:29.277" lastbatchcompleted="2026-10-21T15:01:29.277" lastattention="1900-01-01T00:00:00.277" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E01" hostpid="17536" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833160246" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtend="1724" sqlhandle="0x0200000009410017029a3c1a62029552c222d4f0a8634b680000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+insert bulk [Instrumentation].[FWM_MONITOR] ([SESSIONID] UniqueIdentifier, [SESSIONDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [ACTIVITYID] UniqueIdentifier, [ACTIVITYDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [SERVICECALLID] UniqueIdentifier, [SERVICECALLDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DATE] DateTime, [THREAD] Char(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOGIN] VarChar(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [MESSAGE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DURATION] Int, [TYPE] Int, [ACTIVITYTYPE] Int, [APPLICATION] VarChar(400) COLLATE SQL_Latin1_General_CP1_CI_AS, [DOMAIN] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [MACHINE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOCATION] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [PROXYIDENTITY] UniqueIdentifier)   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <pagelock fileid="1" pageid="8605456" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock13ce10b9080" mode="IX" associatedObjectId="72057594166509568">
+            <owner-list>
+              <owner id="process13a16e9a108" mode="IX" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process13034e544e8" mode="S" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+          <pagelock fileid="1" pageid="7690456" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock1627b387400" mode="S" associatedObjectId="72057594161135616">
+            <owner-list>
+              <owner id="process13034c19c28" mode="IX" requestType="wait" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process13a16e9a108" mode="IX" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+          <pagelock fileid="1" pageid="7690456" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock1627b387400" mode="S" associatedObjectId="72057594161135616">
+            <owner-list>
+              <owner id="process13034e544e8" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process13034c19c28" mode="IX" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
+
+
+
+<event name="xml_deadlock_report" package="sqlserver" timestamp="2026-10-21T19:01:39.635Z">
+  <data name="xml_report">
+    <value>
+      <deadlock>
+        <victim-list>
+          <victimProcess id="process15bdb8c3468" />
+        </victim-list>
+        <process-list>
+          <process id="process15bdb8c3468" taskpriority="0" logused="0" waitresource="PAGE: 11:1:8574520 " waittime="4731" ownerId="18833452216" transactionname="SELECT" lasttranstarted="2026-10-21T15:01:34.640" XDES="0x135185c9c08" lockMode="S" schedulerid="9" kpid="19904" status="suspended" spid="773" sbid="2" ecid="0" priority="0" trancount="0" lastbatchstarted="2026-10-21T15:01:34.640" lastbatchcompleted="2026-10-21T15:01:34.640" lastattention="1900-01-01T00:00:00.640" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E01" hostpid="17536" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833452216" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtstart="116" stmtend="2228" sqlhandle="0x02000000c1a3a0286e6604c0f3bcfca554d4a81a746392f60000000000000000000000000000000000000000">
+unknown    </frame>
+              <frame procname="unknown" line="1" sqlhandle="0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+(@p__linq__0 int,@p__linq__1 int,@p__linq__2 datetime2(7))SELECT TOP (5) 
+    [Project1].[C3] AS [C1], 
+    [Project1].[SESSIONDATA] AS [SESSIONDATA], 
+    [Project1].[C2] AS [C2]
+    FROM ( SELECT 
+        [GroupBy1].[A1] AS [C1], 
+        [GroupBy1].[A2] AS [C2], 
+        [GroupBy1].[K1] AS [SESSIONDATA], 
+        1 AS [C3]
+        FROM ( SELECT 
+            [Filter1].[K1] AS [K1], 
+            SUM([Filter1].[A1_0]) AS [A1], 
+            SUM([Filter1].[A2_0]) AS [A2]
+            FROM ( SELECT 
+                [Extent1].[SESSIONDATA] AS [K1], 
+                 CAST( [Extent1].[DURATION] AS bigint) AS [A1_0], 
+                CASE WHEN ([Extent1].[DURATION] IS NULL) THEN cast(0 as bigint) ELSE  CAST( [Extent1].[DURATION] AS bigint) END AS [A2_0]
+                FROM [Instrumentation].[FWM_MONITOR] AS [Extent1]
+                WHERE ([Extent1].[TYPE] = @p__linq__0) AND ([Extent1].[ACTIVITYTYPE] = @p__linq__1) AND ([Extent1].[DATE] &gt; @p__linq__2)
+            )  AS [Filter1]
+            GROU   </inputbuf>
+          </process>
+          <process id="process14ed31bb088" taskpriority="0" logused="1724" waitresource="PAGE: 11:1:7690456 " waittime="4941" ownerId="18833456050" transactionname="BULK INSERT" lasttranstarted="2026-10-21T15:01:34.680" XDES="0x13868570460" lockMode="IX" schedulerid="6" kpid="9964" status="suspended" spid="168" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:01:34.680" lastbatchcompleted="2026-10-21T15:01:34.677" lastattention="1900-01-01T00:00:00.677" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E04" hostpid="22432" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833456050" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtend="1724" sqlhandle="0x0200000009410017029a3c1a62029552c222d4f0a8634b680000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+insert bulk [Instrumentation].[FWM_MONITOR] ([SESSIONID] UniqueIdentifier, [SESSIONDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [ACTIVITYID] UniqueIdentifier, [ACTIVITYDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [SERVICECALLID] UniqueIdentifier, [SERVICECALLDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DATE] DateTime, [THREAD] Char(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOGIN] VarChar(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [MESSAGE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DURATION] Int, [TYPE] Int, [ACTIVITYTYPE] Int, [APPLICATION] VarChar(400) COLLATE SQL_Latin1_General_CP1_CI_AS, [DOMAIN] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [MACHINE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOCATION] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [PROXYIDENTITY] UniqueIdentifier)   </inputbuf>
+          </process>
+          <process id="process13255300108" taskpriority="0" logused="1724" waitresource="PAGE: 11:1:7690456 " waittime="4954" ownerId="18833454607" transactionname="BULK INSERT" lasttranstarted="2026-10-21T15:01:34.667" XDES="0x1a247d48460" lockMode="IX" schedulerid="6" kpid="8456" status="suspended" spid="51" sbid="2" ecid="0" priority="0" trancount="2" lastbatchstarted="2026-10-21T15:01:34.663" lastbatchcompleted="2026-10-21T15:01:34.663" lastattention="1900-01-01T00:00:00.663" clientapp="PROD_FrameworkServices_Instrumentation" hostname="JLERP9-AS-E02" hostpid="29048" loginname="CMSDBO" isolationlevel="read committed (2)" xactid="18833454607" currentdb="11" currentdbname="ADR_LIVE_MO" lockTimeout="4294967295" clientoption1="671088672" clientoption2="128056">
+            <executionStack>
+              <frame procname="adhoc" line="1" stmtend="1724" sqlhandle="0x0200000009410017029a3c1a62029552c222d4f0a8634b680000000000000000000000000000000000000000">
+unknown    </frame>
+            </executionStack>
+            <inputbuf>
+insert bulk [Instrumentation].[FWM_MONITOR] ([SESSIONID] UniqueIdentifier, [SESSIONDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [ACTIVITYID] UniqueIdentifier, [ACTIVITYDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [SERVICECALLID] UniqueIdentifier, [SERVICECALLDATA] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DATE] DateTime, [THREAD] Char(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOGIN] VarChar(255) COLLATE SQL_Latin1_General_CP1_CI_AS, [MESSAGE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [DURATION] Int, [TYPE] Int, [ACTIVITYTYPE] Int, [APPLICATION] VarChar(400) COLLATE SQL_Latin1_General_CP1_CI_AS, [DOMAIN] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [MACHINE] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [LOCATION] VarChar(max) COLLATE SQL_Latin1_General_CP1_CI_AS, [PROXYIDENTITY] UniqueIdentifier)   </inputbuf>
+          </process>
+        </process-list>
+        <resource-list>
+          <pagelock fileid="1" pageid="8574520" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock14b611f5f00" mode="IX" associatedObjectId="72057594166509568">
+            <owner-list>
+              <owner id="process14ed31bb088" mode="IX" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process15bdb8c3468" mode="S" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+          <pagelock fileid="1" pageid="7690456" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock1627b387400" mode="S" associatedObjectId="72057594161135616">
+            <owner-list>
+              <owner id="process13255300108" mode="IX" requestType="wait" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process14ed31bb088" mode="IX" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+          <pagelock fileid="1" pageid="7690456" dbid="11" subresource="FULL" objectname="ADR_LIVE_MO.Instrumentation.FWM_Monitor" id="lock1627b387400" mode="S" associatedObjectId="72057594161135616">
+            <owner-list>
+              <owner id="process15bdb8c3468" mode="S" />
+            </owner-list>
+            <waiter-list>
+              <waiter id="process13255300108" mode="IX" requestType="wait" />
+            </waiter-list>
+          </pagelock>
+        </resource-list>
+      </deadlock>
+    </value>
+  </data>
+</event>
