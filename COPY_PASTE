@@ -1,49 +1,20 @@
-
-USE [ADR_LIVE];
-GO
-
-SELECT
-    OBJECT_SCHEMA_NAME(ps.object_id) AS schema_name,
-    OBJECT_NAME(ps.object_id) AS table_name,
-    i.name AS index_name,
-    i.type_desc,
-    ps.partition_number,
-    ps.page_count,
-    ps.avg_fragmentation_in_percent,
-    ps.avg_page_space_used_in_percent
-FROM sys.dm_db_index_physical_stats
-(
-    DB_ID(),
-    OBJECT_ID(N'dbo.TAT_TIME_NEW'),
-    NULL,
-    NULL,
-    'LIMITED'
-) AS ps
-INNER JOIN sys.indexes AS i
-    ON i.object_id = ps.object_id
-   AND i.index_id = ps.index_id
-
-UNION ALL
-
-SELECT
-    OBJECT_SCHEMA_NAME(ps.object_id),
-    OBJECT_NAME(ps.object_id),
-    i.name,
-    i.type_desc,
-    ps.partition_number,
-    ps.page_count,
-    ps.avg_fragmentation_in_percent,
-    ps.avg_page_space_used_in_percent
-FROM sys.dm_db_index_physical_stats
-(
-    DB_ID(),
-    OBJECT_ID(N'dbo.TAT_TIME'),
-    NULL,
-    NULL,
-    'LIMITED'
-) AS ps
-INNER JOIN sys.indexes AS i
-    ON i.object_id = ps.object_id
-   AND i.index_id = ps.index_id
-ORDER BY table_name, index_name, partition_number;
-GO
+schema_name	table_name	index_name	type_desc	partition_number	page_count	avg_fragmentation_in_percent	avg_page_space_used_in_percent
+dbo	TAT_TIME	idx_tat_time_uno_status	NONCLUSTERED	1	211445	8.72520040672515	NULL
+dbo	TAT_TIME	TAT_TIME0	CLUSTERED	1	4667686	29.3600083638874	NULL
+dbo	TAT_TIME	TAT_TIME1	NONCLUSTERED	1	256806	16.4766399538952	NULL
+dbo	TAT_TIME	TAT_TIME10	NONCLUSTERED	1	283834	21.893430667221	NULL
+dbo	TAT_TIME	TAT_TIME11	NONCLUSTERED	1	266714	10.6934769078489	NULL
+dbo	TAT_TIME	TAT_TIME12	NONCLUSTERED	1	337573	15.7509634953032	NULL
+dbo	TAT_TIME	TAT_TIME13	NONCLUSTERED	1	257502	24.572236332145	NULL
+dbo	TAT_TIME	TAT_TIME2	NONCLUSTERED	1	260594	17.0951748697207	NULL
+dbo	TAT_TIME	TAT_TIME3	NONCLUSTERED	1	237239	17.6560346317427	NULL
+dbo	TAT_TIME	TAT_TIME4	NONCLUSTERED	1	306922	25.6807918624276	NULL
+dbo	TAT_TIME	TAT_TIME5	NONCLUSTERED	1	260621	17.1110539826031	NULL
+dbo	TAT_TIME	TAT_TIME6	NONCLUSTERED	1	296416	32.8460676886538	NULL
+dbo	TAT_TIME	TAT_TIME7	NONCLUSTERED	1	193217	11.6956582495329	NULL
+dbo	TAT_TIME	TAT_TIME8	NONCLUSTERED	1	259312	19.8934102548282	NULL
+dbo	TAT_TIME	TAT_TIME9	NONCLUSTERED	1	297623	21.1021997627871	NULL
+dbo	TAT_TIME_NEW	TAT_TIME_NEW0	NONCLUSTERED	1	292046	1.53777144696383	NULL
+dbo	TAT_TIME_NEW	TAT_TIME_NEW1	NONCLUSTERED	1	208550	5.73819228002877	NULL
+dbo	TAT_TIME_NEW	TAT_TIME_NEW2	NONCLUSTERED	1	215043	24.0775100793795	NULL
+dbo	TAT_TIME_NEW	TAT_TIME_NEW3	CLUSTERED	1	1624809	17.266706425186	NULL
