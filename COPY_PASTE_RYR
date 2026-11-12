@@ -1,11 +1,11 @@
-	@FragmentationLow	= NULL,
-	@FragmentationMedium	= 'INDEX_REORGANIZE,INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',
-	@FragmentationHigh	= 'INDEX_REBUILD_ONLINE,INDEX_REBUILD_OFFLINE',  
-	@FragmentationLevel1	= 10,
-	@FragmentationLevel2	 = 50,
-	@PartitionLevel		= 'Y',
-	@LogToTable		= 'Y',
-	@MaxDOP		= 4,
-	@SortInTempdb		= 'N',
-	@MinNumberOfPages	= "1",
-	@TimeLimit		= 7140;
+SELECT
+    dp.name AS UserName,
+    OBJECT_SCHEMA_NAME(p.major_id) AS SchemaName,
+    OBJECT_NAME(p.major_id) AS ObjectName,
+    p.permission_name,
+    p.state_desc
+FROM sys.database_permissions p
+JOIN sys.database_principals dp
+    ON p.grantee_principal_id = dp.principal_id
+WHERE dp.name = 'AppUser'
+  AND p.major_id = OBJECT_ID('dbo.fn_CalculateValue');
