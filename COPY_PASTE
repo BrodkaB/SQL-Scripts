@@ -1,3 +1,45 @@
 LogDate	DatabaseName	Operation	Status	Details
-2026-11-19 08:39:11	NULL	CREATE LOGIN	PREVIEW	Login does not exist.
-2026-11-19 08:39:11	NULL	DEPLOYMENT	ABORTED	Login is not available. Remaining operations skipped.
+2026-11-19 08:43:02	NULL	CREATE LOGIN	PREVIEW	Login does not exist.
+2026-11-19 08:43:02	NULL	SERVER PERMISSION: VIEW ANY DEFINITION	PREVIEW	Server-level permission.
+2026-11-19 08:43:02	NULL	SERVER PERMISSION: VIEW SERVER STATE	PREVIEW	Server-level permission.
+2026-11-19 08:43:02	baiautoclassifierdev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	baiconnectdev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	ClocktimizerStaging	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	CompuLaw_Portal_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	CompuLaw_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	CompuLaw_Test2	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	COMPULAWSYNC_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	DBA	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	DEV_SmartPreviews_Configuration	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	DEV_SmartPreviews_PreviewCache	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	DEV_SmartPreviews_UserProfile	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	DingerMatch	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	FileTrail_Sync	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	FoundationExport	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	FoundationImport	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	InterAction_Integration_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	InteractionDev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	IQDB_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	JLApps_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	JLApps_Stg	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	JLCID_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	Lexis_Temp	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	master	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	msdb	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	msdb	EXECUTE dbo.agent_datetime	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.syscategories	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.syscollector_collection_sets	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysjobhistory	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysjobs	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysjobsteps	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_account	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_profile	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_profileaccount	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.sysmaintplan_plans	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	msdb	SELECT dbo.syssubsystems	PREVIEW	msdb object permission.
+2026-11-19 08:43:02	PAACApproval	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	ricoh_slnx_dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	ricoh_slnx_dev01	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	ricoh_slnx_dev02	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	SqliteMigrated	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+2026-11-19 08:43:02	SSISDB	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
