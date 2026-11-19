@@ -1,45 +1,179 @@
-LogDate	DatabaseName	Operation	Status	Details
-2026-11-19 08:43:02	NULL	CREATE LOGIN	PREVIEW	Login does not exist.
-2026-11-19 08:43:02	NULL	SERVER PERMISSION: VIEW ANY DEFINITION	PREVIEW	Server-level permission.
-2026-11-19 08:43:02	NULL	SERVER PERMISSION: VIEW SERVER STATE	PREVIEW	Server-level permission.
-2026-11-19 08:43:02	baiautoclassifierdev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	baiconnectdev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	ClocktimizerStaging	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	CompuLaw_Portal_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	CompuLaw_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	CompuLaw_Test2	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	COMPULAWSYNC_Test	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	DBA	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	DEV_SmartPreviews_Configuration	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	DEV_SmartPreviews_PreviewCache	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	DEV_SmartPreviews_UserProfile	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	DingerMatch	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	FileTrail_Sync	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	FoundationExport	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	FoundationImport	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	InterAction_Integration_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	InteractionDev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	IQDB_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	JLApps_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	JLApps_Stg	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	JLCID_Dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	Lexis_Temp	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	master	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	msdb	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	msdb	EXECUTE dbo.agent_datetime	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.syscategories	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.syscollector_collection_sets	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysjobhistory	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysjobs	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysjobsteps	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_account	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_profile	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysmail_profileaccount	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.sysmaintplan_plans	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	msdb	SELECT dbo.syssubsystems	PREVIEW	msdb object permission.
-2026-11-19 08:43:02	PAACApproval	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	ricoh_slnx_dev	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	ricoh_slnx_dev01	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	ricoh_slnx_dev02	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	SqliteMigrated	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
-2026-11-19 08:43:02	SSISDB	CREATE USER / DATABASE PERMISSIONS	ERROR	Incorrect syntax near 'QUOTENAME'.
+
+/*==============================================================
+  4. Database processing - FIXED VERSION
+==============================================================*/
+
+DECLARE @DatabaseName sysname;
+DECLARE @DatabaseState nvarchar(60);
+DECLARE @IsReadOnly bit;
+DECLARE @GroupDatabaseId uniqueidentifier;
+DECLARE @IsPrimary int;
+
+DECLARE DatabaseCursor CURSOR LOCAL FAST_FORWARD FOR
+    SELECT
+        name,
+        state_desc,
+        is_read_only,
+        group_database_id
+    FROM sys.databases
+    WHERE database_id > 0
+      AND name NOT IN ('tempdb', 'model')
+      AND source_database_id IS NULL
+    ORDER BY name;
+
+OPEN DatabaseCursor;
+
+FETCH NEXT FROM DatabaseCursor
+INTO @DatabaseName, @DatabaseState,
+     @IsReadOnly, @GroupDatabaseId;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+    IF @DatabaseState <> 'ONLINE'
+    BEGIN
+        INSERT INTO #DeploymentLog
+        VALUES
+        (
+            DEFAULT, @DatabaseName, 'DATABASE PROCESSING',
+            'SKIPPED', 'Database is not ONLINE.'
+        );
+    END
+
+    ELSE IF @IsReadOnly = 1
+    BEGIN
+        INSERT INTO #DeploymentLog
+        VALUES
+        (
+            DEFAULT, @DatabaseName, 'DATABASE PROCESSING',
+            'SKIPPED', 'Database is READ_ONLY.'
+        );
+    END
+
+    ELSE
+    BEGIN
+
+        SET @IsPrimary = NULL;
+
+        IF @GroupDatabaseId IS NOT NULL
+        BEGIN
+            SET @IsPrimary =
+                sys.fn_hadr_is_primary_replica(@DatabaseName);
+
+            IF ISNULL(@IsPrimary, 0) <> 1
+            BEGIN
+                INSERT INTO #DeploymentLog
+                VALUES
+                (
+                    DEFAULT, @DatabaseName,
+                    'DATABASE PROCESSING',
+                    'SKIPPED',
+                    'AG database is not confirmed as PRIMARY.'
+                );
+            END;
+        END;
+
+        IF @GroupDatabaseId IS NULL
+           OR @IsPrimary = 1
+        BEGIN
+
+            BEGIN TRY
+
+                SET @SQL = N'
+USE ' + QUOTENAME(@DatabaseName) + N';
+
+DECLARE @LoginSID varbinary(85) =
+    SUSER_SID(@LoginName);
+
+IF EXISTS
+(
+    SELECT 1
+    FROM sys.database_principals
+    WHERE name = @LoginName
+      AND sid <> @LoginSID
+)
+BEGIN
+    THROW 50002,
+        ''Existing USER has a different SID than LOGIN.'',
+        1;
+END;
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.database_principals
+    WHERE name = @LoginName
+)
+BEGIN
+    IF @ApplyChanges = 1
+    BEGIN
+        CREATE USER ' + QUOTENAME(@LoginName) +
+        N' FOR LOGIN ' + QUOTENAME(@LoginName) + N';
+    END;
+END;
+
+IF @ApplyChanges = 1
+BEGIN
+    GRANT SELECT
+    ON OBJECT::sys.sql_expression_dependencies
+    TO ' + QUOTENAME(@LoginName) + N';
+
+    GRANT VIEW DATABASE STATE
+    TO ' + QUOTENAME(@LoginName) + N';
+END;
+';
+
+                EXEC sys.sp_executesql
+                    @SQL,
+                    N'@LoginName sysname, @ApplyChanges bit',
+                    @LoginName = @LoginName,
+                    @ApplyChanges = @ApplyChanges;
+
+                INSERT INTO #DeploymentLog
+                VALUES
+                (
+                    DEFAULT, @DatabaseName,
+                    'CREATE USER / DATABASE PERMISSIONS',
+                    IIF(@ApplyChanges = 1, 'SUCCESS', 'PREVIEW'),
+                    'USER and database permissions processed.'
+                );
+
+                IF @DatabaseName = 'master'
+                   AND @ApplyChanges = 1
+                BEGIN
+
+                    GRANT EXECUTE
+                    ON OBJECT::sys.xp_regenumkeys
+                    TO [JACKSONLEWIS\svc_AzCatalyst];
+
+                    GRANT EXECUTE
+                    ON OBJECT::sys.xp_instance_regread
+                    TO [JACKSONLEWIS\svc_AzCatalyst];
+
+                END;
+
+            END TRY
+            BEGIN CATCH
+
+                INSERT INTO #DeploymentLog
+                VALUES
+                (
+                    DEFAULT, @DatabaseName,
+                    'CREATE USER / DATABASE PERMISSIONS',
+                    'ERROR', ERROR_MESSAGE()
+                );
+
+            END CATCH;
+
+        END;
+
+    END;
+
+    FETCH NEXT FROM DatabaseCursor
+    INTO @DatabaseName, @DatabaseState,
+         @IsReadOnly, @GroupDatabaseId;
+
+END;
+
+CLOSE DatabaseCursor;
+DEALLOCATE DatabaseCursor;
