@@ -1,10 +1,36 @@
-schema_name	object_name	execution_count	total_elapsed_time_ms	total_worker_time_ms	total_logical_reads	total_logical_writes	last_execution_time
-dbo	BPP_PostBill	11654	38068.546000	19466.710000	1121377	14004	2026-10-30 11:30:32.907
-dbo	TR_HBM_MATTER	4956	1900.290000	1141.745000	327773	834	2026-10-30 11:30:32.900
-dbo	TR_TBM_MATTER	4035	2100.412000	945.264000	154277	462	2026-10-30 11:30:32.900
-dbo	BPP_PostBillUpdateTahSummaryGL	39	21.212000	6.870000	669	11	2026-10-30 11:30:32.877
-dbo	SP_EXPERT_MATTER_LOG	10	1.831000	1.828000	311	4	2026-10-30 11:29:00.057
-dbo	BPP_PostBillUpdateCdhSummaryGL	34	19.300000	4.746000	205	2	2026-10-30 11:30:32.897
-dbo	BPP_InsertZeroPaidDisbursementsRA	100	49.645000	41.532000	141	0	2026-10-30 11:30:32.890
-dbo	BPP_InsertZeroPaidFeesRA	100	46.678000	45.028000	134	0	2026-10-30 11:30:32.887
-dbo	SP_CMS_MATTER_LOG	51	1.886000	1.879000	102	0	2026-10-30 11:30:32.900
+USE master;
+CREATE LOGIN [JACKSONLEWIS\svc_AzCatalyst] FROM WINDOWS;
+
+GRANT SELECT ON sys.sql_expression_dependencies TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT EXECUTE ON OBJECT::sys.xp_regenumkeys TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT EXECUTE ON OBJECT::sys.xp_instance_regread TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT VIEW DATABASE STATE TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT VIEW SERVER STATE TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT VIEW ANY DEFINITION TO [JACKSONLEWIS\svc_AzCatalyst];
+GO
+
+-- Provide msdb specific permissions
+use msdb;
+GRANT EXECUTE ON [msdb].[dbo].[agent_datetime] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysjobsteps] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[syssubsystems] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysjobhistory] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[syscategories] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysjobs] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysmaintplan_plans] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[syscollector_collection_sets] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysmail_profile] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysmail_profileaccount] TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON [msdb].[dbo].[sysmail_account] TO [JACKSONLEWIS\svc_AzCatalyst];
+GO
+
+USE <DATABASE>
+CREATE USER [JACKSONLEWIS\svc_AzCatalyst] FOR LOGIN [JACKSONLEWIS\svc_AzCatalyst];
+GRANT SELECT ON sys.sql_expression_dependencies TO [JACKSONLEWIS\svc_AzCatalyst];
+GRANT VIEW DATABASE STATE TO [JACKSONLEWIS\svc_AzCatalyst];
+
+
+
+Create the following Login and User in all the databases except TempDB, Model and all secondary read only replicas.
+
+[JACKSONLEWIS\svc_AzCatalyst]
