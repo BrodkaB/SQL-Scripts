@@ -1,179 +1,178 @@
+---1. Login verification
+USE master;
+GO
 
-/*==============================================================
-  4. Database processing - FIXED VERSION
-==============================================================*/
+DECLARE @LoginName sysname =
+    N'JACKSONLEWIS\svc_AzCatalyst';
 
-DECLARE @DatabaseName sysname;
-DECLARE @DatabaseState nvarchar(60);
-DECLARE @IsReadOnly bit;
-DECLARE @GroupDatabaseId uniqueidentifier;
-DECLARE @IsPrimary int;
+SELECT
+    sp.name AS LoginName,
+    sp.type_desc,
+    sp.is_disabled,
+    sp.sid,
+    perm.permission_name,
+    perm.state_desc
+FROM sys.server_principals sp
+LEFT JOIN sys.server_permissions perm
+    ON sp.principal_id = perm.grantee_principal_id
+WHERE sp.name = @LoginName;
 
-DECLARE DatabaseCursor CURSOR LOCAL FAST_FORWARD FOR
-    SELECT
-        name,
-        state_desc,
-        is_read_only,
-        group_database_id
-    FROM sys.databases
-    WHERE database_id > 0
-      AND name NOT IN ('tempdb', 'model')
-      AND source_database_id IS NULL
-    ORDER BY name;
+---2. Database users verification
+DECLARE @LoginName sysname =
+    N'JACKSONLEWIS\svc_AzCatalyst';
 
-OPEN DatabaseCursor;
+CREATE TABLE #UserCheck
+(
+    DatabaseName sysname,
+    UserName sysname NULL,
+    UserSID varbinary(85) NULL,
+    LoginSID varbinary(85) NULL,
+    SID_Match bit NULL,
+    Status varchar(30)
+);
 
-FETCH NEXT FROM DatabaseCursor
-INTO @DatabaseName, @DatabaseState,
-     @IsReadOnly, @GroupDatabaseId;
+DECLARE @DB sysname;
+DECLARE @SQL nvarchar(max);
+
+DECLARE db_cursor CURSOR LOCAL FAST_FORWARD FOR
+SELECT name
+FROM sys.databases
+WHERE database_id > 0
+  AND name NOT IN ('tempdb', 'model')
+  AND state_desc = 'ONLINE'
+  AND source_database_id IS NULL;
+
+OPEN db_cursor;
+
+FETCH NEXT FROM db_cursor INTO @DB;
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
 
-    IF @DatabaseState <> 'ONLINE'
-    BEGIN
-        INSERT INTO #DeploymentLog
-        VALUES
-        (
-            DEFAULT, @DatabaseName, 'DATABASE PROCESSING',
-            'SKIPPED', 'Database is not ONLINE.'
-        );
-    END
+    SET @SQL = N'
+    USE ' + QUOTENAME(@DB) + N';
 
-    ELSE IF @IsReadOnly = 1
-    BEGIN
-        INSERT INTO #DeploymentLog
-        VALUES
-        (
-            DEFAULT, @DatabaseName, 'DATABASE PROCESSING',
-            'SKIPPED', 'Database is READ_ONLY.'
-        );
-    END
+    INSERT INTO #UserCheck
+    SELECT
+        DB_NAME(),
+        dp.name,
+        dp.sid,
+        SUSER_SID(@LoginName),
+        CASE
+            WHEN dp.sid = SUSER_SID(@LoginName) THEN 1
+            ELSE 0
+        END,
+        CASE
+            WHEN dp.principal_id IS NULL THEN ''MISSING''
+            WHEN dp.sid = SUSER_SID(@LoginName) THEN ''OK''
+            ELSE ''SID MISMATCH''
+        END
+    FROM (SELECT 1 AS Dummy) x
+    LEFT JOIN sys.database_principals dp
+        ON dp.name = @LoginName;
+    ';
 
-    ELSE
-    BEGIN
+    EXEC sys.sp_executesql
+        @SQL,
+        N'@LoginName sysname',
+        @LoginName = @LoginName;
 
-        SET @IsPrimary = NULL;
+    FETCH NEXT FROM db_cursor INTO @DB;
 
-        IF @GroupDatabaseId IS NOT NULL
-        BEGIN
-            SET @IsPrimary =
-                sys.fn_hadr_is_primary_replica(@DatabaseName);
+END;
 
-            IF ISNULL(@IsPrimary, 0) <> 1
-            BEGIN
-                INSERT INTO #DeploymentLog
-                VALUES
-                (
-                    DEFAULT, @DatabaseName,
-                    'DATABASE PROCESSING',
-                    'SKIPPED',
-                    'AG database is not confirmed as PRIMARY.'
-                );
-            END;
-        END;
+CLOSE db_cursor;
+DEALLOCATE db_cursor;
 
-        IF @GroupDatabaseId IS NULL
-           OR @IsPrimary = 1
-        BEGIN
+SELECT *
+FROM #UserCheck
+ORDER BY DatabaseName;
 
-            BEGIN TRY
+DROP TABLE #UserCheck;
 
-                SET @SQL = N'
-USE ' + QUOTENAME(@DatabaseName) + N';
 
-DECLARE @LoginSID varbinary(85) =
-    SUSER_SID(@LoginName);
+---3. Database permissions verification 
+DECLARE @LoginName sysname =
+    N'JACKSONLEWIS\svc_AzCatalyst';
 
-IF EXISTS
+CREATE TABLE #PermissionCheck
 (
-    SELECT 1
-    FROM sys.database_principals
-    WHERE name = @LoginName
-      AND sid <> @LoginSID
-)
+    DatabaseName sysname,
+    PermissionName sysname,
+    StateDesc nvarchar(60),
+    Status varchar(20)
+);
+
+DECLARE @DB sysname;
+DECLARE @SQL nvarchar(max);
+
+DECLARE db_cursor CURSOR LOCAL FAST_FORWARD FOR
+SELECT name
+FROM sys.databases
+WHERE database_id > 0
+  AND name NOT IN ('tempdb', 'model')
+  AND state_desc = 'ONLINE'
+  AND source_database_id IS NULL;
+
+OPEN db_cursor;
+
+FETCH NEXT FROM db_cursor INTO @DB;
+
+WHILE @@FETCH_STATUS = 0
 BEGIN
-    THROW 50002,
-        ''Existing USER has a different SID than LOGIN.'',
-        1;
-END;
 
-IF NOT EXISTS
-(
-    SELECT 1
-    FROM sys.database_principals
-    WHERE name = @LoginName
-)
-BEGIN
-    IF @ApplyChanges = 1
-    BEGIN
-        CREATE USER ' + QUOTENAME(@LoginName) +
-        N' FOR LOGIN ' + QUOTENAME(@LoginName) + N';
-    END;
-END;
+    SET @SQL = N'
+    USE ' + QUOTENAME(@DB) + N';
 
-IF @ApplyChanges = 1
-BEGIN
-    GRANT SELECT
-    ON OBJECT::sys.sql_expression_dependencies
-    TO ' + QUOTENAME(@LoginName) + N';
+    INSERT INTO #PermissionCheck
+    SELECT
+        DB_NAME(),
+        p.permission_name,
+        p.state_desc,
+        CASE
+            WHEN p.state_desc = ''GRANT'' THEN ''OK''
+            ELSE ''CHECK''
+        END
+    FROM sys.database_permissions p
+    INNER JOIN sys.database_principals dp
+        ON p.grantee_principal_id = dp.principal_id
+    WHERE dp.name = @LoginName
+      AND p.permission_name IN
+          (''VIEW DATABASE STATE'', ''SELECT'');
+    ';
 
-    GRANT VIEW DATABASE STATE
-    TO ' + QUOTENAME(@LoginName) + N';
-END;
-';
+    EXEC sys.sp_executesql
+        @SQL,
+        N'@LoginName sysname',
+        @LoginName = @LoginName;
 
-                EXEC sys.sp_executesql
-                    @SQL,
-                    N'@LoginName sysname, @ApplyChanges bit',
-                    @LoginName = @LoginName,
-                    @ApplyChanges = @ApplyChanges;
-
-                INSERT INTO #DeploymentLog
-                VALUES
-                (
-                    DEFAULT, @DatabaseName,
-                    'CREATE USER / DATABASE PERMISSIONS',
-                    IIF(@ApplyChanges = 1, 'SUCCESS', 'PREVIEW'),
-                    'USER and database permissions processed.'
-                );
-
-                IF @DatabaseName = 'master'
-                   AND @ApplyChanges = 1
-                BEGIN
-
-                    GRANT EXECUTE
-                    ON OBJECT::sys.xp_regenumkeys
-                    TO [JACKSONLEWIS\svc_AzCatalyst];
-
-                    GRANT EXECUTE
-                    ON OBJECT::sys.xp_instance_regread
-                    TO [JACKSONLEWIS\svc_AzCatalyst];
-
-                END;
-
-            END TRY
-            BEGIN CATCH
-
-                INSERT INTO #DeploymentLog
-                VALUES
-                (
-                    DEFAULT, @DatabaseName,
-                    'CREATE USER / DATABASE PERMISSIONS',
-                    'ERROR', ERROR_MESSAGE()
-                );
-
-            END CATCH;
-
-        END;
-
-    END;
-
-    FETCH NEXT FROM DatabaseCursor
-    INTO @DatabaseName, @DatabaseState,
-         @IsReadOnly, @GroupDatabaseId;
+    FETCH NEXT FROM db_cursor INTO @DB;
 
 END;
 
-CLOSE DatabaseCursor;
-DEALLOCATE DatabaseCursor;
+CLOSE db_cursor;
+DEALLOCATE db_cursor;
+
+SELECT *
+FROM #PermissionCheck
+ORDER BY DatabaseName, PermissionName;
+
+DROP TABLE #PermissionCheck;
+
+
+---4. msdb verification
+USE msdb;
+GO
+
+SELECT
+    dp.name AS UserName,
+    o.name AS ObjectName,
+    p.permission_name,
+    p.state_desc
+FROM sys.database_permissions p
+JOIN sys.database_principals dp
+    ON p.grantee_principal_id = dp.principal_id
+JOIN sys.objects o
+    ON p.major_id = o.object_id
+WHERE dp.name = N'JACKSONLEWIS\svc_AzCatalyst'
+ORDER BY o.name, p.permission_name;
