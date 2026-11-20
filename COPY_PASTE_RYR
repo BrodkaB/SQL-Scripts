@@ -1,31 +1,5 @@
--------------------------------------------------------------------------------
--- Result set 2: Comparison
--------------------------------------------------------------------------------
+Msg 515, Level 16, State 2, Line 431
+Cannot insert the value NULL into column 'DatabaseName', table 'tempdb.dbo.#Comparison_________________________________________________________________________________________________________000000000012'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
 
-EXEC sys.sp_executesql N'
-SELECT
-    PermissionLevel,
-    DatabaseName,
-    Category,
-    OldSecurable,
-    NewSecurable,
-    PermissionName,
-    OldState,
-    NewState,
-    Result,
-    OldDetails,
-    NewDetails
-FROM #Comparison
-ORDER BY
-    CASE Result
-        WHEN ''MISSING_ON_NEW'' THEN 1
-        WHEN ''DIFFERENT'' THEN 2
-        WHEN ''EXTRA_ON_NEW'' THEN 3
-        WHEN ''IDENTICAL'' THEN 4
-        ELSE 5
-    END,
-    PermissionLevel,
-    DatabaseName,
-    Category,
-    PermissionName;
-';
+Completion time: 2026-11-20T12:55:15.5370408+00:00
