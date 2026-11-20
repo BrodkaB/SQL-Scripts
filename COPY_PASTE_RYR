@@ -1,16 +1,10 @@
-SELECT
-    'Permissions' AS TempTable,
-    c.column_id,
-    c.name AS ColumnName
-FROM tempdb.sys.columns c
-WHERE c.object_id = OBJECT_ID('tempdb..#Permissions')
+Msg 207, Level 16, State 1, Line 526
+Invalid column name 'PermissionLevel'.
+Msg 207, Level 16, State 1, Line 527
+Invalid column name 'DatabaseName'.
+Msg 207, Level 16, State 1, Line 529
+Invalid column name 'OldSecurable'.
+Msg 207, Level 16, State 1, Line 530
+Invalid column name 'NewSecurable'.
 
-UNION ALL
-
-SELECT
-    'Comparison',
-    c.column_id,
-    c.name
-FROM tempdb.sys.columns c
-WHERE c.object_id = OBJECT_ID('tempdb..#Comparison')
-ORDER BY TempTable, column_id;
+Completion time: 2026-11-20T12:49:22.5534142+00:00
