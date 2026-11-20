@@ -1,5 +1,8 @@
-Msg 515, Level 16, State 2, Line 431
-Cannot insert the value NULL into column 'DatabaseName', table 'tempdb.dbo.#Comparison_________________________________________________________________________________________________________000000000012'; column does not allow nulls. INSERT fails.
-The statement has been terminated.
-
-Completion time: 2026-11-20T12:55:15.5370408+00:00
+SELECT
+    c.name AS ColumnName,
+    TYPE_NAME(c.user_type_id) AS DataType,
+    c.max_length,
+    c.is_nullable
+FROM tempdb.sys.columns c
+WHERE c.object_id = OBJECT_ID('tempdb..#Comparison')
+ORDER BY c.column_id;
