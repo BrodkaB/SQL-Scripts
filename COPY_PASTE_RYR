@@ -11,27 +11,9 @@ SET NOCOUNT ON;
 DECLARE @OldLogin SYSNAME = N'DOMAIN\svc_app_old';
 DECLARE @NewLogin SYSNAME = N'DOMAIN\svc_app_new';
 
-DECLARE @IncludeSystemDatabases BIT = 1;
-DECLARE @GenerateRepairScripts BIT = 1;
-
 ------------------------------------------------------------
 -- VALIDATION
 ------------------------------------------------------------
-
-IF IS_SRVROLEMEMBER('sysadmin') <> 1
-BEGIN
-    RAISERROR(
-        'Run this audit as sysadmin for complete metadata visibility.',
-        16, 1
-    );
-    RETURN;
-END;
-
-IF @OldLogin = @NewLogin
-BEGIN
-    RAISERROR('Old and New login cannot be identical.',16,1);
-    RETURN;
-END;
 
 DECLARE @OldSID VARBINARY(85);
 DECLARE @NewSID VARBINARY(85);
@@ -46,141 +28,56 @@ WHERE name = @NewLogin;
 
 IF @OldSID IS NULL OR @NewSID IS NULL
 BEGIN
-    RAISERROR('One or both logins do not exist.',16,1);
+    RAISERROR('One or both SQL Server logins do not exist.',16,1);
+    RETURN;
+END;
+
+IF @OldSID = @NewSID
+BEGIN
+    RAISERROR('Both logins have the same SID.',16,1);
+    RETURN;
+END;
+
+IF IS_SRVROLEMEMBER('sysadmin') <> 1
+BEGIN
+    RAISERROR('Run as sysadmin for complete visibility.',16,1);
     RETURN;
 END;
 
 ------------------------------------------------------------
--- CLEANUP
+-- TEMP TABLE
 ------------------------------------------------------------
 
-DROP TABLE IF EXISTS #Inventory;
-DROP TABLE IF EXISTS #Comparison;
-DROP TABLE IF EXISTS #DBUsers;
-DROP TABLE IF EXISTS #DBRoles;
-DROP TABLE IF EXISTS #DBPermissions;
-DROP TABLE IF EXISTS #DBOwnership;
-DROP TABLE IF EXISTS #ServerRoles;
-DROP TABLE IF EXISTS #ServerPermissions;
-DROP TABLE IF EXISTS #LoginProperties;
+DROP TABLE IF EXISTS #Permissions;
 
-------------------------------------------------------------
--- COMMON INVENTORY
-------------------------------------------------------------
-
-CREATE TABLE #Inventory
+CREATE TABLE #Permissions
 (
-    AccountType VARCHAR(3),
+    AccountSide VARCHAR(3),
+    PermissionLevel VARCHAR(20),
+    DatabaseName SYSNAME NULL,
     Category VARCHAR(50),
-    ScopeName SYSNAME,
+    ItemKey NVARCHAR(1000),
     Securable NVARCHAR(1000),
     PermissionName NVARCHAR(256),
     PermissionState NVARCHAR(60),
-    Details NVARCHAR(1000),
-    RepairDDL NVARCHAR(MAX),
-    ReviewRequired BIT DEFAULT 0
-);
-
-CREATE TABLE #LoginProperties
-(
-    AccountType VARCHAR(3),
-    LoginName SYSNAME,
-    TypeDesc NVARCHAR(60),
-    IsDisabled BIT,
-    DefaultDatabase SYSNAME,
-    DefaultLanguage SYSNAME,
-    SID VARBINARY(85),
-    IsPolicyChecked BIT,
-    IsExpirationChecked BIT
-);
-
-CREATE TABLE #ServerRoles
-(
-    AccountType VARCHAR(3),
-    RoleName SYSNAME
-);
-
-CREATE TABLE #ServerPermissions
-(
-    AccountType VARCHAR(3),
-    PermissionName SYSNAME,
-    StateDesc NVARCHAR(60),
-    ClassDesc NVARCHAR(60),
-    Securable NVARCHAR(1000),
-    RepairDDL NVARCHAR(MAX)
-);
-
-CREATE TABLE #DBUsers
-(
-    AccountType VARCHAR(3),
-    DatabaseName SYSNAME,
-    UserName SYSNAME,
-    TypeDesc NVARCHAR(60),
-    AuthenticationTypeDesc NVARCHAR(60),
-    DefaultSchema SYSNAME,
-    SID VARBINARY(85)
-);
-
-CREATE TABLE #DBRoles
-(
-    AccountType VARCHAR(3),
-    DatabaseName SYSNAME,
-    UserName SYSNAME,
-    RoleName SYSNAME,
-    RepairDDL NVARCHAR(MAX)
-);
-
-CREATE TABLE #DBPermissions
-(
-    AccountType VARCHAR(3),
-    DatabaseName SYSNAME,
-    UserName SYSNAME,
-    PermissionName SYSNAME,
-    StateDesc NVARCHAR(60),
-    ClassDesc NVARCHAR(60),
-    Securable NVARCHAR(1000),
-    MajorID INT,
-    MinorID INT,
-    RepairDDL NVARCHAR(MAX),
-    ReviewRequired BIT
-);
-
-CREATE TABLE #DBOwnership
-(
-    AccountType VARCHAR(3),
-    DatabaseName SYSNAME,
-    OwnershipType VARCHAR(30),
-    ObjectName NVARCHAR(1000)
+    Details NVARCHAR(1000)
 );
 
 ------------------------------------------------------------
--- 1. LOGIN PROPERTIES
+-- 1. SERVER ROLE MEMBERSHIP
 ------------------------------------------------------------
 
-INSERT INTO #LoginProperties
-SELECT
-    CASE WHEN sp.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
-    sp.name,
-    sp.type_desc,
-    sp.is_disabled,
-    sp.default_database_name,
-    sp.default_language_name,
-    sp.sid,
-    sl.is_policy_checked,
-    sl.is_expiration_checked
-FROM sys.server_principals sp
-LEFT JOIN sys.sql_logins sl
-    ON sp.principal_id = sl.principal_id
-WHERE sp.sid IN (@OldSID,@NewSID);
-
-------------------------------------------------------------
--- 2. SERVER ROLE MEMBERSHIP
-------------------------------------------------------------
-
-INSERT INTO #ServerRoles
+INSERT INTO #Permissions
 SELECT
     CASE WHEN member.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
-    role.name
+    'SERVER',
+    NULL,
+    'SERVER_ROLE',
+    role.name,
+    role.name,
+    'ROLE MEMBERSHIP',
+    'MEMBER',
+    'Server role membership'
 FROM sys.server_role_members rm
 JOIN sys.server_principals member
     ON rm.member_principal_id = member.principal_id
@@ -189,47 +86,53 @@ JOIN sys.server_principals role
 WHERE member.sid IN (@OldSID,@NewSID);
 
 ------------------------------------------------------------
--- 3. SERVER PERMISSIONS
+-- 2. SERVER PERMISSIONS
 ------------------------------------------------------------
 
-INSERT INTO #ServerPermissions
+INSERT INTO #Permissions
 SELECT
     CASE WHEN sp.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
-    p.permission_name,
-    p.state_desc,
-    p.class_desc,
+    'SERVER',
+    NULL,
+    'SERVER_PERMISSION',
+
+    CONCAT(
+        p.class_desc, ':',
+        p.major_id, ':',
+        p.minor_id, ':',
+        p.permission_name
+    ),
+
     CASE
         WHEN p.class_desc = 'SERVER'
             THEN 'SERVER'
+
         WHEN p.class_desc = 'ENDPOINT'
             THEN ep.name
-        ELSE CONVERT(NVARCHAR(1000),p.major_id)
+
+        WHEN p.class_desc = 'SERVER_PRINCIPAL'
+            THEN target_principal.name
+
+        ELSE CONCAT(p.class_desc, ':',p.major_id)
     END,
-    CASE
-        WHEN p.class_desc = 'SERVER'
-        THEN
-            p.state_desc + ' ' + p.permission_name +
-            ' TO ' + QUOTENAME(
-                CASE WHEN sp.sid = @OldSID
-                     THEN @NewLogin ELSE @NewLogin END
-            )
-        WHEN p.class_desc = 'ENDPOINT'
-        THEN
-            p.state_desc + ' ' + p.permission_name +
-            ' ON ENDPOINT::' + QUOTENAME(ep.name) +
-            ' TO ' + QUOTENAME(@NewLogin)
-        ELSE NULL
-    END
+
+    p.permission_name,
+    p.state_desc,
+    p.class_desc
+
 FROM sys.server_permissions p
 JOIN sys.server_principals sp
     ON p.grantee_principal_id = sp.principal_id
 LEFT JOIN sys.endpoints ep
     ON p.class_desc = 'ENDPOINT'
     AND ep.endpoint_id = p.major_id
+LEFT JOIN sys.server_principals target_principal
+    ON p.class_desc = 'SERVER_PRINCIPAL'
+    AND target_principal.principal_id = p.major_id
 WHERE sp.sid IN (@OldSID,@NewSID);
 
 ------------------------------------------------------------
--- 4. DATABASE COLLECTION
+-- 3. DATABASE COLLECTION
 ------------------------------------------------------------
 
 DECLARE @DB SYSNAME;
@@ -239,13 +142,10 @@ DECLARE db_cursor CURSOR LOCAL FAST_FORWARD FOR
 SELECT name
 FROM sys.databases
 WHERE state_desc = 'ONLINE'
-  AND HAS_DBACCESS(name) = 1
-  AND (
-      @IncludeSystemDatabases = 1
-      OR database_id > 4
-  );
+  AND HAS_DBACCESS(name) = 1;
 
 OPEN db_cursor;
+
 FETCH NEXT FROM db_cursor INTO @DB;
 
 WHILE @@FETCH_STATUS = 0
@@ -255,18 +155,26 @@ BEGIN
     USE ' + QUOTENAME(@DB) + N';
 
     --------------------------------------------------------
-    -- DATABASE USERS
+    -- DATABASE ACCESS / USER MAPPING
     --------------------------------------------------------
 
-    INSERT INTO #DBUsers
+    INSERT INTO #Permissions
     SELECT
         CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
+        ''DATABASE'',
         DB_NAME(),
+        ''DATABASE_USER'',
+        ''DATABASE_ACCESS'',
         dp.name,
-        dp.type_desc,
-        dp.authentication_type_desc,
-        dp.default_schema_name,
-        dp.sid
+        ''DATABASE ACCESS'',
+        ''MAPPED'',
+        CONCAT(
+            dp.type_desc,
+            '' | Authentication: '',
+            dp.authentication_type_desc,
+            '' | Default schema: '',
+            ISNULL(dp.default_schema_name,'''')
+        )
     FROM sys.database_principals dp
     WHERE dp.sid IN (@OldSID,@NewSID)
       AND dp.type IN (''S'',''U'',''G'');
@@ -275,37 +183,41 @@ BEGIN
     -- DATABASE ROLE MEMBERSHIP
     --------------------------------------------------------
 
-    INSERT INTO #DBRoles
+    INSERT INTO #Permissions
     SELECT
-        CASE WHEN u.AccountType = ''OLD'' THEN ''OLD'' ELSE ''NEW'' END,
+        CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
+        ''DATABASE'',
         DB_NAME(),
-        u.UserName,
-        r.name,
-        ''ALTER ROLE '' + QUOTENAME(r.name) +
-        '' ADD MEMBER '' + QUOTENAME(u.UserName) + '';''
-
+        ''DATABASE_ROLE'',
+        role.name,
+        role.name,
+        ''ROLE MEMBERSHIP'',
+        ''MEMBER'',
+        CONCAT(''Database user: '',dp.name)
     FROM sys.database_role_members drm
-    JOIN sys.database_principals r
-        ON drm.role_principal_id = r.principal_id
-    JOIN sys.database_principals m
-        ON drm.member_principal_id = m.principal_id
-    JOIN #DBUsers u
-        ON u.DatabaseName = DB_NAME()
-        AND u.UserName = m.name
-    WHERE u.AccountType IN (''OLD'',''NEW'');
+    JOIN sys.database_principals role
+        ON drm.role_principal_id = role.principal_id
+    JOIN sys.database_principals dp
+        ON drm.member_principal_id = dp.principal_id
+    WHERE dp.sid IN (@OldSID,@NewSID);
 
     --------------------------------------------------------
-    -- DATABASE PERMISSIONS
+    -- DIRECT DATABASE PERMISSIONS
     --------------------------------------------------------
 
-    INSERT INTO #DBPermissions
+    INSERT INTO #Permissions
     SELECT
-        u.AccountType,
+        CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
+        ''DATABASE'',
         DB_NAME(),
-        u.UserName,
-        p.permission_name,
-        p.state_desc,
-        p.class_desc,
+        ''DATABASE_PERMISSION'',
+
+        CONCAT(
+            p.class_desc, '':'',
+            p.major_id, '':'',
+            p.minor_id, '':'',
+            p.permission_name
+        ),
 
         CASE
             WHEN p.class_desc = ''DATABASE''
@@ -330,121 +242,22 @@ BEGIN
             WHEN p.class_desc = ''DATABASE_PRINCIPAL''
                 THEN USER_NAME(p.major_id)
 
-            ELSE CONVERT(NVARCHAR(1000),p.major_id)
+            ELSE CONCAT(p.class_desc,'':'',p.major_id)
         END,
 
-        p.major_id,
-        p.minor_id,
-
-        CASE
-            WHEN p.class_desc = ''DATABASE''
-                THEN
-                    p.state_desc + '' '' + p.permission_name +
-                    '' TO '' + QUOTENAME(
-                        CASE WHEN u.AccountType = ''OLD''
-                             THEN @NewUserName
-                             ELSE u.UserName END
-                    )
-
-            WHEN p.class_desc = ''SCHEMA''
-                THEN
-                    p.state_desc + '' '' + p.permission_name +
-                    '' ON SCHEMA::'' +
-                    QUOTENAME(SCHEMA_NAME(p.major_id)) +
-                    '' TO '' + QUOTENAME(
-                        CASE WHEN u.AccountType = ''OLD''
-                             THEN @NewUserName
-                             ELSE u.UserName END
-                    )
-
-            WHEN p.class_desc = ''OBJECT_OR_COLUMN''
-                 AND p.minor_id = 0
-                THEN
-                    p.state_desc + '' '' + p.permission_name +
-                    '' ON OBJECT::'' +
-                    QUOTENAME(OBJECT_SCHEMA_NAME(p.major_id)) +
-                    ''.'' + QUOTENAME(OBJECT_NAME(p.major_id)) +
-                    '' TO '' + QUOTENAME(
-                        CASE WHEN u.AccountType = ''OLD''
-                             THEN @NewUserName
-                             ELSE u.UserName END
-                    )
-
-            ELSE NULL
-        END,
-
-        CASE
-            WHEN p.class_desc IN
-                (''DATABASE'',''SCHEMA'',''OBJECT_OR_COLUMN'')
-                 AND (p.class_desc <> ''OBJECT_OR_COLUMN''
-                      OR p.minor_id = 0)
-                THEN 0
-            ELSE 1
-        END
+        p.permission_name,
+        p.state_desc,
+        CONCAT(
+            ''Class: '',p.class_desc,
+            '' | Grantee: '',dp.name
+        )
 
     FROM sys.database_permissions p
-    JOIN sys.database_principals grantee
-        ON p.grantee_principal_id = grantee.principal_id
-    JOIN #DBUsers u
-        ON u.DatabaseName = DB_NAME()
-        AND u.UserName = grantee.name
-    WHERE u.AccountType IN (''OLD'',''NEW'');
-
-    --------------------------------------------------------
-    -- SCHEMA OWNERSHIP
-    --------------------------------------------------------
-
-    INSERT INTO #DBOwnership
-    SELECT
-        u.AccountType,
-        DB_NAME(),
-        ''SCHEMA'',
-        s.name
-    FROM sys.schemas s
     JOIN sys.database_principals dp
-        ON s.principal_id = dp.principal_id
-    JOIN #DBUsers u
-        ON u.DatabaseName = DB_NAME()
-        AND u.UserName = dp.name;
-
-    --------------------------------------------------------
-    -- OBJECT OWNERSHIP
-    --------------------------------------------------------
-
-    INSERT INTO #DBOwnership
-    SELECT
-        u.AccountType,
-        DB_NAME(),
-        ''OBJECT'',
-        QUOTENAME(OBJECT_SCHEMA_NAME(o.object_id))
-            + ''.'' + QUOTENAME(o.name)
-    FROM sys.objects o
-    JOIN sys.database_principals dp
-        ON o.principal_id = dp.principal_id
-    JOIN #DBUsers u
-        ON u.DatabaseName = DB_NAME()
-        AND u.UserName = dp.name;
+        ON p.grantee_principal_id = dp.principal_id
+    WHERE dp.sid IN (@OldSID,@NewSID);
 
     ';
-
-    DECLARE @OldUserName SYSNAME =
-        USER_NAME_FROM_SID(@OldSID);
-
-    -- Determine actual database user names from collected metadata.
-    -- SID-based lookup is performed inside the database instead.
-    SET @SQL = REPLACE(
-        @SQL,
-        '@NewUserName',
-        'REPLACE_PLACEHOLDER'
-    );
-
-    -- Replace placeholder with the mapped user name.
-    -- The dynamic SQL below uses the database-local name.
-    SET @SQL = REPLACE(
-        @SQL,
-        'REPLACE_PLACEHOLDER',
-        'REPLACE_PLACEHOLDER'
-    );
 
     EXEC sys.sp_executesql
         @SQL,
@@ -459,315 +272,138 @@ CLOSE db_cursor;
 DEALLOCATE db_cursor;
 
 ------------------------------------------------------------
--- 5. BUILD NORMALIZED INVENTORY
+-- 4. COMPARISON
 ------------------------------------------------------------
 
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'LOGIN',
-    'SERVER',
-    LoginName,
-    'LOGIN_CONFIGURATION',
-    'CONFIGURATION',
-    CONCAT(
-        TypeDesc,
-        '|Disabled=', IsDisabled,
-        '|DefaultDB=', ISNULL(DefaultDatabase,''),
-        '|Language=', ISNULL(DefaultLanguage,''),
-        '|Policy=', ISNULL(CONVERT(VARCHAR(5),IsPolicyChecked),'NULL'),
-        '|Expiration=', ISNULL(CONVERT(VARCHAR(5),IsExpirationChecked),'NULL')
-    ),
-    NULL,
-    0
-FROM #LoginProperties;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'SERVER_ROLE',
-    'SERVER',
-    RoleName,
-    'MEMBERSHIP',
-    'MEMBER',
-    RoleName,
-    'ALTER SERVER ROLE ' + QUOTENAME(RoleName) +
-    ' ADD MEMBER ' + QUOTENAME(@NewLogin) + ';',
-    0
-FROM #ServerRoles;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'SERVER_PERMISSION',
-    'SERVER',
-    Securable,
-    PermissionName,
-    StateDesc,
-    ClassDesc,
-    RepairDDL,
-    CASE WHEN RepairDDL IS NULL THEN 1 ELSE 0 END
-FROM #ServerPermissions;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'DATABASE_USER',
-    DatabaseName,
-    UserName,
-    'USER_MAPPING',
-    TypeDesc,
-    CONCAT(
-        AuthenticationTypeDesc,
-        '|DefaultSchema=',ISNULL(DefaultSchema,''),
-        '|SID=',CONVERT(VARCHAR(170),SID,2)
-    ),
-    NULL,
-    0
-FROM #DBUsers;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'DATABASE_ROLE',
-    DatabaseName,
-    RoleName,
-    'MEMBERSHIP',
-    'MEMBER',
-    UserName,
-    RepairDDL,
-    0
-FROM #DBRoles;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'DATABASE_PERMISSION',
-    DatabaseName,
-    Securable,
-    PermissionName,
-    StateDesc,
-    ClassDesc,
-    RepairDDL,
-    ReviewRequired
-FROM #DBPermissions;
-
-INSERT INTO #Inventory
-SELECT
-    AccountType,
-    'OWNERSHIP',
-    DatabaseName,
-    ObjectName,
-    OwnershipType,
-    'OWNER',
-    ObjectName,
-    NULL,
-    1
-FROM #DBOwnership;
-
-------------------------------------------------------------
--- 6. DIFFERENCE REPORT
-------------------------------------------------------------
+DROP TABLE IF EXISTS #Comparison;
 
 CREATE TABLE #Comparison
 (
+    PermissionLevel VARCHAR(20),
+    DatabaseName SYSNAME NULL,
     Category VARCHAR(50),
-    ScopeName SYSNAME,
     Securable NVARCHAR(1000),
     PermissionName NVARCHAR(256),
     OldState NVARCHAR(60),
-    OldDetails NVARCHAR(1000),
     NewState NVARCHAR(60),
-    NewDetails NVARCHAR(1000),
     Result VARCHAR(30),
-    RepairDDL NVARCHAR(MAX),
-    ReviewRequired BIT
+    OldDetails NVARCHAR(1000),
+    NewDetails NVARCHAR(1000)
 );
 
 ;WITH OldData AS
 (
     SELECT *
-    FROM #Inventory
-    WHERE AccountType = 'OLD'
+    FROM #Permissions
+    WHERE AccountSide = 'OLD'
 ),
 NewData AS
 (
     SELECT *
-    FROM #Inventory
-    WHERE AccountType = 'NEW'
+    FROM #Permissions
+    WHERE AccountSide = 'NEW'
 )
 INSERT INTO #Comparison
 SELECT
+    COALESCE(o.PermissionLevel,n.PermissionLevel),
+    COALESCE(o.DatabaseName,n.DatabaseName),
     COALESCE(o.Category,n.Category),
-    COALESCE(o.ScopeName,n.ScopeName),
     COALESCE(o.Securable,n.Securable),
     COALESCE(o.PermissionName,n.PermissionName),
-
     o.PermissionState,
-    o.Details,
-
     n.PermissionState,
-    n.Details,
 
     CASE
-        WHEN o.Category IS NULL THEN 'EXTRA_ON_NEW'
-        WHEN n.Category IS NULL THEN 'MISSING_ON_NEW'
+        WHEN o.Category IS NULL
+            THEN 'EXTRA_ON_NEW'
+
+        WHEN n.Category IS NULL
+            THEN 'MISSING_ON_NEW'
+
         WHEN ISNULL(o.PermissionState,'') <>
              ISNULL(n.PermissionState,'')
           OR ISNULL(o.Details,'') <>
              ISNULL(n.Details,'')
             THEN 'DIFFERENT'
+
         ELSE 'IDENTICAL'
     END,
 
-    CASE
-        WHEN n.Category IS NULL THEN o.RepairDDL
-        ELSE NULL
-    END,
-
-    CASE
-        WHEN ISNULL(o.ReviewRequired,0) = 1
-          OR ISNULL(n.ReviewRequired,0) = 1
-            THEN 1
-        ELSE 0
-    END
+    o.Details,
+    n.Details
 
 FROM OldData o
 FULL OUTER JOIN NewData n
-    ON o.Category = n.Category
-    AND o.ScopeName = n.ScopeName
-    AND o.Securable = n.Securable
-    AND o.PermissionName = n.PermissionName;
+    ON o.PermissionLevel = n.PermissionLevel
+    AND ISNULL(o.DatabaseName,'') = ISNULL(n.DatabaseName,'')
+    AND o.Category = n.Category
+    AND o.ItemKey = n.ItemKey;
 
 ------------------------------------------------------------
--- 7. DETAILED INVENTORY OUTPUT
+-- 5. RESULTS
 ------------------------------------------------------------
 
 PRINT '==========================================';
-PRINT '1. LOGIN PROPERTIES';
-PRINT '==========================================';
-
-SELECT * FROM #LoginProperties
-ORDER BY AccountType;
-
-PRINT '==========================================';
-PRINT '2. SERVER ROLES';
-PRINT '==========================================';
-
-SELECT * FROM #ServerRoles
-ORDER BY AccountType,RoleName;
-
-PRINT '==========================================';
-PRINT '3. SERVER PERMISSIONS';
-PRINT '==========================================';
-
-SELECT * FROM #ServerPermissions
-ORDER BY AccountType,PermissionName;
-
-PRINT '==========================================';
-PRINT '4. DATABASE USERS';
-PRINT '==========================================';
-
-SELECT * FROM #DBUsers
-ORDER BY DatabaseName,AccountType;
-
-PRINT '==========================================';
-PRINT '5. DATABASE ROLES';
-PRINT '==========================================';
-
-SELECT * FROM #DBRoles
-ORDER BY DatabaseName,AccountType,RoleName;
-
-PRINT '==========================================';
-PRINT '6. DATABASE PERMISSIONS';
-PRINT '==========================================';
-
-SELECT * FROM #DBPermissions
-ORDER BY DatabaseName,AccountType,PermissionName;
-
-PRINT '==========================================';
-PRINT '7. OWNERSHIP';
-PRINT '==========================================';
-
-SELECT * FROM #DBOwnership
-ORDER BY DatabaseName,AccountType;
-
-PRINT '==========================================';
-PRINT '8. COMPLETE INVENTORY';
+PRINT '1. OLD LOGIN INVENTORY';
 PRINT '==========================================';
 
 SELECT *
-FROM #Inventory
-ORDER BY Category,ScopeName,AccountType,Securable;
-
-------------------------------------------------------------
--- 8. COMPARISON SUMMARY
-------------------------------------------------------------
+FROM #Permissions
+WHERE AccountSide = 'OLD'
+ORDER BY PermissionLevel,DatabaseName,Category,Securable;
 
 PRINT '==========================================';
-PRINT '9. COMPARISON SUMMARY';
+PRINT '2. NEW LOGIN INVENTORY';
+PRINT '==========================================';
+
+SELECT *
+FROM #Permissions
+WHERE AccountSide = 'NEW'
+ORDER BY PermissionLevel,DatabaseName,Category,Securable;
+
+PRINT '==========================================';
+PRINT '3. COMPARISON SUMMARY';
 PRINT '==========================================';
 
 SELECT
     Result,
-    COUNT(*) AS DifferenceCount
+    COUNT(*) AS Total
 FROM #Comparison
 GROUP BY Result
 ORDER BY Result;
 
 PRINT '==========================================';
-PRINT '10. DIFFERENCE REPORT';
+PRINT '4. DIFFERENCES';
 PRINT '==========================================';
 
 SELECT *
 FROM #Comparison
 WHERE Result <> 'IDENTICAL'
 ORDER BY
-    Result,
-    ScopeName,
+    PermissionLevel,
+    DatabaseName,
     Category,
     Securable;
 
-------------------------------------------------------------
--- 9. REPAIR SCRIPT GENERATION
-------------------------------------------------------------
-
-IF @GenerateRepairScripts = 1
-BEGIN
-
-    PRINT '==========================================';
-    PRINT '11. PROPOSED REPAIR SCRIPTS';
-    PRINT 'MANUAL REVIEW REQUIRED';
-    PRINT '==========================================';
-
-    SELECT
-        Result,
-        ScopeName,
-        Category,
-        Securable,
-        RepairDDL
-    FROM #Comparison
-    WHERE Result = 'MISSING_ON_NEW'
-      AND RepairDDL IS NOT NULL
-      AND ReviewRequired = 0
-    ORDER BY ScopeName,Category,Securable;
-
-END;
-
-------------------------------------------------------------
--- 10. REVIEW REQUIRED
-------------------------------------------------------------
-
 PRINT '==========================================';
-PRINT '12. MANUAL REVIEW REQUIRED';
+PRINT '5. DATABASE ACCESS SUMMARY';
 PRINT '==========================================';
 
-SELECT *
-FROM #Comparison
-WHERE ReviewRequired = 1
-   OR Result IN ('DIFFERENT','EXTRA_ON_NEW')
-ORDER BY ScopeName,Category,Securable;
+SELECT
+    DatabaseName,
+    MAX(CASE WHEN AccountSide = 'OLD'
+        THEN 1 ELSE 0 END) AS OldLoginHasAccess,
+    MAX(CASE WHEN AccountSide = 'NEW'
+        THEN 1 ELSE 0 END) AS NewLoginHasAccess
+FROM
+(
+    SELECT AccountSide,DatabaseName
+    FROM #Permissions
+    WHERE Category = 'DATABASE_USER'
+) d
+GROUP BY DatabaseName
+ORDER BY DatabaseName;
 
 PRINT '==========================================';
-PRINT 'AUDIT FINISHED';
+PRINT 'COMPARISON FINISHED';
 PRINT '==========================================';
