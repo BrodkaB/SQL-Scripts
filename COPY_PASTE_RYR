@@ -1,22 +1,56 @@
 
-USE master;
-GO
+/*
+===============================================================================
+ SQL SERVER LOGIN PERMISSIONS COMPARISON
+ Compatible with SQL Server 2019
+
+ Compares:
+   1. Server-level login information
+   2. Server role membership
+   3. Server-level explicit permissions
+   4. Database user mapping
+   5. Database role membership
+   6. Database-level explicit permissions
+
+ Comparison results:
+   IDENTICAL
+   MISSING_ON_NEW
+   EXTRA_ON_NEW
+   DIFFERENT
+
+ Scope:
+   - SQL_LOGIN
+   - WINDOWS_LOGIN
+   - Direct permissions and role memberships
+   - All online databases, including system databases
+
+ Notes:
+   - Does not expand permissions inherited through roles.
+   - Does not resolve Windows AD group membership.
+   - Does not compare effective permissions.
+===============================================================================
+*/
 
 SET NOCOUNT ON;
 
-------------------------------------------------------------
--- CONFIGURATION
-------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- 1. CONFIGURATION
+-------------------------------------------------------------------------------
 
 DECLARE @OldLogin SYSNAME = N'DOMAIN\svc_app_old';
 DECLARE @NewLogin SYSNAME = N'DOMAIN\svc_app_new';
 
-------------------------------------------------------------
--- VALIDATION
-------------------------------------------------------------
-
 DECLARE @OldSID VARBINARY(85);
 DECLARE @NewSID VARBINARY(85);
+
+-------------------------------------------------------------------------------
+-- 2. VALIDATE LOGINS
+-------------------------------------------------------------------------------
+
+IF @OldLogin = @NewLogin
+BEGIN
+    THROW 50001, 'OldLogin and NewLogin cannot be the same.', 1;
+END;
 
 SELECT @OldSID = sid
 FROM sys.server_principals
@@ -26,48 +60,123 @@ SELECT @NewSID = sid
 FROM sys.server_principals
 WHERE name = @NewLogin;
 
-IF @OldSID IS NULL OR @NewSID IS NULL
+IF @OldSID IS NULL
 BEGIN
-    RAISERROR('One or both SQL Server logins do not exist.',16,1);
-    RETURN;
+    DECLARE @ErrorOld NVARCHAR(2048) =
+        N'Login not found on this SQL Server: ' + @OldLogin;
+
+    THROW 50002, @ErrorOld, 1;
 END;
 
-IF @OldSID = @NewSID
+IF @NewSID IS NULL
 BEGIN
-    RAISERROR('Both logins have the same SID.',16,1);
-    RETURN;
+    DECLARE @ErrorNew NVARCHAR(2048) =
+        N'Login not found on this SQL Server: ' + @NewLogin;
+
+    THROW 50003, @ErrorNew, 1;
 END;
 
-IF IS_SRVROLEMEMBER('sysadmin') <> 1
-BEGIN
-    RAISERROR('Run as sysadmin for complete visibility.',16,1);
-    RETURN;
-END;
+-------------------------------------------------------------------------------
+-- 3. TEMPORARY TABLES
+-------------------------------------------------------------------------------
 
-------------------------------------------------------------
--- TEMP TABLE
-------------------------------------------------------------
+IF OBJECT_ID('tempdb..#Permissions') IS NOT NULL
+    DROP TABLE #Permissions;
 
-DROP TABLE IF EXISTS #Permissions;
+IF OBJECT_ID('tempdb..#Comparison') IS NOT NULL
+    DROP TABLE #Comparison;
+
+IF OBJECT_ID('tempdb..#Errors') IS NOT NULL
+    DROP TABLE #Errors;
 
 CREATE TABLE #Permissions
 (
-    AccountSide VARCHAR(3),
-    PermissionLevel VARCHAR(20),
-    DatabaseName SYSNAME NULL,
-    Category VARCHAR(50),
-    ItemKey NVARCHAR(1000),
-    Securable NVARCHAR(1000),
-    PermissionName NVARCHAR(256),
-    PermissionState NVARCHAR(60),
-    Details NVARCHAR(1000)
+    AccountSide       VARCHAR(3)       NOT NULL,
+    PermissionLevel   VARCHAR(20)      NOT NULL,
+    DatabaseName      SYSNAME          NULL,
+    Category          VARCHAR(50)      NOT NULL,
+    ItemKey           NVARCHAR(1000)   NOT NULL,
+    Securable         NVARCHAR(1000)   NULL,
+    PermissionName    NVARCHAR(256)    NULL,
+    PermissionState   NVARCHAR(60)     NULL,
+    Details           NVARCHAR(1000)   NULL
 );
 
-------------------------------------------------------------
--- 1. SERVER ROLE MEMBERSHIP
-------------------------------------------------------------
+CREATE TABLE #Comparison
+(
+    PermissionLevel   VARCHAR(20),
+    DatabaseName      SYSNAME,
+    Category          VARCHAR(50),
+    OldSecurable      NVARCHAR(1000),
+    NewSecurable      NVARCHAR(1000),
+    PermissionName    NVARCHAR(256),
+    OldState          NVARCHAR(60),
+    NewState          NVARCHAR(60),
+    Result            VARCHAR(30),
+    OldDetails        NVARCHAR(1000),
+    NewDetails        NVARCHAR(1000)
+);
+
+CREATE TABLE #Errors
+(
+    DatabaseName SYSNAME,
+    ErrorNumber  INT,
+    ErrorMessage NVARCHAR(4000)
+);
+
+-------------------------------------------------------------------------------
+-- 4. SERVER-LEVEL INFORMATION
+-------------------------------------------------------------------------------
+
+-- 4.1 Login information
 
 INSERT INTO #Permissions
+(
+    AccountSide,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    ItemKey,
+    Securable,
+    PermissionName,
+    PermissionState,
+    Details
+)
+SELECT
+    CASE WHEN sp.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
+    'SERVER',
+    NULL,
+    'SERVER_LOGIN',
+    N'LOGIN',
+    sp.name,
+    N'LOGIN',
+    CASE
+        WHEN sp.is_disabled = 1 THEN N'DISABLED'
+        ELSE N'ENABLED'
+    END,
+    CONCAT
+    (
+        N'Type: ', sp.type_desc,
+        N'; Default database: ',
+        COALESCE(sp.default_database_name, N'')
+    )
+FROM sys.server_principals sp
+WHERE sp.sid IN (@OldSID, @NewSID);
+
+-- 4.2 Server role membership
+
+INSERT INTO #Permissions
+(
+    AccountSide,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    ItemKey,
+    Securable,
+    PermissionName,
+    PermissionState,
+    Details
+)
 SELECT
     CASE WHEN member.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
     'SERVER',
@@ -75,221 +184,249 @@ SELECT
     'SERVER_ROLE',
     role.name,
     role.name,
-    'ROLE MEMBERSHIP',
-    'MEMBER',
-    'Server role membership'
-FROM sys.server_role_members rm
-JOIN sys.server_principals member
-    ON rm.member_principal_id = member.principal_id
-JOIN sys.server_principals role
-    ON rm.role_principal_id = role.principal_id
-WHERE member.sid IN (@OldSID,@NewSID);
+    N'ROLE MEMBERSHIP',
+    NULL,
+    N'Direct server role membership'
+FROM sys.server_role_members srm
+INNER JOIN sys.server_principals role
+    ON role.principal_id = srm.role_principal_id
+INNER JOIN sys.server_principals member
+    ON member.principal_id = srm.member_principal_id
+WHERE member.sid IN (@OldSID, @NewSID);
 
-------------------------------------------------------------
--- 2. SERVER PERMISSIONS
-------------------------------------------------------------
+-- 4.3 Explicit server-level permissions
 
 INSERT INTO #Permissions
+(
+    AccountSide,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    ItemKey,
+    Securable,
+    PermissionName,
+    PermissionState,
+    Details
+)
 SELECT
     CASE WHEN sp.sid = @OldSID THEN 'OLD' ELSE 'NEW' END,
     'SERVER',
     NULL,
     'SERVER_PERMISSION',
 
-    CONCAT(
-        p.class_desc, ':',
-        p.major_id, ':',
-        p.minor_id, ':',
+    CONCAT
+    (
+        p.class_desc, N':',
+        p.major_id, N':',
+        p.minor_id, N':',
         p.permission_name
     ),
 
-    CASE
-        WHEN p.class_desc = 'SERVER'
-            THEN 'SERVER'
-
-        WHEN p.class_desc = 'ENDPOINT'
-            THEN ep.name
-
-        WHEN p.class_desc = 'SERVER_PRINCIPAL'
-            THEN target_principal.name
-
-        ELSE CONCAT(p.class_desc, ':',p.major_id)
-    END,
+    CONCAT
+    (
+        p.class_desc, N':',
+        p.major_id, N':',
+        p.minor_id
+    ),
 
     p.permission_name,
     p.state_desc,
-    p.class_desc
-
+    N'Direct server-level permission'
 FROM sys.server_permissions p
-JOIN sys.server_principals sp
-    ON p.grantee_principal_id = sp.principal_id
-LEFT JOIN sys.endpoints ep
-    ON p.class_desc = 'ENDPOINT'
-    AND ep.endpoint_id = p.major_id
-LEFT JOIN sys.server_principals target_principal
-    ON p.class_desc = 'SERVER_PRINCIPAL'
-    AND target_principal.principal_id = p.major_id
-WHERE sp.sid IN (@OldSID,@NewSID);
+INNER JOIN sys.server_principals sp
+    ON sp.principal_id = p.grantee_principal_id
+WHERE sp.sid IN (@OldSID, @NewSID);
 
-------------------------------------------------------------
--- 3. DATABASE COLLECTION
-------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- 5. DATABASE-LEVEL INFORMATION
+-------------------------------------------------------------------------------
 
-DECLARE @DB SYSNAME;
+DECLARE @DatabaseName SYSNAME;
 DECLARE @SQL NVARCHAR(MAX);
 
-DECLARE db_cursor CURSOR LOCAL FAST_FORWARD FOR
+DECLARE DatabaseCursor CURSOR LOCAL FAST_FORWARD FOR
 SELECT name
 FROM sys.databases
-WHERE state_desc = 'ONLINE'
-  AND HAS_DBACCESS(name) = 1;
+WHERE state = 0
+ORDER BY name;
 
-OPEN db_cursor;
+OPEN DatabaseCursor;
 
-FETCH NEXT FROM db_cursor INTO @DB;
+FETCH NEXT FROM DatabaseCursor INTO @DatabaseName;
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
+    BEGIN TRY
 
-    SET @SQL = N'
-    USE ' + QUOTENAME(@DB) + N';
+        SET @SQL = N'
+        USE ' + QUOTENAME(@DatabaseName) + N';
 
-    --------------------------------------------------------
-    -- DATABASE ACCESS / USER MAPPING
-    --------------------------------------------------------
+        -----------------------------------------------------------------------
+        -- 5.1 Database user mapping
+        -----------------------------------------------------------------------
 
-    INSERT INTO #Permissions
-    SELECT
-        CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
-        ''DATABASE'',
-        DB_NAME(),
-        ''DATABASE_USER'',
-        ''DATABASE_ACCESS'',
-        dp.name,
-        ''DATABASE ACCESS'',
-        ''MAPPED'',
-        CONCAT(
-            dp.type_desc,
-            '' | Authentication: '',
-            dp.authentication_type_desc,
-            '' | Default schema: '',
-            ISNULL(dp.default_schema_name,'''')
+        INSERT INTO #Permissions
+        (
+            AccountSide,
+            PermissionLevel,
+            DatabaseName,
+            Category,
+            ItemKey,
+            Securable,
+            PermissionName,
+            PermissionState,
+            Details
         )
-    FROM sys.database_principals dp
-    WHERE dp.sid IN (@OldSID,@NewSID)
-      AND dp.type IN (''S'',''U'',''G'');
+        SELECT
+            a.AccountSide,
+            ''DATABASE'',
+            DB_NAME(),
+            ''DATABASE_USER'',
+            N''DATABASE_USER'',
+            dp.name,
+            N''DATABASE USER'',
+            NULL,
+            CONCAT
+            (
+                N''Type: '', dp.type_desc,
+                N''; Authentication: '',
+                COALESCE(dp.authentication_type_desc, N''''),
+                N''; Default schema: '',
+                COALESCE(dp.default_schema_name, N'''')
+            )
+        FROM sys.database_principals dp
+        CROSS APPLY
+        (
+            SELECT ''OLD'' AS AccountSide, @OldSID AS SID
+            UNION ALL
+            SELECT ''NEW'', @NewSID
+        ) a
+        WHERE dp.sid = a.SID;
 
-    --------------------------------------------------------
-    -- DATABASE ROLE MEMBERSHIP
-    --------------------------------------------------------
+        -----------------------------------------------------------------------
+        -- 5.2 Database role membership
+        -----------------------------------------------------------------------
 
-    INSERT INTO #Permissions
-    SELECT
-        CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
-        ''DATABASE'',
-        DB_NAME(),
-        ''DATABASE_ROLE'',
-        role.name,
-        role.name,
-        ''ROLE MEMBERSHIP'',
-        ''MEMBER'',
-        CONCAT(''Database user: '',dp.name)
-    FROM sys.database_role_members drm
-    JOIN sys.database_principals role
-        ON drm.role_principal_id = role.principal_id
-    JOIN sys.database_principals dp
-        ON drm.member_principal_id = dp.principal_id
-    WHERE dp.sid IN (@OldSID,@NewSID);
-
-    --------------------------------------------------------
-    -- DIRECT DATABASE PERMISSIONS
-    --------------------------------------------------------
-
-    INSERT INTO #Permissions
-    SELECT
-        CASE WHEN dp.sid = @OldSID THEN ''OLD'' ELSE ''NEW'' END,
-        ''DATABASE'',
-        DB_NAME(),
-        ''DATABASE_PERMISSION'',
-
-        CONCAT(
-            p.class_desc, '':'',
-            p.major_id, '':'',
-            p.minor_id, '':'',
-            p.permission_name
-        ),
-
-        CASE
-            WHEN p.class_desc = ''DATABASE''
-                THEN DB_NAME()
-
-            WHEN p.class_desc = ''SCHEMA''
-                THEN SCHEMA_NAME(p.major_id)
-
-            WHEN p.class_desc = ''OBJECT_OR_COLUMN''
-                THEN
-                    QUOTENAME(OBJECT_SCHEMA_NAME(p.major_id))
-                    + ''.'' +
-                    QUOTENAME(OBJECT_NAME(p.major_id))
-                    + CASE
-                        WHEN p.minor_id > 0
-                        THEN ''.'' + QUOTENAME(
-                            COL_NAME(p.major_id,p.minor_id)
-                        )
-                        ELSE ''''
-                      END
-
-            WHEN p.class_desc = ''DATABASE_PRINCIPAL''
-                THEN USER_NAME(p.major_id)
-
-            ELSE CONCAT(p.class_desc,'':'',p.major_id)
-        END,
-
-        p.permission_name,
-        p.state_desc,
-        CONCAT(
-            ''Class: '',p.class_desc,
-            '' | Grantee: '',dp.name
+        INSERT INTO #Permissions
+        (
+            AccountSide,
+            PermissionLevel,
+            DatabaseName,
+            Category,
+            ItemKey,
+            Securable,
+            PermissionName,
+            PermissionState,
+            Details
         )
+        SELECT
+            a.AccountSide,
+            ''DATABASE'',
+            DB_NAME(),
+            ''DATABASE_ROLE'',
+            CONCAT(N''ROLE:'', rolep.name),
+            rolep.name,
+            N''ROLE MEMBERSHIP'',
+            NULL,
+            N''Direct database role membership''
+        FROM sys.database_role_members rm
+        INNER JOIN sys.database_principals rolep
+            ON rolep.principal_id = rm.role_principal_id
+        INNER JOIN sys.database_principals memberp
+            ON memberp.principal_id = rm.member_principal_id
+        CROSS APPLY
+        (
+            SELECT ''OLD'' AS AccountSide, @OldSID AS SID
+            UNION ALL
+            SELECT ''NEW'', @NewSID
+        ) a
+        WHERE memberp.sid = a.SID;
 
-    FROM sys.database_permissions p
-    JOIN sys.database_principals dp
-        ON p.grantee_principal_id = dp.principal_id
-    WHERE dp.sid IN (@OldSID,@NewSID);
+        -----------------------------------------------------------------------
+        -- 5.3 Explicit database-level permissions
+        -----------------------------------------------------------------------
 
-    ';
+        INSERT INTO #Permissions
+        (
+            AccountSide,
+            PermissionLevel,
+            DatabaseName,
+            Category,
+            ItemKey,
+            Securable,
+            PermissionName,
+            PermissionState,
+            Details
+        )
+        SELECT
+            a.AccountSide,
+            ''DATABASE'',
+            DB_NAME(),
+            ''DATABASE_PERMISSION'',
 
-    EXEC sys.sp_executesql
-        @SQL,
-        N'@OldSID VARBINARY(85), @NewSID VARBINARY(85)',
-        @OldSID = @OldSID,
-        @NewSID = @NewSID;
+            CONCAT
+            (
+                p.class_desc, N'':'',
+                p.major_id, N'':'',
+                p.minor_id, N'':'',
+                p.permission_name
+            ),
 
-    FETCH NEXT FROM db_cursor INTO @DB;
+            CONCAT
+            (
+                p.class_desc, N'':'',
+                p.major_id, N'':'',
+                p.minor_id
+            ),
+
+            p.permission_name,
+            p.state_desc,
+            N''Direct database permission''
+        FROM sys.database_permissions p
+        INNER JOIN sys.database_principals dp
+            ON dp.principal_id = p.grantee_principal_id
+        CROSS APPLY
+        (
+            SELECT ''OLD'' AS AccountSide, @OldSID AS SID
+            UNION ALL
+            SELECT ''NEW'', @NewSID
+        ) a
+        WHERE dp.sid = a.SID;
+        ';
+
+        EXEC sys.sp_executesql
+            @SQL,
+            N'@OldSID VARBINARY(85), @NewSID VARBINARY(85)',
+            @OldSID = @OldSID,
+            @NewSID = @NewSID;
+
+    END TRY
+    BEGIN CATCH
+
+        INSERT INTO #Errors
+        (
+            DatabaseName,
+            ErrorNumber,
+            ErrorMessage
+        )
+        VALUES
+        (
+            @DatabaseName,
+            ERROR_NUMBER(),
+            ERROR_MESSAGE()
+        );
+
+    END CATCH;
+
+    FETCH NEXT FROM DatabaseCursor INTO @DatabaseName;
 END;
 
-CLOSE db_cursor;
-DEALLOCATE db_cursor;
+CLOSE DatabaseCursor;
+DEALLOCATE DatabaseCursor;
 
-------------------------------------------------------------
--- 4. COMPARISON
-------------------------------------------------------------
-
-DROP TABLE IF EXISTS #Comparison;
-
-CREATE TABLE #Comparison
-(
-    PermissionLevel VARCHAR(20),
-    DatabaseName SYSNAME NULL,
-    Category VARCHAR(50),
-    Securable NVARCHAR(1000),
-    PermissionName NVARCHAR(256),
-    OldState NVARCHAR(60),
-    NewState NVARCHAR(60),
-    Result VARCHAR(30),
-    OldDetails NVARCHAR(1000),
-    NewDetails NVARCHAR(1000)
-);
+-------------------------------------------------------------------------------
+-- 6. COMPARE OLD VS NEW
+-------------------------------------------------------------------------------
 
 ;WITH OldData AS
 (
@@ -304,26 +441,42 @@ NewData AS
     WHERE AccountSide = 'NEW'
 )
 INSERT INTO #Comparison
+(
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    OldSecurable,
+    NewSecurable,
+    PermissionName,
+    OldState,
+    NewState,
+    Result,
+    OldDetails,
+    NewDetails
+)
 SELECT
-    COALESCE(o.PermissionLevel,n.PermissionLevel),
-    COALESCE(o.DatabaseName,n.DatabaseName),
-    COALESCE(o.Category,n.Category),
-    COALESCE(o.Securable,n.Securable),
-    COALESCE(o.PermissionName,n.PermissionName),
+    COALESCE(o.PermissionLevel, n.PermissionLevel),
+    COALESCE(o.DatabaseName, n.DatabaseName),
+    COALESCE(o.Category, n.Category),
+    o.Securable,
+    n.Securable,
+    COALESCE(o.PermissionName, n.PermissionName),
     o.PermissionState,
     n.PermissionState,
 
     CASE
-        WHEN o.Category IS NULL
+        WHEN o.ItemKey IS NULL
             THEN 'EXTRA_ON_NEW'
 
-        WHEN n.Category IS NULL
+        WHEN n.ItemKey IS NULL
             THEN 'MISSING_ON_NEW'
 
-        WHEN ISNULL(o.PermissionState,'') <>
-             ISNULL(n.PermissionState,'')
-          OR ISNULL(o.Details,'') <>
-             ISNULL(n.Details,'')
+        WHEN ISNULL(o.PermissionState, N'')
+             <> ISNULL(n.PermissionState, N'')
+
+          OR ISNULL(o.Details, N'')
+             <> ISNULL(n.Details, N'')
+
             THEN 'DIFFERENT'
 
         ELSE 'IDENTICAL'
@@ -334,76 +487,87 @@ SELECT
 
 FROM OldData o
 FULL OUTER JOIN NewData n
-    ON o.PermissionLevel = n.PermissionLevel
-    AND ISNULL(o.DatabaseName,'') = ISNULL(n.DatabaseName,'')
+    ON  o.PermissionLevel = n.PermissionLevel
+    AND ISNULL(o.DatabaseName, N'') = ISNULL(n.DatabaseName, N'')
     AND o.Category = n.Category
     AND o.ItemKey = n.ItemKey;
 
-------------------------------------------------------------
--- 5. RESULTS
-------------------------------------------------------------
+-------------------------------------------------------------------------------
+-- 7. RESULTS
+-------------------------------------------------------------------------------
 
-PRINT '==========================================';
-PRINT '1. OLD LOGIN INVENTORY';
-PRINT '==========================================';
+-- Result set 1: Complete permission inventory
 
-SELECT *
+SELECT
+    AccountSide,
+    CASE
+        WHEN AccountSide = 'OLD' THEN @OldLogin
+        ELSE @NewLogin
+    END AS LoginName,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    Securable,
+    PermissionName,
+    PermissionState,
+    Details
 FROM #Permissions
-WHERE AccountSide = 'OLD'
-ORDER BY PermissionLevel,DatabaseName,Category,Securable;
+ORDER BY
+    PermissionLevel,
+    DatabaseName,
+    AccountSide,
+    Category,
+    Securable;
 
-PRINT '==========================================';
-PRINT '2. NEW LOGIN INVENTORY';
-PRINT '==========================================';
+-------------------------------------------------------------------------------
+-- Result set 2: Comparison
 
-SELECT *
-FROM #Permissions
-WHERE AccountSide = 'NEW'
-ORDER BY PermissionLevel,DatabaseName,Category,Securable;
+SELECT
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    OldSecurable,
+    NewSecurable,
+    PermissionName,
+    OldState,
+    NewState,
+    Result,
+    OldDetails,
+    NewDetails
+FROM #Comparison
+ORDER BY
+    CASE Result
+        WHEN 'MISSING_ON_NEW' THEN 1
+        WHEN 'DIFFERENT' THEN 2
+        WHEN 'EXTRA_ON_NEW' THEN 3
+        WHEN 'IDENTICAL' THEN 4
+        ELSE 5
+    END,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    PermissionName;
 
-PRINT '==========================================';
-PRINT '3. COMPARISON SUMMARY';
-PRINT '==========================================';
+-------------------------------------------------------------------------------
+-- Result set 3: Comparison summary
 
 SELECT
     Result,
-    COUNT(*) AS Total
+    COUNT(*) AS NumberOfEntries
 FROM #Comparison
 GROUP BY Result
 ORDER BY Result;
 
-PRINT '==========================================';
-PRINT '4. DIFFERENCES';
-PRINT '==========================================';
-
-SELECT *
-FROM #Comparison
-WHERE Result <> 'IDENTICAL'
-ORDER BY
-    PermissionLevel,
-    DatabaseName,
-    Category,
-    Securable;
-
-PRINT '==========================================';
-PRINT '5. DATABASE ACCESS SUMMARY';
-PRINT '==========================================';
+-------------------------------------------------------------------------------
+-- Result set 4: Database collection errors
 
 SELECT
     DatabaseName,
-    MAX(CASE WHEN AccountSide = 'OLD'
-        THEN 1 ELSE 0 END) AS OldLoginHasAccess,
-    MAX(CASE WHEN AccountSide = 'NEW'
-        THEN 1 ELSE 0 END) AS NewLoginHasAccess
-FROM
-(
-    SELECT AccountSide,DatabaseName
-    FROM #Permissions
-    WHERE Category = 'DATABASE_USER'
-) d
-GROUP BY DatabaseName
+    ErrorNumber,
+    ErrorMessage
+FROM #Errors
 ORDER BY DatabaseName;
 
-PRINT '==========================================';
-PRINT 'COMPARISON FINISHED';
-PRINT '==========================================';
+-------------------------------------------------------------------------------
+-- END
+-------------------------------------------------------------------------------
