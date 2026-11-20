@@ -1,10 +1,31 @@
-Msg 207, Level 16, State 1, Line 526
-Invalid column name 'PermissionLevel'.
-Msg 207, Level 16, State 1, Line 527
-Invalid column name 'DatabaseName'.
-Msg 207, Level 16, State 1, Line 529
-Invalid column name 'OldSecurable'.
-Msg 207, Level 16, State 1, Line 530
-Invalid column name 'NewSecurable'.
+-------------------------------------------------------------------------------
+-- Result set 2: Comparison
+-------------------------------------------------------------------------------
 
-Completion time: 2026-11-20T12:49:22.5534142+00:00
+EXEC sys.sp_executesql N'
+SELECT
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    OldSecurable,
+    NewSecurable,
+    PermissionName,
+    OldState,
+    NewState,
+    Result,
+    OldDetails,
+    NewDetails
+FROM #Comparison
+ORDER BY
+    CASE Result
+        WHEN ''MISSING_ON_NEW'' THEN 1
+        WHEN ''DIFFERENT'' THEN 2
+        WHEN ''EXTRA_ON_NEW'' THEN 3
+        WHEN ''IDENTICAL'' THEN 4
+        ELSE 5
+    END,
+    PermissionLevel,
+    DatabaseName,
+    Category,
+    PermissionName;
+';
